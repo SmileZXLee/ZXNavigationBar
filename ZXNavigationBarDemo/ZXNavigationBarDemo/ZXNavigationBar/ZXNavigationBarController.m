@@ -1,0 +1,346 @@
+//
+//  ZXNavigationBarController.m
+//  ZXNavigationBar
+//
+//  Created by 李兆祥 on 2020/3/7.
+//  Copyright © 2020 ZXLee. All rights reserved.
+//  https://github.com/SmileZXLee/ZXNavigationBar
+
+#import "ZXNavigationBarController.h"
+#import "UIImage+ZXNavBundleExtension.h"
+@interface ZXNavigationBarController ()
+@property(nonatomic,assign)CGFloat orgNavOffset;
+@end
+
+@implementation ZXNavigationBarController
+#pragma mark - Init
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.orgNavOffset = -1;
+    if(self.navigationController && !self.zx_hideBaseNavBar){
+        [self initNavBar];
+        self.navigationController.interactivePopGestureRecognizer.delegate = (id)self;
+        [self setAutoBack];
+    }
+    [self setNeedsStatusBarAppearanceUpdate];
+}
+
+#pragma mark - private
+#pragma mark 初始化导航栏
+-(void)initNavBar{
+    ZXNavigationBar *navBar = [[ZXNavigationBar alloc]init];
+    [self.view addSubview:navBar];
+    [self.view bringSubviewToFront:navBar];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(CGFLOAT_MIN * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.view bringSubviewToFront:navBar];
+    });
+    self.zx_navTitleView = navBar.zx_titleView;
+    self.zx_navTitleLabel = navBar.zx_titleLabel;
+    self.zx_navLeftBtn = navBar.zx_leftBtn;
+    self.zx_navRightBtn = navBar.zx_rightBtn;
+    self.zx_navSubRightBtn = navBar.zx_subRightBtn;
+    self.zx_navLineView = navBar.lineView;
+    self.zx_navBacImageView = navBar.zx_bacImageView;
+    self.zx_navBar = navBar;
+    self.zx_navTitleLabel.text = self.zx_navTitle;
+    [self adjustNavContainerOffset:ZXNavBarHeight];
+    [self relayoutSubviews];
+}
+
+#pragma mark 设置自动显示返回Button且点击pop到上一个控制器
+- (void)setAutoBack{
+    if(self.navigationController && self.navigationController.viewControllers.count > 1){
+        UIImage *backImg = [UIImage imageFromBundleWithImageName:@"back_icon"];
+        [self.zx_navLeftBtn setImage:backImg forState:UIControlStateNormal];
+        __weak typeof(self) weakSelf = self;
+        [self zx_leftClickedBlock:^(ZXNavItemBtn * _Nonnull btn) {
+            [weakSelf.navigationController popViewControllerAnimated:YES];
+        }];
+    }
+}
+
+#pragma mark Xib加载情况下，调整约束自动下移导航栏高度
+- (void)adjustNavContainerOffset:(CGFloat)offset{
+    if(self.zx_disableNavAutoSafeLayout){
+        offset = 0;
+    }
+    NSArray *constraintArr = [self.view constraints];
+    [constraintArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSLayoutConstraint * constraint = obj;
+        if (constraint.firstAttribute == NSLayoutAttributeTop){
+            if(self.orgNavOffset == -1){
+                self.orgNavOffset = constraint.constant;
+            }
+            constraint.constant = self.orgNavOffset + offset ;
+            *stop = YES;
+        }
+    }];
+}
+
+#pragma mark 刷新导航栏位置
+- (void)relayoutSubviews{
+    if(self.zx_navBar){
+        self.zx_navBar.frame = CGRectMake(0, 0, ZXScreenWidth, ZXNavBarHeight);
+    }
+}
+
+#pragma mark - Setter
+-(void)setZx_navTitle:(NSString *)zx_navTitle{
+    _zx_navTitle = zx_navTitle;
+    self.zx_navTitleLabel.text = zx_navTitle;
+}
+
+- (void)setTitle:(NSString *)title{
+    [super setTitle:title];
+    self.zx_navTitle = title;
+}
+
+- (void)setZx_navTintColor:(UIColor *)zx_navTintColor{
+    _zx_navTintColor = zx_navTintColor;
+    self.zx_navTitleLabel.textColor = zx_navTintColor;
+    [self.zx_navLeftBtn setTitleColor:zx_navTintColor forState:UIControlStateNormal];
+    [self.zx_navRightBtn setTitleColor:zx_navTintColor forState:UIControlStateNormal];
+    [self.zx_navSubRightBtn setTitleColor:zx_navTintColor forState:UIControlStateNormal];
+    if(self.zx_navLeftBtn.currentImage){
+      [self.zx_navLeftBtn setImage:[self.zx_navLeftBtn.currentImage zx_renderingColor:zx_navTintColor] forState:UIControlStateNormal];
+    }
+    if(self.zx_navRightBtn.currentImage){
+        [self.zx_navRightBtn setImage:[self.zx_navRightBtn.currentImage zx_renderingColor:zx_navTintColor] forState:UIControlStateNormal];
+    }
+    if(self.zx_navSubRightBtn.currentImage){
+        [self.zx_navSubRightBtn setImage:[self.zx_navSubRightBtn.currentImage zx_renderingColor:zx_navTintColor] forState:UIControlStateNormal];
+    }
+}
+
+- (void)setZx_hideBaseNavBar:(BOOL)zx_hideBaseNavBar{
+    if(_zx_hideBaseNavBar != zx_hideBaseNavBar){
+        if(zx_hideBaseNavBar){
+            [self adjustNavContainerOffset:0];
+        }else{
+            if(self.zx_isEnableSafeArea && [[UIDevice currentDevice].systemVersion doubleValue] >= 11){
+                [self adjustNavContainerOffset:(ZXNavBarHeight - ZXAppStatusBarHeight)];
+            }else{
+                [self adjustNavContainerOffset:ZXNavBarHeight];
+            }
+        }
+        
+    }
+    _zx_hideBaseNavBar = zx_hideBaseNavBar;
+    if(self.zx_navBar){
+        self.zx_navBar.hidden = zx_hideBaseNavBar;
+    }
+}
+
+- (void)setZx_isEnableSafeArea:(BOOL)zx_isEnableSafeArea{
+    if(@available(iOS 11.0, *)) {
+        if(_zx_isEnableSafeArea != zx_isEnableSafeArea){
+            if(zx_isEnableSafeArea){
+                [self adjustNavContainerOffset:(ZXNavBarHeight - ZXAppStatusBarHeight)];
+            }else{
+                [self adjustNavContainerOffset:ZXNavBarHeight];
+            }
+        }
+    }
+    _zx_isEnableSafeArea = zx_isEnableSafeArea;
+}
+
+- (void)setZx_isLightStatusBar:(BOOL)zx_isLightStatusBar{
+    _zx_isLightStatusBar = zx_isLightStatusBar;
+    [self setNeedsStatusBarAppearanceUpdate];
+}
+
+- (void)setZx_showSystemNavBar:(BOOL)zx_showSystemNavBar{
+    _zx_showSystemNavBar = zx_showSystemNavBar;
+    if(self.navigationController){
+        self.zx_hideBaseNavBar = YES;
+        self.navigationController.navigationBar.translucent = !zx_showSystemNavBar;
+        self.navigationController.navigationBarHidden = !zx_showSystemNavBar;
+    }
+}
+
+- (void)setZx_navItemSize:(CGFloat)zx_navItemSize{
+    _zx_navItemSize = zx_navItemSize;
+    if(self.zx_navBar){
+        self.zx_navBar.zx_itemSize = zx_navItemSize;
+    }
+}
+
+- (void)setZx_navItemMargin:(CGFloat)zx_navItemMargin{
+    _zx_navItemMargin = zx_navItemMargin;
+    if(self.zx_navBar){
+        self.zx_navBar.zx_itemMargin = zx_navItemMargin;
+    }
+    
+}
+
+- (void)setZx_disableNavAutoSafeLayout:(BOOL)zx_disableNavAutoSafeLayout{
+    zx_disableNavAutoSafeLayout = zx_disableNavAutoSafeLayout;
+    [self adjustNavContainerOffset:0];
+}
+
+
+#pragma mark - Public
+#pragma mark 设置左侧Button图片和点击回调
+- (void)zx_setLeftBtnWithImgName:(NSString *)imgName clickedBlock:(leftBtnClickedBlock)clickBlock{
+    [self.zx_navLeftBtn setImage:[UIImage imageNamed:imgName] forState:UIControlStateNormal];
+    ((ZXNavigationBar *)self.zx_navBar).zx_leftBtnClickedBlock = ^(ZXNavItemBtn * _Nonnull btn) {
+        clickBlock(btn);
+    };
+}
+
+#pragma mark 设置最右侧Button图片和点击回调
+- (void)zx_setRightBtnWithImgName:(NSString *)imgName clickedBlock:(rightBtnClickedBlock)clickBlock{
+    [self.zx_navRightBtn setImage:[UIImage imageNamed:imgName] forState:UIControlStateNormal];
+    ((ZXNavigationBar *)self.zx_navBar).zx_rightBtnClickedBlock = ^(ZXNavItemBtn * _Nonnull btn) {
+        clickBlock(btn);
+    };
+}
+
+#pragma mark 设置右侧第二个Button图片和点击回调
+- (void)zx_setSubRightBtnWithImgName:(NSString *)imgName clickedBlock:(subRightBtnClickedBlock)clickBlock{
+    [self.zx_navSubRightBtn setImage:[UIImage imageNamed:imgName] forState:UIControlStateNormal];
+    ((ZXNavigationBar *)self.zx_navBar).zx_subRightBtnClickedBlock = ^(ZXNavItemBtn * _Nonnull btn) {
+        clickBlock(btn);
+    };
+}
+
+#pragma mark 设置左侧Button文字和点击回调
+- (void)zx_setLeftBtnWithText:(NSString *)btnText clickedBlock:(leftBtnClickedBlock)clickBlock{
+    [self.zx_navLeftBtn setTitle:btnText forState:UIControlStateNormal];
+    ((ZXNavigationBar *)self.zx_navBar).zx_leftBtnClickedBlock = ^(ZXNavItemBtn * _Nonnull btn) {
+        clickBlock(btn);
+    };
+}
+
+#pragma mark 设置最右侧Button图片和点击回调
+- (void)zx_setRightBtnWithText:(NSString *)btnText clickedBlock:(rightBtnClickedBlock)clickBlock{
+    [self.zx_navRightBtn setTitleColor:self.zx_navTitleLabel.textColor forState:UIControlStateNormal];
+    [self.zx_navRightBtn setTitle:btnText forState:UIControlStateNormal];
+    ((ZXNavigationBar *)self.zx_navBar).zx_rightBtnClickedBlock = ^(ZXNavItemBtn * _Nonnull btn) {
+        clickBlock(btn);
+    };
+}
+
+#pragma mark 设置右侧第二个按钮图片和点击回调
+- (void)zx_setSubRightBtnWithText:(NSString *)btnText clickedBlock:(subRightBtnClickedBlock)clickBlock{
+    [self.zx_navSubRightBtn setTitleColor:self.zx_navTitleLabel.textColor forState:UIControlStateNormal];
+    [self.zx_navSubRightBtn setTitle:btnText forState:UIControlStateNormal];
+    ((ZXNavigationBar *)self.zx_navBar).zx_subRightBtnClickedBlock = ^(ZXNavItemBtn * _Nonnull btn) {
+        clickBlock(btn);
+    };
+}
+
+#pragma mark 左侧Button点击回调
+- (void)zx_leftClickedBlock:(leftBtnClickedBlock)clickBlock{
+    ((ZXNavigationBar *)self.zx_navBar).zx_leftBtnClickedBlock = ^(ZXNavItemBtn * _Nonnull btn) {
+        clickBlock(btn);
+    };
+}
+
+#pragma mark 最右侧Button点击回调
+- (void)zx_rightClickedBlock:(rightBtnClickedBlock)clickBlock{
+    ((ZXNavigationBar *)self.zx_navBar).zx_rightBtnClickedBlock = ^(ZXNavItemBtn * _Nonnull btn) {
+        clickBlock(btn);
+    };
+}
+
+#pragma mark 右侧第二个Button点击回调
+- (void)zx_subRightClickedBlock:(subRightBtnClickedBlock)clickBlock{
+    ((ZXNavigationBar *)self.zx_navBar).zx_subRightBtnClickedBlock = ^(ZXNavItemBtn * _Nonnull btn) {
+        clickBlock(btn);
+    };
+}
+
+#pragma mark 设置导航栏背景渐变
+- (void)zx_setNavGradientBacFrom:(UIColor *)fromColor to:(UIColor *)toColor{
+    if(self.zx_navBar){
+        CAGradientLayer *gradientLayer = [CAGradientLayer layer];
+        gradientLayer.startPoint = CGPointMake(0, 0);
+        gradientLayer.endPoint = CGPointMake(1, 0);
+        gradientLayer.colors = [NSArray arrayWithObjects:(id)fromColor.CGColor,(id)toColor.CGColor,nil];
+        self.zx_navBar.zx_gradientLayer = gradientLayer;
+    }
+    
+}
+
+#pragma mark 移除导航栏背景渐变
+- (void)zx_removeNavGradientBac{
+    if(self.zx_navBar){
+        self.zx_navBar.zx_gradientLayer = nil;
+    }
+}
+
+#pragma mark 添加自定义导航栏
+- (void)zx_addCustomNavBar:(UIView *)navBar{
+    if(self.zx_navCustomNavBar){
+        [self.zx_navCustomNavBar removeFromSuperview];
+    }
+    [self.zx_navBar addSubview:navBar];
+    self.zx_navCustomNavBar = navBar;
+    self.zx_navBar.zx_customNavBar = navBar;
+}
+
+#pragma mark 添加自定义TitleView
+- (void)zx_addCustomTitleView:(UIView *)customTitleView{
+    if(self.zx_navCustomTitleView){
+        [self.zx_navCustomTitleView removeFromSuperview];
+    }
+    self.zx_navTitleLabel.text = @"";
+    [self.zx_navTitleView addSubview:customTitleView];
+    self.zx_navCustomTitleView = customTitleView;
+    self.zx_navBar.zx_customTitleView = customTitleView;
+}
+
+#pragma mark 设置大小标题的效果
+- (void)zx_setMultiTitle:(NSString *)title subTitle:(NSString *)subTitle{
+    [self.zx_navBar zx_setMultiTitle:title subTitle:subTitle];
+}
+
+#pragma mark - Other
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    if(!self.zx_showSystemNavBar){
+        self.navigationController.navigationBar.translucent = YES;
+    }else{
+        self.navigationController.navigationBar.translucent = NO;
+    }
+    if(@available(iOS 11.0, *)){
+        UIScrollView.appearance.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+    }else{
+        self.automaticallyAdjustsScrollViewInsets = NO;
+    }
+    
+}
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    if(self.zx_showSystemNavBar){
+        self.navigationController.navigationBarHidden = NO;
+    }
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    self.navigationController.navigationBarHidden = !self.zx_showSystemNavBar;
+}
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+
+- (UIStatusBarStyle)preferredStatusBarStyle{
+    if(!self.zx_isLightStatusBar){
+        return UIStatusBarStyleDefault;
+    }else{
+        return UIStatusBarStyleLightContent;
+    }
+    
+}
+
+- (void)viewDidLayoutSubviews{
+    [super viewDidLayoutSubviews];
+    [self relayoutSubviews];
+}
+
+
+@end

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="DemoCustomNav">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="64"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="欢迎登录" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3YX-Eg-HVj">
+                    <rect key="frame" x="15" y="24" width="101.5" height="30"/>
+                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="25"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="5XC-ew-epc">
+                    <rect key="frame" x="379" y="29" width="20" height="20"/>
+                </activityIndicatorView>
+                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="bds-8z-KSG">
+                    <rect key="frame" x="243" y="26" width="121" height="29"/>
+                    <segments>
+                        <segment title="First"/>
+                        <segment title="Second"/>
+                    </segments>
+                </segmentedControl>
+                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jsZ-Dj-YRT">
+                    <rect key="frame" x="179" y="23" width="51" height="31"/>
+                </switch>
+                <view alpha="0.20000000000000001" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mdG-kT-nsS">
+                    <rect key="frame" x="0.0" y="63" width="414" height="1"/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="dkS-TM-hLX"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="mdG-kT-nsS" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="9uX-oQ-X3t"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="3YX-Eg-HVj" secondAttribute="bottom" constant="10" id="D1E-9I-PBo"/>
+                <constraint firstItem="bds-8z-KSG" firstAttribute="leading" secondItem="jsZ-Dj-YRT" secondAttribute="trailing" constant="15" id="EFD-RN-Xsn"/>
+                <constraint firstItem="3YX-Eg-HVj" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="15" id="GLo-3C-W6U"/>
+                <constraint firstAttribute="bottom" secondItem="mdG-kT-nsS" secondAttribute="bottom" id="T70-Pz-TCW"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="jsZ-Dj-YRT" secondAttribute="bottom" constant="10" id="THK-9p-6OK"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="5XC-ew-epc" secondAttribute="bottom" constant="15" id="b0R-UK-eY5"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="mdG-kT-nsS" secondAttribute="trailing" id="bJB-M4-jP1"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="5XC-ew-epc" secondAttribute="trailing" constant="15" id="fBu-F4-JEB"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="bds-8z-KSG" secondAttribute="bottom" constant="10" id="vuP-gW-Zda"/>
+                <constraint firstItem="5XC-ew-epc" firstAttribute="leading" secondItem="bds-8z-KSG" secondAttribute="trailing" constant="15" id="wiv-Wb-zi0"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <point key="canvasLocation" x="137.59999999999999" y="88.15592203898052"/>
+        </view>
+    </objects>
+</document>

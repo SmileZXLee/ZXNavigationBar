@@ -1,0 +1,699 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		74BC1AEA241362C10032A424 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BC1AE9241362C10032A424 /* AppDelegate.m */; };
+		74BC1AF2241362C50032A424 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 74BC1AF1241362C50032A424 /* Assets.xcassets */; };
+		74BC1AF5241362C50032A424 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 74BC1AF3241362C50032A424 /* LaunchScreen.storyboard */; };
+		74BC1AF8241362C50032A424 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BC1AF7241362C50032A424 /* main.m */; };
+		74BC1B02241362C60032A424 /* ZXNavigationBarDemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BC1B01241362C60032A424 /* ZXNavigationBarDemoUITests.m */; };
+		74BC1B0F241364140032A424 /* ZXNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BC1B0E241364140032A424 /* ZXNavigationBar.m */; };
+		74BC1B1424136C5C0032A424 /* ZXNavTitleLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BC1B1324136C5C0032A424 /* ZXNavTitleLabel.m */; };
+		74BC1B1724136C800032A424 /* ZXNavItemBtn.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BC1B1624136C800032A424 /* ZXNavItemBtn.m */; };
+		74BC1B1C241373A30032A424 /* UIView+ZXNavFrameExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BC1B1B241373A30032A424 /* UIView+ZXNavFrameExtension.m */; };
+		74BC1B1F2413886B0032A424 /* NSString+ZXNavCalcSizeExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BC1B1E2413886B0032A424 /* NSString+ZXNavCalcSizeExtension.m */; };
+		74BC1B2224138BCB0032A424 /* ZXNavigationBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BC1B2124138BCB0032A424 /* ZXNavigationBarController.m */; };
+		74BC1B2E241742FD0032A424 /* ZXNavContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BC1B2D241742FD0032A424 /* ZXNavContentView.m */; };
+		74BC1B36241787760032A424 /* UIImage+ZXNavColorRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BC1B35241787720032A424 /* UIImage+ZXNavColorRender.m */; };
+		74BC1B3924178DFB0032A424 /* ZXNavBacImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BC1B3824178DFB0032A424 /* ZXNavBacImageView.m */; };
+		74BC1B3C2417C8100032A424 /* DemoListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BC1B3B2417C8100032A424 /* DemoListViewController.m */; };
+		74BC1B3F2417C9D60032A424 /* DemoBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BC1B3E2417C9D60032A424 /* DemoBaseViewController.m */; };
+		74BC1B452417D14A0032A424 /* DemoXibViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BC1B432417D14A0032A424 /* DemoXibViewController.m */; };
+		74BC1B462417D14A0032A424 /* DemoXibViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74BC1B442417D14A0032A424 /* DemoXibViewController.xib */; };
+		74BC1B4A2418E6D20032A424 /* DemoSystemBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BC1B492418E6D10032A424 /* DemoSystemBarViewController.m */; };
+		74BC1B4D24192BB00032A424 /* ZXNavigationBar.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 74BC1B4C24192BB00032A424 /* ZXNavigationBar.bundle */; };
+		74BC1B5024192F2E0032A424 /* UIImage+ZXNavBundleExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BC1B4F24192F2E0032A424 /* UIImage+ZXNavBundleExtension.m */; };
+		74BC1B542419F1E80032A424 /* DemoWeiboHotViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BC1B532419F1E80032A424 /* DemoWeiboHotViewController.m */; };
+		74BC1B57241A05700032A424 /* DemoCustomNavViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BC1B56241A05700032A424 /* DemoCustomNavViewController.m */; };
+		74BC1B5C241A05C90032A424 /* DemoCustomNav.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BC1B5B241A05C90032A424 /* DemoCustomNav.m */; };
+		74BC1B5F241A079A0032A424 /* ZXNavTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BC1B5E241A079A0032A424 /* ZXNavTitleView.m */; };
+		74BC1B61241A0DFB0032A424 /* DemoCustomNav.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74BC1B60241A0DFB0032A424 /* DemoCustomNav.xib */; };
+		74BC1B65241A23660032A424 /* DemoCustomTitleViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BC1B64241A23660032A424 /* DemoCustomTitleViewViewController.m */; };
+		74BC1B69241A23C00032A424 /* DemoCustomTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BC1B68241A23C00032A424 /* DemoCustomTitleView.m */; };
+		74BC1B6B241A23DF0032A424 /* DemoCustomTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74BC1B6A241A23DF0032A424 /* DemoCustomTitleView.xib */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		74BC1AFE241362C60032A424 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 74BC1ADD241362C10032A424 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 74BC1AE4241362C10032A424;
+			remoteInfo = ZXNavigationBarDemo;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		74BC1AE5241362C10032A424 /* ZXNavigationBarDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZXNavigationBarDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		74BC1AE8241362C10032A424 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		74BC1AE9241362C10032A424 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		74BC1AF1241362C50032A424 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		74BC1AF4241362C50032A424 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		74BC1AF6241362C50032A424 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		74BC1AF7241362C50032A424 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		74BC1AFD241362C60032A424 /* ZXNavigationBarDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ZXNavigationBarDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		74BC1B01241362C60032A424 /* ZXNavigationBarDemoUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZXNavigationBarDemoUITests.m; sourceTree = "<group>"; };
+		74BC1B03241362C60032A424 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		74BC1B0D241364140032A424 /* ZXNavigationBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZXNavigationBar.h; sourceTree = "<group>"; };
+		74BC1B0E241364140032A424 /* ZXNavigationBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZXNavigationBar.m; sourceTree = "<group>"; };
+		74BC1B10241364C50032A424 /* ZXNavigationBarDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZXNavigationBarDefine.h; sourceTree = "<group>"; };
+		74BC1B1224136C5C0032A424 /* ZXNavTitleLabel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZXNavTitleLabel.h; sourceTree = "<group>"; };
+		74BC1B1324136C5C0032A424 /* ZXNavTitleLabel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZXNavTitleLabel.m; sourceTree = "<group>"; };
+		74BC1B1524136C800032A424 /* ZXNavItemBtn.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZXNavItemBtn.h; sourceTree = "<group>"; };
+		74BC1B1624136C800032A424 /* ZXNavItemBtn.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZXNavItemBtn.m; sourceTree = "<group>"; };
+		74BC1B1A241373A30032A424 /* UIView+ZXNavFrameExtension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+ZXNavFrameExtension.h"; sourceTree = "<group>"; };
+		74BC1B1B241373A30032A424 /* UIView+ZXNavFrameExtension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+ZXNavFrameExtension.m"; sourceTree = "<group>"; };
+		74BC1B1D2413886B0032A424 /* NSString+ZXNavCalcSizeExtension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+ZXNavCalcSizeExtension.h"; sourceTree = "<group>"; };
+		74BC1B1E2413886B0032A424 /* NSString+ZXNavCalcSizeExtension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+ZXNavCalcSizeExtension.m"; sourceTree = "<group>"; };
+		74BC1B2024138BCB0032A424 /* ZXNavigationBarController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZXNavigationBarController.h; sourceTree = "<group>"; };
+		74BC1B2124138BCB0032A424 /* ZXNavigationBarController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZXNavigationBarController.m; sourceTree = "<group>"; };
+		74BC1B2C241742FD0032A424 /* ZXNavContentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZXNavContentView.h; sourceTree = "<group>"; };
+		74BC1B2D241742FD0032A424 /* ZXNavContentView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZXNavContentView.m; sourceTree = "<group>"; };
+		74BC1B34241787720032A424 /* UIImage+ZXNavColorRender.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+ZXNavColorRender.h"; sourceTree = "<group>"; };
+		74BC1B35241787720032A424 /* UIImage+ZXNavColorRender.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ZXNavColorRender.m"; sourceTree = "<group>"; };
+		74BC1B3724178DFB0032A424 /* ZXNavBacImageView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZXNavBacImageView.h; sourceTree = "<group>"; };
+		74BC1B3824178DFB0032A424 /* ZXNavBacImageView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZXNavBacImageView.m; sourceTree = "<group>"; };
+		74BC1B3A2417C8100032A424 /* DemoListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DemoListViewController.h; sourceTree = "<group>"; };
+		74BC1B3B2417C8100032A424 /* DemoListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DemoListViewController.m; sourceTree = "<group>"; };
+		74BC1B3D2417C9D60032A424 /* DemoBaseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DemoBaseViewController.h; sourceTree = "<group>"; };
+		74BC1B3E2417C9D60032A424 /* DemoBaseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DemoBaseViewController.m; sourceTree = "<group>"; };
+		74BC1B422417D14A0032A424 /* DemoXibViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DemoXibViewController.h; sourceTree = "<group>"; };
+		74BC1B432417D14A0032A424 /* DemoXibViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DemoXibViewController.m; sourceTree = "<group>"; };
+		74BC1B442417D14A0032A424 /* DemoXibViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DemoXibViewController.xib; sourceTree = "<group>"; };
+		74BC1B482418E6D10032A424 /* DemoSystemBarViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DemoSystemBarViewController.h; sourceTree = "<group>"; };
+		74BC1B492418E6D10032A424 /* DemoSystemBarViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DemoSystemBarViewController.m; sourceTree = "<group>"; };
+		74BC1B4C24192BB00032A424 /* ZXNavigationBar.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ZXNavigationBar.bundle; sourceTree = "<group>"; };
+		74BC1B4E24192F2E0032A424 /* UIImage+ZXNavBundleExtension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+ZXNavBundleExtension.h"; sourceTree = "<group>"; };
+		74BC1B4F24192F2E0032A424 /* UIImage+ZXNavBundleExtension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ZXNavBundleExtension.m"; sourceTree = "<group>"; };
+		74BC1B522419F1E80032A424 /* DemoWeiboHotViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DemoWeiboHotViewController.h; sourceTree = "<group>"; };
+		74BC1B532419F1E80032A424 /* DemoWeiboHotViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DemoWeiboHotViewController.m; sourceTree = "<group>"; };
+		74BC1B55241A05700032A424 /* DemoCustomNavViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DemoCustomNavViewController.h; sourceTree = "<group>"; };
+		74BC1B56241A05700032A424 /* DemoCustomNavViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DemoCustomNavViewController.m; sourceTree = "<group>"; };
+		74BC1B5A241A05C90032A424 /* DemoCustomNav.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DemoCustomNav.h; sourceTree = "<group>"; };
+		74BC1B5B241A05C90032A424 /* DemoCustomNav.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DemoCustomNav.m; sourceTree = "<group>"; };
+		74BC1B5D241A079A0032A424 /* ZXNavTitleView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZXNavTitleView.h; sourceTree = "<group>"; };
+		74BC1B5E241A079A0032A424 /* ZXNavTitleView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZXNavTitleView.m; sourceTree = "<group>"; };
+		74BC1B60241A0DFB0032A424 /* DemoCustomNav.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DemoCustomNav.xib; sourceTree = "<group>"; };
+		74BC1B63241A23660032A424 /* DemoCustomTitleViewViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DemoCustomTitleViewViewController.h; sourceTree = "<group>"; };
+		74BC1B64241A23660032A424 /* DemoCustomTitleViewViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DemoCustomTitleViewViewController.m; sourceTree = "<group>"; };
+		74BC1B67241A23C00032A424 /* DemoCustomTitleView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DemoCustomTitleView.h; sourceTree = "<group>"; };
+		74BC1B68241A23C00032A424 /* DemoCustomTitleView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DemoCustomTitleView.m; sourceTree = "<group>"; };
+		74BC1B6A241A23DF0032A424 /* DemoCustomTitleView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DemoCustomTitleView.xib; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		74BC1AE2241362C10032A424 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		74BC1AFA241362C60032A424 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		74BC1ADC241362C10032A424 = {
+			isa = PBXGroup;
+			children = (
+				74BC1AE7241362C10032A424 /* ZXNavigationBarDemo */,
+				74BC1B00241362C60032A424 /* ZXNavigationBarDemoUITests */,
+				74BC1AE6241362C10032A424 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		74BC1AE6241362C10032A424 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				74BC1AE5241362C10032A424 /* ZXNavigationBarDemo.app */,
+				74BC1AFD241362C60032A424 /* ZXNavigationBarDemoUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		74BC1AE7241362C10032A424 /* ZXNavigationBarDemo */ = {
+			isa = PBXGroup;
+			children = (
+				74BC1B0C241362F40032A424 /* ZXNavigationBar */,
+				74BC1B2324163E2A0032A424 /* Demo */,
+				74BC1AE8241362C10032A424 /* AppDelegate.h */,
+				74BC1AE9241362C10032A424 /* AppDelegate.m */,
+				74BC1AF1241362C50032A424 /* Assets.xcassets */,
+				74BC1AF3241362C50032A424 /* LaunchScreen.storyboard */,
+				74BC1AF6241362C50032A424 /* Info.plist */,
+				74BC1AF7241362C50032A424 /* main.m */,
+			);
+			path = ZXNavigationBarDemo;
+			sourceTree = "<group>";
+		};
+		74BC1B00241362C60032A424 /* ZXNavigationBarDemoUITests */ = {
+			isa = PBXGroup;
+			children = (
+				74BC1B01241362C60032A424 /* ZXNavigationBarDemoUITests.m */,
+				74BC1B03241362C60032A424 /* Info.plist */,
+			);
+			path = ZXNavigationBarDemoUITests;
+			sourceTree = "<group>";
+		};
+		74BC1B0C241362F40032A424 /* ZXNavigationBar */ = {
+			isa = PBXGroup;
+			children = (
+				74BC1B1824136CE20032A424 /* ZXNavigationBarHelper */,
+				74BC1B1124136BA20032A424 /* ZXNavigationBarSubViews */,
+				74BC1B0D241364140032A424 /* ZXNavigationBar.h */,
+				74BC1B0E241364140032A424 /* ZXNavigationBar.m */,
+				74BC1B2024138BCB0032A424 /* ZXNavigationBarController.h */,
+				74BC1B2124138BCB0032A424 /* ZXNavigationBarController.m */,
+				74BC1B10241364C50032A424 /* ZXNavigationBarDefine.h */,
+				74BC1B4C24192BB00032A424 /* ZXNavigationBar.bundle */,
+			);
+			path = ZXNavigationBar;
+			sourceTree = "<group>";
+		};
+		74BC1B1124136BA20032A424 /* ZXNavigationBarSubViews */ = {
+			isa = PBXGroup;
+			children = (
+				74BC1B1224136C5C0032A424 /* ZXNavTitleLabel.h */,
+				74BC1B1324136C5C0032A424 /* ZXNavTitleLabel.m */,
+				74BC1B5D241A079A0032A424 /* ZXNavTitleView.h */,
+				74BC1B5E241A079A0032A424 /* ZXNavTitleView.m */,
+				74BC1B1524136C800032A424 /* ZXNavItemBtn.h */,
+				74BC1B1624136C800032A424 /* ZXNavItemBtn.m */,
+				74BC1B2C241742FD0032A424 /* ZXNavContentView.h */,
+				74BC1B2D241742FD0032A424 /* ZXNavContentView.m */,
+				74BC1B3724178DFB0032A424 /* ZXNavBacImageView.h */,
+				74BC1B3824178DFB0032A424 /* ZXNavBacImageView.m */,
+			);
+			path = ZXNavigationBarSubViews;
+			sourceTree = "<group>";
+		};
+		74BC1B1824136CE20032A424 /* ZXNavigationBarHelper */ = {
+			isa = PBXGroup;
+			children = (
+				74BC1B1924136D0C0032A424 /* ZXNavigationBarCategory */,
+			);
+			path = ZXNavigationBarHelper;
+			sourceTree = "<group>";
+		};
+		74BC1B1924136D0C0032A424 /* ZXNavigationBarCategory */ = {
+			isa = PBXGroup;
+			children = (
+				74BC1B1A241373A30032A424 /* UIView+ZXNavFrameExtension.h */,
+				74BC1B1B241373A30032A424 /* UIView+ZXNavFrameExtension.m */,
+				74BC1B1D2413886B0032A424 /* NSString+ZXNavCalcSizeExtension.h */,
+				74BC1B1E2413886B0032A424 /* NSString+ZXNavCalcSizeExtension.m */,
+				74BC1B34241787720032A424 /* UIImage+ZXNavColorRender.h */,
+				74BC1B35241787720032A424 /* UIImage+ZXNavColorRender.m */,
+				74BC1B4E24192F2E0032A424 /* UIImage+ZXNavBundleExtension.h */,
+				74BC1B4F24192F2E0032A424 /* UIImage+ZXNavBundleExtension.m */,
+			);
+			path = ZXNavigationBarCategory;
+			sourceTree = "<group>";
+		};
+		74BC1B2324163E2A0032A424 /* Demo */ = {
+			isa = PBXGroup;
+			children = (
+				74BC1B402417D0DA0032A424 /* DemoBaseViewController */,
+				74BC1B412417D0FB0032A424 /* DemoListViewController */,
+				74BC1B472417D1550032A424 /* DemoXibViewController */,
+				74BC1B512419F1B10032A424 /* DemoWeiboHotViewController */,
+				74BC1B58241A057C0032A424 /* DemoCustomNavViewController */,
+				74BC1B62241A232B0032A424 /* DemoCustomTitleViewViewController */,
+				74BC1B4B2418E6DE0032A424 /* DemoSystemBarViewController */,
+			);
+			path = Demo;
+			sourceTree = "<group>";
+		};
+		74BC1B402417D0DA0032A424 /* DemoBaseViewController */ = {
+			isa = PBXGroup;
+			children = (
+				74BC1B3D2417C9D60032A424 /* DemoBaseViewController.h */,
+				74BC1B3E2417C9D60032A424 /* DemoBaseViewController.m */,
+			);
+			path = DemoBaseViewController;
+			sourceTree = "<group>";
+		};
+		74BC1B412417D0FB0032A424 /* DemoListViewController */ = {
+			isa = PBXGroup;
+			children = (
+				74BC1B3A2417C8100032A424 /* DemoListViewController.h */,
+				74BC1B3B2417C8100032A424 /* DemoListViewController.m */,
+			);
+			path = DemoListViewController;
+			sourceTree = "<group>";
+		};
+		74BC1B472417D1550032A424 /* DemoXibViewController */ = {
+			isa = PBXGroup;
+			children = (
+				74BC1B422417D14A0032A424 /* DemoXibViewController.h */,
+				74BC1B432417D14A0032A424 /* DemoXibViewController.m */,
+				74BC1B442417D14A0032A424 /* DemoXibViewController.xib */,
+			);
+			path = DemoXibViewController;
+			sourceTree = "<group>";
+		};
+		74BC1B4B2418E6DE0032A424 /* DemoSystemBarViewController */ = {
+			isa = PBXGroup;
+			children = (
+				74BC1B482418E6D10032A424 /* DemoSystemBarViewController.h */,
+				74BC1B492418E6D10032A424 /* DemoSystemBarViewController.m */,
+			);
+			path = DemoSystemBarViewController;
+			sourceTree = "<group>";
+		};
+		74BC1B512419F1B10032A424 /* DemoWeiboHotViewController */ = {
+			isa = PBXGroup;
+			children = (
+				74BC1B522419F1E80032A424 /* DemoWeiboHotViewController.h */,
+				74BC1B532419F1E80032A424 /* DemoWeiboHotViewController.m */,
+			);
+			path = DemoWeiboHotViewController;
+			sourceTree = "<group>";
+		};
+		74BC1B58241A057C0032A424 /* DemoCustomNavViewController */ = {
+			isa = PBXGroup;
+			children = (
+				74BC1B59241A059C0032A424 /* DemoCustomNav */,
+				74BC1B55241A05700032A424 /* DemoCustomNavViewController.h */,
+				74BC1B56241A05700032A424 /* DemoCustomNavViewController.m */,
+			);
+			path = DemoCustomNavViewController;
+			sourceTree = "<group>";
+		};
+		74BC1B59241A059C0032A424 /* DemoCustomNav */ = {
+			isa = PBXGroup;
+			children = (
+				74BC1B5A241A05C90032A424 /* DemoCustomNav.h */,
+				74BC1B5B241A05C90032A424 /* DemoCustomNav.m */,
+				74BC1B60241A0DFB0032A424 /* DemoCustomNav.xib */,
+			);
+			path = DemoCustomNav;
+			sourceTree = "<group>";
+		};
+		74BC1B62241A232B0032A424 /* DemoCustomTitleViewViewController */ = {
+			isa = PBXGroup;
+			children = (
+				74BC1B66241A23A30032A424 /* DemoCustomTitleView */,
+				74BC1B63241A23660032A424 /* DemoCustomTitleViewViewController.h */,
+				74BC1B64241A23660032A424 /* DemoCustomTitleViewViewController.m */,
+			);
+			path = DemoCustomTitleViewViewController;
+			sourceTree = "<group>";
+		};
+		74BC1B66241A23A30032A424 /* DemoCustomTitleView */ = {
+			isa = PBXGroup;
+			children = (
+				74BC1B67241A23C00032A424 /* DemoCustomTitleView.h */,
+				74BC1B68241A23C00032A424 /* DemoCustomTitleView.m */,
+				74BC1B6A241A23DF0032A424 /* DemoCustomTitleView.xib */,
+			);
+			path = DemoCustomTitleView;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		74BC1AE4241362C10032A424 /* ZXNavigationBarDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 74BC1B06241362C60032A424 /* Build configuration list for PBXNativeTarget "ZXNavigationBarDemo" */;
+			buildPhases = (
+				74BC1AE1241362C10032A424 /* Sources */,
+				74BC1AE2241362C10032A424 /* Frameworks */,
+				74BC1AE3241362C10032A424 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ZXNavigationBarDemo;
+			productName = ZXNavigationBarDemo;
+			productReference = 74BC1AE5241362C10032A424 /* ZXNavigationBarDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
+		74BC1AFC241362C60032A424 /* ZXNavigationBarDemoUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 74BC1B09241362C60032A424 /* Build configuration list for PBXNativeTarget "ZXNavigationBarDemoUITests" */;
+			buildPhases = (
+				74BC1AF9241362C60032A424 /* Sources */,
+				74BC1AFA241362C60032A424 /* Frameworks */,
+				74BC1AFB241362C60032A424 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				74BC1AFF241362C60032A424 /* PBXTargetDependency */,
+			);
+			name = ZXNavigationBarDemoUITests;
+			productName = ZXNavigationBarDemoUITests;
+			productReference = 74BC1AFD241362C60032A424 /* ZXNavigationBarDemoUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		74BC1ADD241362C10032A424 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1020;
+				ORGANIZATIONNAME = ZXLee;
+				TargetAttributes = {
+					74BC1AE4241362C10032A424 = {
+						CreatedOnToolsVersion = 10.2;
+					};
+					74BC1AFC241362C60032A424 = {
+						CreatedOnToolsVersion = 10.2;
+						TestTargetID = 74BC1AE4241362C10032A424;
+					};
+				};
+			};
+			buildConfigurationList = 74BC1AE0241362C10032A424 /* Build configuration list for PBXProject "ZXNavigationBarDemo" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 74BC1ADC241362C10032A424;
+			productRefGroup = 74BC1AE6241362C10032A424 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				74BC1AE4241362C10032A424 /* ZXNavigationBarDemo */,
+				74BC1AFC241362C60032A424 /* ZXNavigationBarDemoUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		74BC1AE3241362C10032A424 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				74BC1AF5241362C50032A424 /* LaunchScreen.storyboard in Resources */,
+				74BC1B4D24192BB00032A424 /* ZXNavigationBar.bundle in Resources */,
+				74BC1AF2241362C50032A424 /* Assets.xcassets in Resources */,
+				74BC1B6B241A23DF0032A424 /* DemoCustomTitleView.xib in Resources */,
+				74BC1B462417D14A0032A424 /* DemoXibViewController.xib in Resources */,
+				74BC1B61241A0DFB0032A424 /* DemoCustomNav.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		74BC1AFB241362C60032A424 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		74BC1AE1241362C10032A424 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				74BC1B4A2418E6D20032A424 /* DemoSystemBarViewController.m in Sources */,
+				74BC1B36241787760032A424 /* UIImage+ZXNavColorRender.m in Sources */,
+				74BC1B3C2417C8100032A424 /* DemoListViewController.m in Sources */,
+				74BC1B69241A23C00032A424 /* DemoCustomTitleView.m in Sources */,
+				74BC1B2224138BCB0032A424 /* ZXNavigationBarController.m in Sources */,
+				74BC1B1424136C5C0032A424 /* ZXNavTitleLabel.m in Sources */,
+				74BC1B3F2417C9D60032A424 /* DemoBaseViewController.m in Sources */,
+				74BC1B5C241A05C90032A424 /* DemoCustomNav.m in Sources */,
+				74BC1AF8241362C50032A424 /* main.m in Sources */,
+				74BC1B1F2413886B0032A424 /* NSString+ZXNavCalcSizeExtension.m in Sources */,
+				74BC1B2E241742FD0032A424 /* ZXNavContentView.m in Sources */,
+				74BC1AEA241362C10032A424 /* AppDelegate.m in Sources */,
+				74BC1B0F241364140032A424 /* ZXNavigationBar.m in Sources */,
+				74BC1B5F241A079A0032A424 /* ZXNavTitleView.m in Sources */,
+				74BC1B452417D14A0032A424 /* DemoXibViewController.m in Sources */,
+				74BC1B3924178DFB0032A424 /* ZXNavBacImageView.m in Sources */,
+				74BC1B1C241373A30032A424 /* UIView+ZXNavFrameExtension.m in Sources */,
+				74BC1B65241A23660032A424 /* DemoCustomTitleViewViewController.m in Sources */,
+				74BC1B542419F1E80032A424 /* DemoWeiboHotViewController.m in Sources */,
+				74BC1B1724136C800032A424 /* ZXNavItemBtn.m in Sources */,
+				74BC1B57241A05700032A424 /* DemoCustomNavViewController.m in Sources */,
+				74BC1B5024192F2E0032A424 /* UIImage+ZXNavBundleExtension.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		74BC1AF9241362C60032A424 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				74BC1B02241362C60032A424 /* ZXNavigationBarDemoUITests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		74BC1AFF241362C60032A424 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 74BC1AE4241362C10032A424 /* ZXNavigationBarDemo */;
+			targetProxy = 74BC1AFE241362C60032A424 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		74BC1AF3241362C50032A424 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				74BC1AF4241362C50032A424 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		74BC1B04241362C60032A424 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		74BC1B05241362C60032A424 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		74BC1B07241362C60032A424 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = X3UA5897T2;
+				INFOPLIST_FILE = ZXNavigationBarDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = cn.zxlee.ZXNavigationBarDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		74BC1B08241362C60032A424 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = X3UA5897T2;
+				INFOPLIST_FILE = ZXNavigationBarDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = cn.zxlee.ZXNavigationBarDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		74BC1B0A241362C60032A424 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = X3UA5897T2;
+				INFOPLIST_FILE = ZXNavigationBarDemoUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = cn.zxlee.ZXNavigationBarDemoUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = ZXNavigationBarDemo;
+			};
+			name = Debug;
+		};
+		74BC1B0B241362C60032A424 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = X3UA5897T2;
+				INFOPLIST_FILE = ZXNavigationBarDemoUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = cn.zxlee.ZXNavigationBarDemoUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = ZXNavigationBarDemo;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		74BC1AE0241362C10032A424 /* Build configuration list for PBXProject "ZXNavigationBarDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				74BC1B04241362C60032A424 /* Debug */,
+				74BC1B05241362C60032A424 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		74BC1B06241362C60032A424 /* Build configuration list for PBXNativeTarget "ZXNavigationBarDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				74BC1B07241362C60032A424 /* Debug */,
+				74BC1B08241362C60032A424 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		74BC1B09241362C60032A424 /* Build configuration list for PBXNativeTarget "ZXNavigationBarDemoUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				74BC1B0A241362C60032A424 /* Debug */,
+				74BC1B0B241362C60032A424 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 74BC1ADD241362C10032A424 /* Project object */;
+}
