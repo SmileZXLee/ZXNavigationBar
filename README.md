@@ -25,6 +25,14 @@ pod 'ZXNavigationBar'
 - [x] 若ZXNavigationBar自带效果都无法满足，支持自定义导航栏
 - [x] 若从Xib中加载控制器，添加子View无需手动设置距离导航栏顶部约束，ZXNavigationBar会自动处理
 
+### 效果预览
+导航栏设置 | 仿微博热搜效果 |  自定义导航栏  
+-|-|-
+![](http://www.zxlee.cn/github/ZXNavigationBar/ZXNavigationBarDemo1.gif) | ![](http://www.zxlee.cn/github/ZXNavigationBar/ZXNavigationBarDemo2.gif) | ![](http://www.zxlee.cn/github/ZXNavigationBar/ZXNavigationBarDemo3.gif) |
+
+自定义titleView | 切换系统导航栏 |   【占位，对称】
+-|-|-
+![](http://www.zxlee.cn/github/ZXNavigationBar/ZXNavigationBarDemo4.gif) | ![](http://www.zxlee.cn/github/ZXNavigationBar/ZXNavigationBarDemo5.gif) | ![](http://www.zxlee.cn/github/ZXNavigationBar/ZXNavigationBarDemo1.gif) | 
 ### 开始使用
 #### 将控制器继承于ZXNavigationBarController，建议将Base控制器继承于ZXNavigationBarController
 ```objective-c
