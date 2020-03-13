@@ -196,7 +196,7 @@ UIView *customNav = [[UIView alloc]init];
 //若大多数控制器都从Xib加载并禁用了SafeArea，可以直接在Base控制器中设置
 self.zx_isEnableSafeArea = NO;
 ```
-#### 更多示例，可下载Demo查阅，感谢使用
+#### 更多示例，可下载Demo查阅，若有任何问题，可随时在issue中提出
 
 
 
