@@ -18,8 +18,6 @@
     [super viewDidLoad];
     //设置导航栏标题
     self.title = @"ZXNavigationBar";
-    //因为这个控制器是从Xib中加载的，且设置了SafeArea，因此需要将zx_isEnableSafeArea设置为YES
-    self.zx_isEnableSafeArea = YES;
     
     //设置最右侧的Button的图片和点击回调
     [self zx_setRightBtnWithImgName:@"set_icon" clickedBlock:^(UIButton * _Nonnull btn) {

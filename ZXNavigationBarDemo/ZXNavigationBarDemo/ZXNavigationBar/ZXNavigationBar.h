@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "ZXNavigationBarDefine.h"
 #import "UIImage+ZXNavColorRender.h"
+#import "UIView+ZXNavFrameExtension.h"
+#import "NSString+ZXNavCalcSizeExtension.h"
 #import "ZXNavTitleLabel.h"
 #import "ZXNavItemBtn.h"
 #import "ZXNavBacImageView.h"

@@ -16,10 +16,16 @@
 #pragma mark - Setter
 - (void)setTitle:(NSString *)title forState:(UIControlState)state{
     [super setTitle:title forState:state];
+    if(self.zx_tintColor){
+        [self setTitleColor:self.zx_tintColor forState:UIControlStateNormal];
+    }
     [self noticeUpdateFrame];
 }
 
 - (void)setImage:(UIImage *)image forState:(UIControlState)state{
+    if(self.zx_tintColor){
+        image = [image zx_renderingColor:self.zx_tintColor];
+    }
     [super setImage:image forState:state];
     if(!image){
         self.imageView.image = image;

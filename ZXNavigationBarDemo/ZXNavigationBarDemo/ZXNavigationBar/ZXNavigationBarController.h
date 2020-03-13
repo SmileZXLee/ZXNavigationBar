@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 typedef void(^leftBtnClickedBlock) (ZXNavItemBtn *btn);
 typedef void(^rightBtnClickedBlock) (ZXNavItemBtn *btn);
 typedef void(^subRightBtnClickedBlock) (ZXNavItemBtn *btn);
+typedef void(^foldingOffsetBlock) (CGFloat offset);
+typedef void(^foldCompletionBlock) (void);
 @interface ZXNavigationBarController : UIViewController
 
 /**
@@ -40,19 +42,19 @@ typedef void(^subRightBtnClickedBlock) (ZXNavItemBtn *btn);
 @property (assign, nonatomic)BOOL zx_showSystemNavBar;
 
 /**
- 是否禁止Xib加载控制器情况下自动将顶部CView约束下移导航栏高度，默认为否(使用Xib加载控制器时生效)
+ 是否禁止Xib加载控制器情况下自动将顶部View约束下移导航栏高度，默认为否(使用Xib加载控制器时生效)
  */
 @property (assign, nonatomic)BOOL zx_disableNavAutoSafeLayout;
 
 /**
- 是否启用了SafeArea，默认为否，若启用，则必须将此项设置为YES(使用Xib加载控制器时生效)
+ 是否启用了SafeArea，默认为是，若取消了SafeArea，则必须将此项设置为NO(使用Xib加载控制器时生效)
  */
 @property (assign, nonatomic)BOOL zx_isEnableSafeArea;
 
 /**
  设置导航栏的TintColor，此属性可以将导航栏的title颜色、左右Button的文字和图片颜色修改为TintColor
  */
-@property (strong, nonatomic)UIColor *zx_navTintColor;
+@property (strong, nonatomic, nullable)UIColor *zx_navTintColor;
 
 /**
  设置导航栏标题，使用self.title亦可
@@ -110,12 +112,22 @@ typedef void(^subRightBtnClickedBlock) (ZXNavItemBtn *btn);
 @property (weak, nonatomic)UIView *zx_navCustomTitleView;
 
 /**
+ 导航栏是否已被折叠，默认为否
+ */
+@property (assign, nonatomic, readonly)BOOL zx_navIsFolded;
+
+/**
+ 导航栏折叠动画速度
+ */
+@property (assign, nonatomic, readonly)int zx_navFoldingSpeed;
+
+/**
  设置左侧Button的图片和点击回调
 
  @param imgName 图片名字
  @param clickBlock 点击回调
  */
--(void)zx_setLeftBtnWithImgName:(NSString *)imgName clickedBlock:(leftBtnClickedBlock)clickBlock;
+-(void)zx_setLeftBtnWithImgName:(NSString *)imgName clickedBlock:(nullable leftBtnClickedBlock)clickBlock;
 
 /**
  设置最右侧Button的图片和点击回调
@@ -123,7 +135,7 @@ typedef void(^subRightBtnClickedBlock) (ZXNavItemBtn *btn);
  @param imgName 图片名字
  @param clickBlock 点击回调
  */
--(void)zx_setRightBtnWithImgName:(NSString *)imgName clickedBlock:(rightBtnClickedBlock)clickBlock;
+-(void)zx_setRightBtnWithImgName:(NSString *)imgName clickedBlock:(nullable rightBtnClickedBlock)clickBlock;
 
 /**
  设置右侧第二个Button的图片和点击回调
@@ -131,7 +143,7 @@ typedef void(^subRightBtnClickedBlock) (ZXNavItemBtn *btn);
  @param imgName 图片名字
  @param clickBlock 点击回调
  */
--(void)zx_setSubRightBtnWithImgName:(NSString *)imgName clickedBlock:(subRightBtnClickedBlock)clickBlock;
+-(void)zx_setSubRightBtnWithImgName:(NSString *)imgName clickedBlock:(nullable subRightBtnClickedBlock)clickBlock;
 
 /**
  设置左侧Button的文字和点击回调
@@ -139,7 +151,7 @@ typedef void(^subRightBtnClickedBlock) (ZXNavItemBtn *btn);
  @param btnText 图片名字
  @param clickBlock 点击回调
  */
--(void)zx_setLeftBtnWithText:(NSString *)btnText clickedBlock:(leftBtnClickedBlock)clickBlock;
+-(void)zx_setLeftBtnWithText:(NSString *)btnText clickedBlock:(nullable leftBtnClickedBlock)clickBlock;
 
 /**
  设置最右侧Button的文字和点击回调
@@ -147,7 +159,7 @@ typedef void(^subRightBtnClickedBlock) (ZXNavItemBtn *btn);
  @param btnText 图片名字
  @param clickBlock 点击回调
  */
--(void)zx_setRightBtnWithText:(NSString *)btnText clickedBlock:(rightBtnClickedBlock)clickBlock;
+-(void)zx_setRightBtnWithText:(NSString *)btnText clickedBlock:(nullable rightBtnClickedBlock)clickBlock;
 
 /**
  左侧Button的点击回调
@@ -204,6 +216,17 @@ typedef void(^subRightBtnClickedBlock) (ZXNavItemBtn *btn);
  @param customTitleView 自定义的TitleView
  */
 - (void)zx_addCustomTitleView:(UIView *)customTitleView;
+
+
+/**
+ 设置可伸缩折叠式导航栏
+
+ @param folded 是否折叠，为否时即为展开
+ @param speed 折叠效果动画速度，1-6，建议3
+ @param offsetBlock 折叠动画导航栏位移回调，当控制器使用frame布局时，用于在导航栏高度更改时，同时设置导航栏下方视图的frame，此时获取到的offset就是导航栏实时相较自身位移距离
+ @param completionBlock 折叠动画结束回调
+ */
+- (void)zx_setNavFolded:(BOOL)folded speed:(int)speed foldingOffsetBlock:(nullable foldingOffsetBlock)offsetBlock foldCompletionBlock:(nullable foldCompletionBlock)completionBlock;
 
 @end
 

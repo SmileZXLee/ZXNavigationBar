@@ -36,6 +36,9 @@
 		74BC1B65241A23660032A424 /* DemoCustomTitleViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BC1B64241A23660032A424 /* DemoCustomTitleViewViewController.m */; };
 		74BC1B69241A23C00032A424 /* DemoCustomTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BC1B68241A23C00032A424 /* DemoCustomTitleView.m */; };
 		74BC1B6B241A23DF0032A424 /* DemoCustomTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74BC1B6A241A23DF0032A424 /* DemoCustomTitleView.xib */; };
+		74BC1B6F241B2E170032A424 /* DemoFoldFrameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BC1B6E241B2E170032A424 /* DemoFoldFrameViewController.m */; };
+		74BC1B82241B7EB30032A424 /* DemoFoldXibViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74BC1B80241B7EB30032A424 /* DemoFoldXibViewController.xib */; };
+		74BC1B83241B7EB30032A424 /* DemoFoldXibViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BC1B81241B7EB30032A424 /* DemoFoldXibViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -104,6 +107,11 @@
 		74BC1B67241A23C00032A424 /* DemoCustomTitleView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DemoCustomTitleView.h; sourceTree = "<group>"; };
 		74BC1B68241A23C00032A424 /* DemoCustomTitleView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DemoCustomTitleView.m; sourceTree = "<group>"; };
 		74BC1B6A241A23DF0032A424 /* DemoCustomTitleView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DemoCustomTitleView.xib; sourceTree = "<group>"; };
+		74BC1B6D241B2E170032A424 /* DemoFoldFrameViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DemoFoldFrameViewController.h; sourceTree = "<group>"; };
+		74BC1B6E241B2E170032A424 /* DemoFoldFrameViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DemoFoldFrameViewController.m; sourceTree = "<group>"; };
+		74BC1B7F241B7EB30032A424 /* DemoFoldXibViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoFoldXibViewController.h; sourceTree = "<group>"; };
+		74BC1B80241B7EB30032A424 /* DemoFoldXibViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DemoFoldXibViewController.xib; sourceTree = "<group>"; };
+		74BC1B81241B7EB30032A424 /* DemoFoldXibViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoFoldXibViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -228,6 +236,8 @@
 				74BC1B412417D0FB0032A424 /* DemoListViewController */,
 				74BC1B472417D1550032A424 /* DemoXibViewController */,
 				74BC1B512419F1B10032A424 /* DemoWeiboHotViewController */,
+				74BC1B7E241B7EB30032A424 /* DemoFoldXibViewController */,
+				74BC1B6C241B2DDB0032A424 /* DemoFoldFrameViewController */,
 				74BC1B58241A057C0032A424 /* DemoCustomNavViewController */,
 				74BC1B62241A232B0032A424 /* DemoCustomTitleViewViewController */,
 				74BC1B4B2418E6DE0032A424 /* DemoSystemBarViewController */,
@@ -321,6 +331,25 @@
 			path = DemoCustomTitleView;
 			sourceTree = "<group>";
 		};
+		74BC1B6C241B2DDB0032A424 /* DemoFoldFrameViewController */ = {
+			isa = PBXGroup;
+			children = (
+				74BC1B6D241B2E170032A424 /* DemoFoldFrameViewController.h */,
+				74BC1B6E241B2E170032A424 /* DemoFoldFrameViewController.m */,
+			);
+			path = DemoFoldFrameViewController;
+			sourceTree = "<group>";
+		};
+		74BC1B7E241B7EB30032A424 /* DemoFoldXibViewController */ = {
+			isa = PBXGroup;
+			children = (
+				74BC1B7F241B7EB30032A424 /* DemoFoldXibViewController.h */,
+				74BC1B81241B7EB30032A424 /* DemoFoldXibViewController.m */,
+				74BC1B80241B7EB30032A424 /* DemoFoldXibViewController.xib */,
+			);
+			path = DemoFoldXibViewController;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -407,6 +436,7 @@
 				74BC1B6B241A23DF0032A424 /* DemoCustomTitleView.xib in Resources */,
 				74BC1B462417D14A0032A424 /* DemoXibViewController.xib in Resources */,
 				74BC1B61241A0DFB0032A424 /* DemoCustomNav.xib in Resources */,
+				74BC1B82241B7EB30032A424 /* DemoFoldXibViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -430,6 +460,7 @@
 				74BC1B69241A23C00032A424 /* DemoCustomTitleView.m in Sources */,
 				74BC1B2224138BCB0032A424 /* ZXNavigationBarController.m in Sources */,
 				74BC1B1424136C5C0032A424 /* ZXNavTitleLabel.m in Sources */,
+				74BC1B6F241B2E170032A424 /* DemoFoldFrameViewController.m in Sources */,
 				74BC1B3F2417C9D60032A424 /* DemoBaseViewController.m in Sources */,
 				74BC1B5C241A05C90032A424 /* DemoCustomNav.m in Sources */,
 				74BC1AF8241362C50032A424 /* main.m in Sources */,
@@ -441,6 +472,7 @@
 				74BC1B452417D14A0032A424 /* DemoXibViewController.m in Sources */,
 				74BC1B3924178DFB0032A424 /* ZXNavBacImageView.m in Sources */,
 				74BC1B1C241373A30032A424 /* UIView+ZXNavFrameExtension.m in Sources */,
+				74BC1B83241B7EB30032A424 /* DemoFoldXibViewController.m in Sources */,
 				74BC1B65241A23660032A424 /* DemoCustomTitleViewViewController.m in Sources */,
 				74BC1B542419F1E80032A424 /* DemoWeiboHotViewController.m in Sources */,
 				74BC1B1724136C800032A424 /* ZXNavItemBtn.m in Sources */,

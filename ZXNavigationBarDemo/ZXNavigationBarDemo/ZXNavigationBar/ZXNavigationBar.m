@@ -7,8 +7,6 @@
 //  https://github.com/SmileZXLee/ZXNavigationBar
 
 #import "ZXNavigationBar.h"
-#import "UIView+ZXNavFrameExtension.h"
-#import "NSString+ZXNavCalcSizeExtension.h"
 @interface ZXNavigationBar()
 @property (assign, nonatomic)BOOL shouldRefLayout;
 @end

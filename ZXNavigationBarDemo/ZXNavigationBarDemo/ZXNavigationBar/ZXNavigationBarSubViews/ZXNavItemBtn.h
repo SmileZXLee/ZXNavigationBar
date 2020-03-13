@@ -12,8 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ZXNavItemBtn : UIButton
 @property (copy, nonatomic) void (^zx_barItemBtnFrameUpdateBlock)(ZXNavItemBtn *barItemBtn);
-@property (strong, nonatomic) UIColor *zx_imageColor;
-@property (assign, nonatomic)CGFloat margin;
+@property (strong, nonatomic, nullable)UIColor *zx_imageColor;
+@property (strong, nonatomic, nullable)UIColor *zx_tintColor;
 @end
 
 NS_ASSUME_NONNULL_END

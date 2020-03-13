@@ -9,7 +9,12 @@
 #import "ZXNavigationBarController.h"
 #import "UIImage+ZXNavBundleExtension.h"
 @interface ZXNavigationBarController ()
-@property(nonatomic,assign)CGFloat orgNavOffset;
+@property(assign, nonatomic)CGFloat orgNavOffset;
+@property(assign, nonatomic)BOOL isNavFoldAnimating;
+@property(strong, nonatomic)CADisplayLink *displayLink;
+@property(copy, nonatomic)foldingOffsetBlock offsetBlock;
+@property(copy, nonatomic)foldCompletionBlock completionBlock;
+@property(strong, nonatomic)NSLayoutConstraint * xibTopConstraint;
 @end
 
 @implementation ZXNavigationBarController
@@ -44,6 +49,7 @@
     self.zx_navBar = navBar;
     self.zx_navTitleLabel.text = self.zx_navTitle;
     [self adjustNavContainerOffset:ZXNavBarHeight];
+    self.zx_isEnableSafeArea = YES;
     [self relayoutSubviews];
 }
 
@@ -64,6 +70,10 @@
     if(self.zx_disableNavAutoSafeLayout){
         offset = 0;
     }
+    if(self.xibTopConstraint){
+        self.xibTopConstraint.constant = self.orgNavOffset + offset;
+        return;
+    }
     NSArray *constraintArr = [self.view constraints];
     [constraintArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         NSLayoutConstraint * constraint = obj;
@@ -71,18 +81,81 @@
             if(self.orgNavOffset == -1){
                 self.orgNavOffset = constraint.constant;
             }
-            constraint.constant = self.orgNavOffset + offset ;
+            constraint.constant = self.orgNavOffset + offset;
+            self.xibTopConstraint = constraint;
             *stop = YES;
         }
     }];
 }
 
+#pragma mark 开启DisplayLink
+- (void)startDisplayLink{
+    self.displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(updateNavFoldingFrame:)];
+    [self.displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
+}
+
 #pragma mark 刷新导航栏位置
 - (void)relayoutSubviews{
     if(self.zx_navBar){
-        self.zx_navBar.frame = CGRectMake(0, 0, ZXScreenWidth, ZXNavBarHeight);
+        if(self.zx_navIsFolded){
+           self.zx_navBar.frame = CGRectMake(0, 0, ZXScreenWidth, ZXAppStatusBarHeight);
+        }else{
+           self.zx_navBar.frame = CGRectMake(0, 0, ZXScreenWidth, ZXNavBarHeight);
+        }
     }
 }
+
+#pragma mark 折叠导航栏时更新导航栏高度
+- (void)updateNavFoldingFrame:(CADisplayLink *)displayLink{
+    self.isNavFoldAnimating = YES;
+    if(self.zx_navIsFolded){
+        if(self.zx_navBar.height > ZXAppStatusBarHeight){
+            self.zx_navBar.height -= self.zx_navFoldingSpeed;
+            if(self.xibTopConstraint){
+                self.xibTopConstraint.constant -= self.zx_navFoldingSpeed;
+            }
+            if(self.offsetBlock){
+                self.offsetBlock(-self.zx_navFoldingSpeed);
+            }
+            [self setAlphaOfNavSubViews:(self.zx_navBar.height - ZXAppStatusBarHeight) / (ZXNavBarHeight - ZXAppStatusBarHeight)];
+        }else{
+            self.isNavFoldAnimating = NO;
+            [self.displayLink invalidate];
+            self.displayLink = nil;
+            if(self.completionBlock){
+                self.completionBlock();
+            }
+            [self setAlphaOfNavSubViews:0];
+        }
+    }else{
+        if(self.zx_navBar.height < ZXNavBarHeight){
+            self.zx_navBar.height += self.zx_navFoldingSpeed;
+            if(self.xibTopConstraint){
+                self.xibTopConstraint.constant += self.zx_navFoldingSpeed;
+            }
+            if(self.offsetBlock){
+               self.offsetBlock(self.zx_navFoldingSpeed);
+            }
+            [self setAlphaOfNavSubViews:(self.zx_navBar.height - ZXAppStatusBarHeight) / (ZXNavBarHeight - ZXAppStatusBarHeight)];
+        }else{
+            self.isNavFoldAnimating = NO;
+            [self.displayLink invalidate];
+            self.displayLink = nil;
+            if(self.completionBlock){
+                self.completionBlock();
+            }
+            [self setAlphaOfNavSubViews:1];
+        }
+    }
+}
+
+#pragma mark 设置导航栏子视图透明度
+- (void)setAlphaOfNavSubViews:(CGFloat)alpha{
+    for(UIView *subView in self.zx_navBar.subviews){
+        subView.alpha = alpha;
+    }
+}
+
 
 #pragma mark - Setter
 -(void)setZx_navTitle:(NSString *)zx_navTitle{
@@ -97,6 +170,11 @@
 
 - (void)setZx_navTintColor:(UIColor *)zx_navTintColor{
     _zx_navTintColor = zx_navTintColor;
+    if(self.zx_navBar){
+        self.zx_navLeftBtn.zx_tintColor = zx_navTintColor;
+        self.zx_navRightBtn.zx_tintColor = zx_navTintColor;
+        self.zx_navSubRightBtn.zx_tintColor = zx_navTintColor;
+    }
     self.zx_navTitleLabel.textColor = zx_navTintColor;
     [self.zx_navLeftBtn setTitleColor:zx_navTintColor forState:UIControlStateNormal];
     [self.zx_navRightBtn setTitleColor:zx_navTintColor forState:UIControlStateNormal];
@@ -296,6 +374,24 @@
     [self.zx_navBar zx_setMultiTitle:title subTitle:subTitle];
 }
 
+#pragma mark 设置导航栏折叠效果
+- (void)zx_setNavFolded:(BOOL)folded speed:(int)speed foldingOffsetBlock:(foldingOffsetBlock)offsetBlock foldCompletionBlock:(foldCompletionBlock)completionBlock{
+    self.offsetBlock = offsetBlock;
+    self.completionBlock = completionBlock;
+    if(speed > 0 && speed < 6){
+        _zx_navFoldingSpeed = speed;
+    }else{
+        _zx_navFoldingSpeed = 3;
+    }
+    
+    if(_zx_navIsFolded != folded){
+        _zx_navIsFolded = folded;
+        [self startDisplayLink];
+    }else{
+        _zx_navIsFolded = folded;
+    }
+}
+
 #pragma mark - Other
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
@@ -339,7 +435,9 @@
 
 - (void)viewDidLayoutSubviews{
     [super viewDidLayoutSubviews];
-    [self relayoutSubviews];
+    if(!self.isNavFoldAnimating){
+        [self relayoutSubviews];
+    }
 }
 
 

@@ -12,6 +12,8 @@
 #import "DemoCustomNavViewController.h"
 #import "DemoCustomTitleViewViewController.h"
 #import "DemoSystemBarViewController.h"
+#import "DemoFoldFrameViewController.h"
+#import "DemoFoldXibViewController.h"
 @interface DemoListViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) NSArray *datas;
@@ -30,7 +32,7 @@
 }
 
 - (void)setUpViewAndData{
-    self.datas = @[@"ZXNavigationBar属性设置",@"仿微博热搜页面导航栏",@"自定义导航栏",@"自定义TitleView",@"跳转到使用系统导航栏的控制器"];
+    self.datas = @[@"ZXNavigationBar属性设置",@"仿微博热搜页面导航栏",@"可伸缩式导航栏(从Xib中设置tableView约束)",@"可伸缩式导航栏(通过Frame设置tableView约束)",@"自定义导航栏",@"自定义TitleView",@"跳转到使用系统导航栏的控制器"];
     self.tableView = [[UITableView alloc]init];
     [self.view addSubview:self.tableView];
     self.tableView.delegate = self;
@@ -73,16 +75,26 @@
             break;
         }
         case 2:{
+            //可伸缩式导航栏(从Xib中设置tableView约束)
+            vc = [[DemoFoldXibViewController alloc]init];
+            break;
+        }
+        case 3:{
+            //可伸缩式导航栏(通过Frame设置tableView约束)
+            vc = [[DemoFoldFrameViewController alloc]init];
+            break;
+        }
+        case 4:{
             //自定义导航栏
             vc = [[DemoCustomNavViewController alloc]init];
             break;
         }
-        case 3:{
+        case 5:{
             //自定义TitleView
             vc = [[DemoCustomTitleViewViewController alloc]init];
             break;
         }
-        case 4:{
+        case 6:{
             //跳转到使用系统导航栏的控制器
             vc = [[DemoSystemBarViewController alloc]init];
             break;
