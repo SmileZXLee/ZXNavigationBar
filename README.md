@@ -30,9 +30,9 @@ pod 'ZXNavigationBar'
 -|-|-
 ![](http://www.zxlee.cn/github/ZXNavigationBar/ZXNavigationBarDemo1.gif) | ![](http://www.zxlee.cn/github/ZXNavigationBar/ZXNavigationBarDemo2.gif) | ![](http://www.zxlee.cn/github/ZXNavigationBar/ZXNavigationBarDemo3.gif) |
 
-自定义titleView | 切换系统导航栏 |   【占位，对称】
+自定义titleView | 切换系统导航栏 |   可伸缩式导航栏
 -|-|-
-![](http://www.zxlee.cn/github/ZXNavigationBar/ZXNavigationBarDemo4.gif) | ![](http://www.zxlee.cn/github/ZXNavigationBar/ZXNavigationBarDemo5.gif) | ![](http://www.zxlee.cn/github/ZXNavigationBar/ZXNavigationBarDemo1.gif) | 
+![](http://www.zxlee.cn/github/ZXNavigationBar/ZXNavigationBarDemo4.gif) | ![](http://www.zxlee.cn/github/ZXNavigationBar/ZXNavigationBarDemo5.gif) | ![](http://www.zxlee.cn/github/ZXNavigationBar/ZXNavigationBarDemo6.gif) | 
 ### 开始使用
 #### 将控制器继承于ZXNavigationBarController，建议将Base控制器继承于ZXNavigationBarController
 ```objective-c
@@ -40,10 +40,10 @@ pod 'ZXNavigationBar'
 
 @end
 ```
-#### 是否启用了SafeArea，默认为否，若启用，则必须将此项设置为YES(使用Xib加载控制器时生效)
+#### 是否启用了SafeArea，默认为是，若取消了SafeArea，则必须将此项设置为NO(使用Xib加载控制器时生效)
 ```objective-c
-//若大多数控制器都从Xib加载并启用了SafeArea，可以直接在Base控制器中设置
-self.zx_isEnableSafeArea = YES;
+//若大多数控制器都从Xib加载并禁用了SafeArea，可以直接在Base控制器中设置
+self.zx_isEnableSafeArea = NO;
 ```
 
 * 注意:ZXNavigationBar会自动显示返回按钮，且实现点击pop功能，您无需设置，若需要自定义返回按钮，直接覆盖leftBtn的设置即可
@@ -135,6 +135,22 @@ self.zx_navLineView.backgroundColor = [UIColor blueColor];
 ```
 * 分割线其他其他非frame相关属性通过self.zx_navLineView设置即可
 
+#### 设置伸缩式导航栏
+* 如果设置了控制器的Xib且在Xib中设置了子视图的约束(仅需设置展开或者折叠导航栏与动画效果速度，无需手动调整控制器View子视图的frame)
+```objective-c
+//第一个参数folded：控制是展开还是折叠导航栏；第二个参数speed：控制展开或收缩导航栏的速度，0-6，建议值为3；第三个参数offsetBlock：折叠动画导航栏位移回调；第四个参数completionBlock：折叠动画结束回调
+[self zx_setNavFolded:YES speed:3 foldingOffsetBlock:nil foldCompletionBlock:nil];
+```
+* 如果是通过Frame设置控制器View的子视图（如TableView），需要在foldingOffsetBlock回调中控制导航栏下方View的frame，使其始终紧贴导航栏底部
+```objective-c
+__weak typeof(self) weakSelf = self;
+[self zx_setNavFolded:shouldFold speed:3 foldingOffsetBlock:^(CGFloat offset) {
+    //tableView的y值跟随这导航栏变化(导航栏高度减小，tableView的y值减小)
+    weakSelf.tableView.y += offset;
+    //tableView的高度值跟随这导航栏变化(导航栏高度减小，tableView高度增加)
+    weakSelf.tableView.height -= offset;
+} 
+```
 #### 设置状态栏为白色
 ```objective-c
 self.zx_isLightStatusBar = YES;
@@ -169,18 +185,18 @@ UIView *customTitleView = [[UIView alloc]init];
 UIView *customNav = [[UIView alloc]init];
 [self zx_addCustomNavBar:customNav];
 ```
-#### 关于自定义导航栏view内容无法自动下移的说明
+#### 关于自定义导航栏view内容无法自动下移的处理方式
 * 如果是系统的导航栏，view的内容会自动下移，如64像素
 * 设置了自定义的导航栏，实际上就是普通的View，则view中的内容不会自动下移避免挡住导航栏
 * ZXNavigationBar的处理方法是：
 * 如果您是通过frame或者Masonry设置控件布局，请设置y距离顶部高度为导航栏高度，可直接用ZXNavBarHeight这个宏
 * 如果您是通过Xib加载控制器，则ZXNavigationBar会自动将内部约束设置为距离顶部为导航栏高度+原始高度
-* 若您是通过Xib加载控制器，且启用了SafeArea，请设置：
+* 若您是通过Xib加载控制器，且禁用了SafeArea，请设置：
 ```objective-c
-//若大多数控制器都从Xib加载并启用了SafeArea，可以直接在Base控制器中设置
-self.zx_isEnableSafeArea = YES;
+//若大多数控制器都从Xib加载并禁用了SafeArea，可以直接在Base控制器中设置
+self.zx_isEnableSafeArea = NO;
 ```
-# TODO
+#### 更多示例，可下载Demo查阅，感谢使用
 
 
 
