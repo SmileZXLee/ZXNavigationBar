@@ -21,9 +21,9 @@ pod 'ZXNavigationBar'
 - [x] 兼容iOS8-iOS13，兼容各种设备，且无需担心系统更新需要重新适配导航栏
 - [x] 仅需一行代码即可轻松控制各种效果
 - [x] 支持随时切换为系统导航栏，且与系统导航栏之间无缝衔接
-- [x] 支持在` ZXNavigationBar` 上自定义titleView
-- [x] 若` ZXNavigationBar` 自带效果都无法满足，支持自定义导航栏
-- [x] 若从Xib中加载控制器，添加子View无需手动设置距离导航栏顶部约束，ZXNavigationBar会自动处理
+- [x] 支持在`ZXNavigationBar`上自定义titleView
+- [x] 若`ZXNavigationBar`自带效果都无法满足，支持自定义导航栏
+- [x] 若从Xib中加载控制器，添加子View无需手动设置距离导航栏顶部约束，`ZXNavigationBar`会自动处理
 
 ### 效果预览
 导航栏设置 | 仿微博热搜效果 |  自定义导航栏  
@@ -34,20 +34,20 @@ pod 'ZXNavigationBar'
 -|-|-
 ![](http://www.zxlee.cn/github/ZXNavigationBar/ZXNavigationBarDemo4.gif) | ![](http://www.zxlee.cn/github/ZXNavigationBar/ZXNavigationBarDemo5.gif) | ![](http://www.zxlee.cn/github/ZXNavigationBar/ZXNavigationBarDemo6.gif) | 
 ### 开始使用
-#### 将控制器继承于` ZXNavigationBarController` ，建议将Base控制器继承于` ZXNavigationBarController` 
+#### 将控制器继承于`ZXNavigationBarController`，建议将Base控制器继承于`ZXNavigationBarController`
 ```objective-c
 @interface DemoBaseViewController : ZXNavigationBarController
 
 @end
 ```
-#### 注意:` ZXNavigationBar` 会自动显示返回按钮，且实现点击pop功能，您无需设置，若需要自定义返回按钮，直接覆盖leftBtn的设置即可
+#### 注意:`ZXNavigationBar`会自动显示返回按钮，且实现点击pop功能，您无需设置，若需要自定义返回按钮，直接覆盖`self.zx_navLeftBtn`的图片和点击回调即可
 
 #### 关于自定义导航栏view内容无法自动下移的处理方式
 * 如果是系统的导航栏，view的内容会自动下移，如64像素
 * 设置了自定义的导航栏，它实际上就是普通的View，则view中的内容不会自动下移以避免挡住导航栏
-* ` ZXNavigationBar` 的处理方法是：
-* 如果您是通过frame或者Masonry设置控件布局，请设置y距离顶部高度为导航栏高度，可直接使用` ZXNavBarHeight` 这个宏
-* 如果您是通过Xib加载控制器，则` ZXNavigationBar` 会自动将内部约束设置为距离顶部为导航栏高度+原始高度，您无需作任何处理
+* `ZXNavigationBar`的处理方法是：
+* 如果您是通过frame或者Masonry设置控件布局，请设置y距离顶部高度为导航栏高度，可直接使用`ZXNavBarHeight`这个宏
+* 如果您是通过Xib加载控制器，则`ZXNavigationBar`会自动将内部约束设置为距离顶部为导航栏高度+原始高度，您无需作任何处理
 * 若您是通过Xib加载控制器，且禁用了SafeArea，请设置：
 ```objective-c
 //若大多数控制器都从Xib加载并禁用了SafeArea，可以直接在Base控制器中设置
@@ -70,7 +70,7 @@ self.zx_navTitleLabel.textColor = @"ZXNavigationBar";
 ```objective-c
 self.zx_navTitleLabel.fontSize = [UIFont systemFontOfSize:20];
 ```
-* 设置导航栏标题其他属性，通过控制self.zx_navTitleLabel即可
+* 设置导航栏标题其他属性，通过控制`self.zx_navTitleLabel`即可
 
 #### 快速设置左侧/右侧的按钮(以右侧按钮为例)
 * 设置最右侧按钮的图片和点击回调
@@ -91,7 +91,7 @@ self.zx_navTitleLabel.fontSize = [UIFont systemFontOfSize:20];
 //由于ZXNavigationBar会自动在左侧添加返回图片和点击返回事件，因此只需要设置返回的文字即可
 [self.zx_navLeftBtn setTitle:@"返回" forState:UIControlStateNormal];
 ```
-* 设置导航栏左侧/右侧的按钮的其他非frame相关属性，通过控制` self.zx_navLeftBtn/zx_navRightBtn` 即可
+* 设置导航栏左侧/右侧的按钮的其他非frame相关属性，通过控制`self.zx_navLeftBtn/zx_navRightBtn`即可
 
 #### 将图片渲染为指定颜色
 ```objective-c
@@ -109,7 +109,7 @@ self.zx_navItemSize = 30;
 self.zx_navItemMargin = 0;
 ```
 #### 设置右侧第二个按钮
-* 将上诉例子中` zx_navLeftBtn` /` zx_navRightBtn` 修改为` zx_navSubRightBtn` 即可
+* 将上诉例子中`zx_navLeftBtn`/`zx_navRightBtn`修改为`zx_navSubRightBtn`即可
 
 #### 设置导航栏背景颜色
 ```objective-c
@@ -140,7 +140,7 @@ self.zx_navTintColor = [UIColor yellowColor];
 ```objective-c
 self.zx_navLineView.backgroundColor = [UIColor blueColor];
 ```
-* 分割线其他其他非frame相关属性通过` self.zx_navLineView` 设置即可
+* 分割线其他其他非frame相关属性通过`self.zx_navLineView`设置即可
 
 #### 设置伸缩式导航栏
 * 如果设置了控制器的Xib且在Xib中设置了子视图的约束(仅需设置展开或者折叠导航栏与动画效果速度，无需手动调整控制器View子视图的frame)
@@ -148,7 +148,7 @@ self.zx_navLineView.backgroundColor = [UIColor blueColor];
 //第一个参数folded：控制是展开还是折叠导航栏；第二个参数speed：控制展开或收缩导航栏的速度，0-6，建议值为3；第三个参数offsetBlock：折叠动画导航栏位移回调；第四个参数completionBlock：折叠动画结束回调
 [self zx_setNavFolded:YES speed:3 foldingOffsetBlock:nil foldCompletionBlock:nil];
 ```
-* 如果是通过Frame设置控制器View的子视图（如TableView），需要在` foldingOffsetBlock` 回调中控制导航栏下方View的frame，使其始终紧贴导航栏底部
+* 如果是通过Frame设置控制器View的子视图（如TableView），需要在`foldingOffsetBlock`回调中控制导航栏下方View的frame，使其始终紧贴导航栏底部
 ```objective-c
 __weak typeof(self) weakSelf = self;
 [self zx_setNavFolded:shouldFold speed:3 foldingOffsetBlock:^(CGFloat offset) {
