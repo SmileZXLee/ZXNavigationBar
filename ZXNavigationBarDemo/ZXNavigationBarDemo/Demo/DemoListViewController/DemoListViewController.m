@@ -29,6 +29,7 @@
 
 - (void)setUpNav{
     self.title = @"ZXNavigationBar";
+    self.zx_navEnableSmoothFromSystemNavBar = YES;
 }
 
 - (void)setUpViewAndData{

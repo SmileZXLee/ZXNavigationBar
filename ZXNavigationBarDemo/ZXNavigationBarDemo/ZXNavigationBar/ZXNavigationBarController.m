@@ -18,6 +18,7 @@
 @end
 
 @implementation ZXNavigationBarController
+static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault;
 #pragma mark - Init
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -27,7 +28,6 @@
         self.navigationController.interactivePopGestureRecognizer.delegate = (id)self;
         [self setAutoBack];
     }
-    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 #pragma mark - private
@@ -98,9 +98,9 @@
 - (void)relayoutSubviews{
     if(self.zx_navBar){
         if(self.zx_navIsFolded){
-           self.zx_navBar.frame = CGRectMake(0, 0, ZXScreenWidth, ZXAppStatusBarHeight);
+            self.zx_navBar.frame = CGRectMake(0, 0, ZXScreenWidth, ZXAppStatusBarHeight);
         }else{
-           self.zx_navBar.frame = CGRectMake(0, 0, ZXScreenWidth, ZXNavBarHeight);
+            self.zx_navBar.frame = CGRectMake(0, 0, ZXScreenWidth, ZXNavBarHeight);
         }
     }
 }
@@ -134,7 +134,7 @@
                 self.xibTopConstraint.constant += self.zx_navFoldingSpeed;
             }
             if(self.offsetBlock){
-               self.offsetBlock(self.zx_navFoldingSpeed);
+                self.offsetBlock(self.zx_navFoldingSpeed);
             }
             [self setAlphaOfNavSubViews:(self.zx_navBar.height - ZXAppStatusBarHeight) / (ZXNavBarHeight - ZXAppStatusBarHeight)];
         }else{
@@ -180,7 +180,7 @@
     [self.zx_navRightBtn setTitleColor:zx_navTintColor forState:UIControlStateNormal];
     [self.zx_navSubRightBtn setTitleColor:zx_navTintColor forState:UIControlStateNormal];
     if(self.zx_navLeftBtn.currentImage){
-      [self.zx_navLeftBtn setImage:[self.zx_navLeftBtn.currentImage zx_renderingColor:zx_navTintColor] forState:UIControlStateNormal];
+        [self.zx_navLeftBtn setImage:[self.zx_navLeftBtn.currentImage zx_renderingColor:zx_navTintColor] forState:UIControlStateNormal];
     }
     if(self.zx_navRightBtn.currentImage){
         [self.zx_navRightBtn setImage:[self.zx_navRightBtn.currentImage zx_renderingColor:zx_navTintColor] forState:UIControlStateNormal];
@@ -222,8 +222,9 @@
     _zx_isEnableSafeArea = zx_isEnableSafeArea;
 }
 
-- (void)setZx_isLightStatusBar:(BOOL)zx_isLightStatusBar{
-    _zx_isLightStatusBar = zx_isLightStatusBar;
+- (void)setZx_navStatusBarStyle:(ZXNavStatusBarStyle)zx_navStatusBarStyle{
+    _zx_navStatusBarStyle = zx_navStatusBarStyle;
+    defaultNavStatusBarStyle = zx_navStatusBarStyle;
     [self setNeedsStatusBarAppearanceUpdate];
 }
 
@@ -395,6 +396,9 @@
 #pragma mark - Other
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    if(!self.zx_navEnableSmoothFromSystemNavBar){
+        self.navigationController.navigationBarHidden = !self.zx_showSystemNavBar;
+    }
     if(!self.zx_showSystemNavBar){
         self.navigationController.navigationBar.translucent = YES;
     }else{
@@ -425,10 +429,15 @@
 
 
 - (UIStatusBarStyle)preferredStatusBarStyle{
-    if(!self.zx_isLightStatusBar){
-        return UIStatusBarStyleDefault;
-    }else{
+    [super preferredStatusBarStyle];
+    ZXNavStatusBarStyle statusBarStyle = self.zx_navStatusBarStyle;
+    if(statusBarStyle == 0x00){
+        statusBarStyle = defaultNavStatusBarStyle;
+    }
+    if(statusBarStyle == ZXNavStatusBarStyleLight){
         return UIStatusBarStyleLightContent;
+    }else{
+        return UIStatusBarStyleDefault;
     }
     
 }

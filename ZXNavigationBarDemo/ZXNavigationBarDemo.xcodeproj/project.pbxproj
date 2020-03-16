@@ -18,7 +18,6 @@
 		74BC1B1C241373A30032A424 /* UIView+ZXNavFrameExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BC1B1B241373A30032A424 /* UIView+ZXNavFrameExtension.m */; };
 		74BC1B1F2413886B0032A424 /* NSString+ZXNavCalcSizeExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BC1B1E2413886B0032A424 /* NSString+ZXNavCalcSizeExtension.m */; };
 		74BC1B2224138BCB0032A424 /* ZXNavigationBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BC1B2124138BCB0032A424 /* ZXNavigationBarController.m */; };
-		74BC1B2E241742FD0032A424 /* ZXNavContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BC1B2D241742FD0032A424 /* ZXNavContentView.m */; };
 		74BC1B36241787760032A424 /* UIImage+ZXNavColorRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BC1B35241787720032A424 /* UIImage+ZXNavColorRender.m */; };
 		74BC1B3924178DFB0032A424 /* ZXNavBacImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BC1B3824178DFB0032A424 /* ZXNavBacImageView.m */; };
 		74BC1B3C2417C8100032A424 /* DemoListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BC1B3B2417C8100032A424 /* DemoListViewController.m */; };
@@ -75,8 +74,6 @@
 		74BC1B1E2413886B0032A424 /* NSString+ZXNavCalcSizeExtension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+ZXNavCalcSizeExtension.m"; sourceTree = "<group>"; };
 		74BC1B2024138BCB0032A424 /* ZXNavigationBarController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZXNavigationBarController.h; sourceTree = "<group>"; };
 		74BC1B2124138BCB0032A424 /* ZXNavigationBarController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZXNavigationBarController.m; sourceTree = "<group>"; };
-		74BC1B2C241742FD0032A424 /* ZXNavContentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZXNavContentView.h; sourceTree = "<group>"; };
-		74BC1B2D241742FD0032A424 /* ZXNavContentView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZXNavContentView.m; sourceTree = "<group>"; };
 		74BC1B34241787720032A424 /* UIImage+ZXNavColorRender.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+ZXNavColorRender.h"; sourceTree = "<group>"; };
 		74BC1B35241787720032A424 /* UIImage+ZXNavColorRender.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ZXNavColorRender.m"; sourceTree = "<group>"; };
 		74BC1B3724178DFB0032A424 /* ZXNavBacImageView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZXNavBacImageView.h; sourceTree = "<group>"; };
@@ -198,8 +195,6 @@
 				74BC1B5E241A079A0032A424 /* ZXNavTitleView.m */,
 				74BC1B1524136C800032A424 /* ZXNavItemBtn.h */,
 				74BC1B1624136C800032A424 /* ZXNavItemBtn.m */,
-				74BC1B2C241742FD0032A424 /* ZXNavContentView.h */,
-				74BC1B2D241742FD0032A424 /* ZXNavContentView.m */,
 				74BC1B3724178DFB0032A424 /* ZXNavBacImageView.h */,
 				74BC1B3824178DFB0032A424 /* ZXNavBacImageView.m */,
 			);
@@ -465,7 +460,6 @@
 				74BC1B5C241A05C90032A424 /* DemoCustomNav.m in Sources */,
 				74BC1AF8241362C50032A424 /* main.m in Sources */,
 				74BC1B1F2413886B0032A424 /* NSString+ZXNavCalcSizeExtension.m in Sources */,
-				74BC1B2E241742FD0032A424 /* ZXNavContentView.m in Sources */,
 				74BC1AEA241362C10032A424 /* AppDelegate.m in Sources */,
 				74BC1B0F241364140032A424 /* ZXNavigationBar.m in Sources */,
 				74BC1B5F241A079A0032A424 /* ZXNavTitleView.m in Sources */,

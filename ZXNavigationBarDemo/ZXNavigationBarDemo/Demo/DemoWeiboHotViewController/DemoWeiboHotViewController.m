@@ -55,7 +55,7 @@
     //隐藏分割线
     self.zx_navLineView.hidden = NO;
     //设置状态栏为黑色
-    self.zx_isLightStatusBar = NO;
+    self.zx_navStatusBarStyle = ZXNavStatusBarStyleDefault;
 }
 
 #pragma mark 设置导航栏为白色
@@ -67,7 +67,7 @@
     //显示分割线
     self.zx_navLineView.hidden = YES;
     //设置状态栏为白色
-    self.zx_isLightStatusBar = YES;
+    self.zx_navStatusBarStyle = ZXNavStatusBarStyleLight;
 }
 
 #pragma mark - UIScrollViewDelegate

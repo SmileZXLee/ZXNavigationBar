@@ -62,7 +62,6 @@
     subRightBtn.titleLabel.adjustsFontSizeToFitWidth = YES;
     
     ZXNavTitleView *titleView = [[ZXNavTitleView alloc]init];
-    
     ZXNavTitleLabel *titleLabel = [[ZXNavTitleLabel alloc]init];
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.font = [UIFont boldSystemFontOfSize:ZXNavDefalutTitleSize];
@@ -90,15 +89,8 @@
     CGFloat orgLeftBtnX = leftBtn.x;
     __weak typeof(self) weakSelf = self;
     rightBtn.zx_barItemBtnFrameUpdateBlock = ^(ZXNavItemBtn * _Nonnull barItemBtn) {
-        CGFloat btnw = [[NSString stringWithFormat:@"%@",barItemBtn.currentTitle] getRectWidthWithLimitH:barItemBtn.height fontSize:barItemBtn.titleLabel.font.pointSize];
-        if(!barItemBtn.currentTitle.length){
-            btnw = 0;
-        }
-        if(barItemBtn.imageView.image){
-            btnw = btnw + barItemBtn.imageView.width;
-        }
-        barItemBtn.width = btnw;
-        barItemBtn.x = orgRigthBtnX - (btnw + 5 - weakSelf.zx_itemSize) - weakSelf.zx_itemMargin * 10;
+        [weakSelf layoutItemBtn:barItemBtn];
+        barItemBtn.x = orgRigthBtnX - (barItemBtn.width + 5 - weakSelf.zx_itemSize) - weakSelf.zx_itemMargin * 10;
         [weakSelf refNavBar];
     };
     
@@ -107,6 +99,17 @@
     };
     
     leftBtn.zx_barItemBtnFrameUpdateBlock = ^(ZXNavItemBtn * _Nonnull barItemBtn) {
+        [weakSelf layoutItemBtn:barItemBtn];
+        rightBtn.x = orgLeftBtnX + (barItemBtn.width + 5 - weakSelf.zx_itemSize);
+        [weakSelf refNavBar];
+
+    };
+    [self relayoutSubviews];
+}
+
+#pragma mark 当Button中有文字时，刷新Button布局
+- (void)layoutItemBtn:(ZXNavItemBtn *)barItemBtn{
+    if(barItemBtn.currentTitle && barItemBtn.currentTitle.length){
         CGFloat btnw = [[NSString stringWithFormat:@"%@",barItemBtn.currentTitle] getRectWidthWithLimitH:barItemBtn.height fontSize:barItemBtn.titleLabel.font.pointSize];
         if(!barItemBtn.currentTitle.length){
             btnw = 0;
@@ -114,12 +117,8 @@
         if(barItemBtn.imageView.image){
             btnw = btnw + barItemBtn.imageView.width;
         }
-        rightBtn.x = orgLeftBtnX + (btnw + 5 - weakSelf.zx_itemSize);
         barItemBtn.width = btnw + 5;
-        [weakSelf refNavBar];
-
-    };
-    [self relayoutSubviews];
+    }
 }
 
 #pragma mark 刷新导航栏titleView布局
@@ -164,6 +163,10 @@
             rightBtnW = self.zx_rightBtn.width;
         }
         self.zx_rightBtn.frame = CGRectMake(self.width - self.zx_itemMargin - rightBtnW,(self.height - self.zx_itemSize + centerOffSet) / 2, rightBtnSize.width,rightBtnSize.height);
+        if(self.shouldRefLayout){
+            [self layoutItemBtn:self.zx_leftBtn];
+            [self layoutItemBtn:self.zx_rightBtn];
+        }
         if(self.zx_subRightBtn.imageView.image){
             self.zx_subRightBtn.frame = CGRectMake(CGRectGetMinX(self.zx_rightBtn.frame) - self.zx_itemMargin - self.zx_itemSize, self.zx_rightBtn.y, self.zx_itemSize, self.zx_itemSize);
         }else{

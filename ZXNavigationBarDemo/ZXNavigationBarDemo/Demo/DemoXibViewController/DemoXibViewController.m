@@ -70,9 +70,9 @@
 #pragma mark 点击了设置StatusBar白色
 - (IBAction)changeStatusBarAction:(UISwitch *)sender {
     if(sender.on){
-        self.zx_isLightStatusBar = YES;
+        self.zx_navStatusBarStyle = ZXNavStatusBarStyleLight;
     }else{
-        self.zx_isLightStatusBar = NO;
+        self.zx_navStatusBarStyle = ZXNavStatusBarStyleDefault;
     }
 }
 

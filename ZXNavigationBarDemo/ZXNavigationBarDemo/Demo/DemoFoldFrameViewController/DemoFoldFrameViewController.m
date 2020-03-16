@@ -24,7 +24,7 @@
 
 - (void)setUpNav{
     self.title = @"可伸缩式导航栏(Frame)";
-    self.zx_isLightStatusBar = YES;
+    self.zx_navStatusBarStyle = ZXNavStatusBarStyleLight;
     [self.zx_navLeftBtn setTitle:@"首页" forState:UIControlStateNormal];
     self.zx_navBar.backgroundColor = [UIColor colorWithRed:16/255.0 green:94/255.0 blue:253/255.0 alpha:1];
     self.zx_navTintColor = [UIColor whiteColor];

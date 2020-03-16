@@ -9,6 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "ZXNavigationBar.h"
 NS_ASSUME_NONNULL_BEGIN
+typedef enum {
+    ZXNavStatusBarStyleDefault = 0x01,    // 状态栏颜色：黑色
+    ZXNavStatusBarStyleLight = 0x02,    // 状态栏颜色：白色
+}ZXNavStatusBarStyle;
 typedef void(^leftBtnClickedBlock) (ZXNavItemBtn *btn);
 typedef void(^rightBtnClickedBlock) (ZXNavItemBtn *btn);
 typedef void(^subRightBtnClickedBlock) (ZXNavItemBtn *btn);
@@ -27,9 +31,9 @@ typedef void(^foldCompletionBlock) (void);
 @property (assign, nonatomic)CGFloat zx_navItemMargin;
 
 /**
- 状态栏是否修改为白色，默认为否
+ 状态栏颜色
  */
-@property(assign, nonatomic)BOOL zx_isLightStatusBar;
+@property(assign, nonatomic)ZXNavStatusBarStyle zx_navStatusBarStyle;
 
 /**
  是否隐藏ZXNavigationBar导航栏，默认为否
@@ -40,6 +44,11 @@ typedef void(^foldCompletionBlock) (void);
  是否显示系统导航栏，默认为否
  */
 @property (assign, nonatomic)BOOL zx_showSystemNavBar;
+
+/**
+ 是否开启系统导航栏与自定义导航栏平滑过渡(务必仅当存在系统导航栏与自定义导航栏过渡时启用，非必要请勿启用，否则可能造成自定义导航栏跳动，若当前控制器显示了系统导航栏，请于当前控制器pop的上一个控制器中使用self.zx_navEnableSmoothFromSystemNavBar = YES)
+ */
+@property (assign, nonatomic)BOOL zx_navEnableSmoothFromSystemNavBar;
 
 /**
  是否禁止Xib加载控制器情况下自动将顶部View约束下移导航栏高度，默认为否(使用Xib加载控制器时生效)
@@ -121,9 +130,10 @@ typedef void(^foldCompletionBlock) (void);
  */
 @property (assign, nonatomic, readonly)int zx_navFoldingSpeed;
 
+
 /**
  设置左侧Button的图片和点击回调
-
+ 
  @param imgName 图片名字
  @param clickBlock 点击回调
  */
@@ -163,7 +173,7 @@ typedef void(^foldCompletionBlock) (void);
 
 /**
  左侧Button的点击回调
-
+ 
  @param clickBlock 点击回调
  */
 -(void)zx_leftClickedBlock:(leftBtnClickedBlock)clickBlock;
@@ -191,7 +201,7 @@ typedef void(^foldCompletionBlock) (void);
 
 /**
  设置大小标题效果
-
+ 
  @param title 大标题
  @param subTitle 小标题
  */
@@ -199,7 +209,7 @@ typedef void(^foldCompletionBlock) (void);
 
 /**
  设置导航栏背景渐变(颜色渐变从fromColor到toColor)
-
+ 
  @param fromColor 起止颜色
  @param toColor 终止颜色
  */
@@ -212,7 +222,7 @@ typedef void(^foldCompletionBlock) (void);
 
 /**
  添加自定义的TitleView
-
+ 
  @param customTitleView 自定义的TitleView
  */
 - (void)zx_addCustomTitleView:(UIView *)customTitleView;
@@ -220,7 +230,7 @@ typedef void(^foldCompletionBlock) (void);
 
 /**
  设置可伸缩折叠式导航栏
-
+ 
  @param folded 是否折叠，为否时即为展开
  @param speed 折叠效果动画速度，1-6，建议3
  @param offsetBlock 折叠动画导航栏位移回调，当控制器使用frame布局时，用于在导航栏高度更改时，同时设置导航栏下方视图的frame，此时获取到的offset就是导航栏实时相较自身位移距离
