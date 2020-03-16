@@ -160,11 +160,11 @@ __weak typeof(self) weakSelf = self;
 ```
 #### 设置状态栏为白色
 ```objective-c
-self.zx_isLightStatusBar = YES;
+self.zx_navStatusBarStyle = ZXNavStatusBarStyleLight;
 ```
 #### 设置状态栏为黑色
 ```objective-c
-self.zx_isLightStatusBar = NO;
+self.zx_navStatusBarStyle = ZXNavStatusBarStyleDefault;
 ```
 #### 显示系统导航栏(默认为否)
 ```objective-c
@@ -175,6 +175,11 @@ self.zx_showSystemNavBar = YES;
 ```objective-c
 //显示系统导航栏将会自动隐藏ZXNavigationBar
 self.zx_hideBaseNavBar = YES;
+```
+#### 自定义导航栏与系统导航栏平滑过渡
+```objective-c
+//务必仅当存在系统导航栏与自定义导航栏过渡时启用，非必要请勿启用，否则可能造成自定义导航栏跳动，若当前控制器显示了系统导航栏，请于当前控制器pop的上一个控制器中使用self.zx_navEnableSmoothFromSystemNavBar = YES)
+self.zx_navEnableSmoothFromSystemNavBar = YES;
 ```
 #### 禁止Xib加载控制器情况下自动将顶部View约束下移导航栏高度(默认为否)
 ```objective-c
