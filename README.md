@@ -21,6 +21,7 @@ pod 'ZXNavigationBar'
 - [x] 兼容iOS8-iOS13，兼容各种设备，且无需担心系统更新需要重新适配导航栏
 - [x] 仅需一行代码即可轻松控制各种效果
 - [x] 支持随时切换为系统导航栏，且与系统导航栏之间无缝衔接
+- [x] 支持在自定义`ZXNavigationBar`高度
 - [x] 支持在`ZXNavigationBar`上自定义titleView
 - [x] 若`ZXNavigationBar`自带效果都无法满足，支持自定义导航栏
 - [x] 若从Xib中加载控制器，添加子View无需手动设置距离导航栏顶部约束，`ZXNavigationBar`会自动处理
@@ -40,7 +41,37 @@ pod 'ZXNavigationBar'
 
 @end
 ```
-#### 注意:`ZXNavigationBar`会自动显示返回按钮，且实现点击pop功能，您无需设置，若需要自定义返回按钮，直接覆盖`self.zx_navLeftBtn`的图片和点击回调即可
+#### 注意
+* `ZXNavigationBar`会自动显示返回按钮，且实现点击pop功能，您无需设置，若需要自定义返回按钮，直接覆盖`self.zx_navLeftBtn`的图片和点击回调即可
+* 如果项目中存在黑白状态栏交替，建议先在base控制器的`viewDidLoad`方法中统一设置状态栏颜色
+```objective-c
+@interface DemoBaseViewController : ZXNavigationBarController
+- (void)viewDidLoad{
+    [super viewDidLoad];
+    self.zx_navStatusBarStyle = ZXNavStatusBarStyleDefault;
+}
+@end
+```
+
+* `ZXNavigationBarController`作了自动隐藏导航栏的处理，但由于导航栏早于内部子控制器加载，因此有可能造成自定义导航栏抖动或状态栏颜色黑白相嵌的问题，
+若您遇到此问题，请在base导航控制器的`pushViewController:animated:`中设置`self.navigationBarHidden = YES;`或在Appdelegate的`application:didFinishLaunchingWithOptions:`中调用方法`[UINavigationController zx_hideAllNavBar]`【需要先`#import "ZXNavigationBarController.h"`】
+```objective-c
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+
+    //这个方法需要在导航控制器加载前调用
+    [UINavigationController zx_hideAllNavBar];
+    
+    UIWindow *window = [[UIWindow alloc]initWithFrame:[UIScreen mainScreen].bounds];
+    DemoListViewController *vc = [[DemoListViewController alloc]init];
+    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
+    window.rootViewController = nav;
+    [window makeKeyAndVisible];
+    self.window = window;
+    return YES;
+}
+@end
+```
+
 
 #### 关于自定义导航栏view内容无法自动下移的处理方式
 * 如果是系统的导航栏，view的内容会自动下移，如64像素
@@ -131,6 +162,10 @@ self.zx_navBar.zx_bacImage = [UIImage imageNamed:@"nav_bac"];
 #### 设置导航栏TintColor(此属性可以将导航栏的title颜色、左右Button的文字和图片颜色修改为TintColor)
 ```objective-c
 self.zx_navTintColor = [UIColor yellowColor];
+```
+#### 自定义导航栏高度(若设置此属性，则ZXNavigationBar不会再使用默认的导航栏高度)
+```objective-c
+self.zx_navFixHeight = 30;
 ```
 #### 设置导航栏大小标题效果
 ```objective-c
