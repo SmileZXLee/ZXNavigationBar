@@ -24,7 +24,7 @@ pod 'ZXNavigationBar'
 - [x] 支持在自定义`ZXNavigationBar`高度
 - [x] 支持在`ZXNavigationBar`上自定义titleView
 - [x] 若`ZXNavigationBar`自带效果都无法满足，支持自定义导航栏
-- [x] 若从Xib中加载控制器，添加子View无需手动设置距离导航栏顶部约束，`ZXNavigationBar`会自动处理
+- [x] 若从Xib中加载控制器View，添加子View无需手动设置距离导航栏顶部约束，`ZXNavigationBar`会自动处理
 
 ### 效果预览
 导航栏设置 | 仿微博热搜效果 |  自定义导航栏  
@@ -41,7 +41,7 @@ pod 'ZXNavigationBar'
 
 @end
 ```
-#### 注意
+#### 【重要】注意事项
 * `ZXNavigationBar`会自动显示返回按钮，且实现点击pop功能，您无需设置，若需要自定义返回按钮，直接覆盖`self.zx_navLeftBtn`的图片和点击回调即可
 * 如果项目中存在黑白状态栏交替的需求，建议先在base控制器的`viewDidLoad`方法中统一设置状态栏颜色，以避免设置成白色状态栏后返回上一个页面无法自动恢复为黑色状态栏
 ```objective-c
@@ -73,13 +73,13 @@ pod 'ZXNavigationBar'
 ```
 
 
-#### 关于自定义导航栏view内容无法自动下移的处理方式
+#### 【重要】关于自定义导航栏view内容无法自动下移的处理方式
 * 如果是系统的导航栏，view的内容会自动下移，如64像素
 * 设置了自定义的导航栏，它实际上就是普通的View，则view中的内容不会自动下移以避免挡住导航栏
 * `ZXNavigationBar`的处理方法是：
 * 如果您是通过frame或者Masonry设置控件布局，请设置y距离顶部高度为导航栏高度，可直接使用`ZXNavBarHeight`这个宏
-* 如果您是通过Xib加载控制器，则`ZXNavigationBar`会自动将内部约束设置为距离顶部为导航栏高度+原始高度，您无需作任何处理
-* 若您是通过Xib加载控制器，且禁用了SafeArea，请设置：
+* 如果您是通过Xib加载控制器View，则`ZXNavigationBar`会自动将内部约束设置为距离顶部为导航栏高度+原始高度，您无需作任何处理
+* 若您是通过Xib加载控制器View，且禁用了SafeArea，请设置：
 ```objective-c
 //若大多数控制器都从Xib加载并禁用了SafeArea，可以直接在Base控制器中设置
 self.zx_isEnableSafeArea = NO;
