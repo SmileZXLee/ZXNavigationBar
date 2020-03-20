@@ -43,7 +43,7 @@ pod 'ZXNavigationBar'
 ```
 #### 注意
 * `ZXNavigationBar`会自动显示返回按钮，且实现点击pop功能，您无需设置，若需要自定义返回按钮，直接覆盖`self.zx_navLeftBtn`的图片和点击回调即可
-* 如果项目中存在黑白状态栏交替，建议先在base控制器的`viewDidLoad`方法中统一设置状态栏颜色
+* 如果项目中存在黑白状态栏交替的需求，建议先在base控制器的`viewDidLoad`方法中统一设置状态栏颜色，以避免设置成白色状态栏后返回上一个页面无法自动恢复为黑色状态栏
 ```objective-c
 @interface DemoBaseViewController : ZXNavigationBarController
 - (void)viewDidLoad{
