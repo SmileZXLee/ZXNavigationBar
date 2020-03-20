@@ -226,6 +226,13 @@
     _zx_gradientLayer = zx_gradientLayer;
 }
 
+- (void)setBackgroundColor:(UIColor *)backgroundColor{
+    [super setBackgroundColor:backgroundColor];
+    if(self.zx_navEnableSmoothFromSystemNavBar){
+        [UIApplication sharedApplication].keyWindow.backgroundColor = backgroundColor;
+    }
+}
+
 #pragma mark - public
 #pragma mark 设置大小标题效果
 - (void)zx_setMultiTitle:(NSString *)title subTitle:(NSString *)subTitle{

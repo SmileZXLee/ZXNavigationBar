@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		749BBF4F2424CE6400C63132 /* UINavigationController+ZXNavBarAllHiddenExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 749BBF4E2424CE6400C63132 /* UINavigationController+ZXNavBarAllHiddenExtension.m */; };
 		74BC1AEA241362C10032A424 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BC1AE9241362C10032A424 /* AppDelegate.m */; };
 		74BC1AF2241362C50032A424 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 74BC1AF1241362C50032A424 /* Assets.xcassets */; };
 		74BC1AF5241362C50032A424 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 74BC1AF3241362C50032A424 /* LaunchScreen.storyboard */; };
@@ -51,6 +52,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		749BBF4D2424CE6400C63132 /* UINavigationController+ZXNavBarAllHiddenExtension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+ZXNavBarAllHiddenExtension.h"; sourceTree = "<group>"; };
+		749BBF4E2424CE6400C63132 /* UINavigationController+ZXNavBarAllHiddenExtension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+ZXNavBarAllHiddenExtension.m"; sourceTree = "<group>"; };
 		74BC1AE5241362C10032A424 /* ZXNavigationBarDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZXNavigationBarDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		74BC1AE8241362C10032A424 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		74BC1AE9241362C10032A424 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -220,6 +223,8 @@
 				74BC1B35241787720032A424 /* UIImage+ZXNavColorRender.m */,
 				74BC1B4E24192F2E0032A424 /* UIImage+ZXNavBundleExtension.h */,
 				74BC1B4F24192F2E0032A424 /* UIImage+ZXNavBundleExtension.m */,
+				749BBF4D2424CE6400C63132 /* UINavigationController+ZXNavBarAllHiddenExtension.h */,
+				749BBF4E2424CE6400C63132 /* UINavigationController+ZXNavBarAllHiddenExtension.m */,
 			);
 			path = ZXNavigationBarCategory;
 			sourceTree = "<group>";
@@ -458,6 +463,7 @@
 				74BC1B6F241B2E170032A424 /* DemoFoldFrameViewController.m in Sources */,
 				74BC1B3F2417C9D60032A424 /* DemoBaseViewController.m in Sources */,
 				74BC1B5C241A05C90032A424 /* DemoCustomNav.m in Sources */,
+				749BBF4F2424CE6400C63132 /* UINavigationController+ZXNavBarAllHiddenExtension.m in Sources */,
 				74BC1AF8241362C50032A424 /* main.m in Sources */,
 				74BC1B1F2413886B0032A424 /* NSString+ZXNavCalcSizeExtension.m in Sources */,
 				74BC1AEA241362C10032A424 /* AppDelegate.m in Sources */,

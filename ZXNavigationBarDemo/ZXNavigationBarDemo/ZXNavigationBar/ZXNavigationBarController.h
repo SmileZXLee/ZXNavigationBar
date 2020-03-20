@@ -7,6 +7,7 @@
 //  https://github.com/SmileZXLee/ZXNavigationBar
 
 #import <UIKit/UIKit.h>
+#import "UINavigationController+ZXNavBarAllHiddenExtension.h"
 #import "ZXNavigationBar.h"
 NS_ASSUME_NONNULL_BEGIN
 typedef enum {
@@ -131,6 +132,17 @@ typedef void(^foldCompletionBlock) (void);
 @property (assign, nonatomic, readonly)int zx_navFoldingSpeed;
 
 
+/**
+ 自动将顶部View约束下移导航栏高度时的回调，可拦截并自定义下移距离(xib加载控制器view时生效)
+ oldNavOffset:视图在xib中所设置的约束与顶部距离
+ currentNavOffset:即将设置的视图与顶部的距离
+ */
+@property(nonatomic,copy)CGFloat(^zx_handleAdjustNavContainerOffsetBlock)(CGFloat oldNavOffset,CGFloat currentNavOffset);
+
+/**
+ 导航栏固定高度
+ */
+@property (assign, nonatomic)int zx_navFixHeight;
 /**
  设置左侧Button的图片和点击回调
  

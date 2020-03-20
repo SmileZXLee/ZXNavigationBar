@@ -59,6 +59,10 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (strong, nonatomic ,nullable)UIImage *zx_bacImage;
 /**
+ 是否开启系统导航栏与自定义导航栏平滑过渡(务必仅当存在系统导航栏与自定义导航栏过渡时启用，非必要请勿启用，否则可能造成自定义导航栏跳动，若当前控制器显示了系统导航栏，请于当前控制器pop的上一个控制器中使用self.zx_navEnableSmoothFromSystemNavBar = YES)
+ */
+@property (assign, nonatomic, readonly)BOOL zx_navEnableSmoothFromSystemNavBar;
+/**
  自定义的titleView，是TitleView的SubView
  */
 @property (weak, nonatomic)UIView *zx_customTitleView;

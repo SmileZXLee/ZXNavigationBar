@@ -42,7 +42,6 @@
 #pragma mark 点击了设置背景图片
 - (IBAction)setBacImageAction:(UISwitch *)sender {
     if(sender.on){
-        
         self.zx_navBar.zx_bacImage = [UIImage imageNamed:@"nav_bac"];
     }else{
         self.zx_navBar.zx_bacImage = nil;
