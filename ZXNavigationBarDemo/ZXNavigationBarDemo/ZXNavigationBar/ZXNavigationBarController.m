@@ -469,6 +469,7 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
     }else{
         self.automaticallyAdjustsScrollViewInsets = NO;
     }
+    
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
@@ -482,6 +483,9 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
     [super viewDidAppear:animated];
     if(self.zx_navEnableSmoothFromSystemNavBar){
         [self refNavStatusFromWillAppear:NO];
+    }
+    if(self.navigationController){
+        self.navigationController.interactivePopGestureRecognizer.enabled = self.navigationController.viewControllers.firstObject != self;
     }
 }
 - (void)didReceiveMemoryWarning {
