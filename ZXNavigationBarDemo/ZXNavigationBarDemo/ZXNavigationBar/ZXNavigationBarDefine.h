@@ -59,7 +59,9 @@ cFlag;\
 
  @return 状态栏高度
  */
-#define ZXAppStatusBarHeight [[UIApplication sharedApplication] statusBarFrame].size.height
+//#define ZXAppStatusBarHeight [[UIApplication sharedApplication] statusBarFrame].size.height
+//适配iOS13以下系统开启热点或音频时的导航栏
+#define ZXAppStatusBarHeight (ZXIsBangScreen ? 44 : 20)
 
 /**
  获取导航栏高度
