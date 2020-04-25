@@ -32,19 +32,18 @@
 #pragma mark 点击了设置背景色橙色
 - (IBAction)changeBacColorAction:(UISwitch *)sender {
     if(sender.on){
-        self.zx_navBar.backgroundColor = [UIColor orangeColor];
+        self.zx_navBarBackgroundColor = [UIColor orangeColor];
     }else{
-        self.zx_navBar.backgroundColor = [UIColor whiteColor];
+        self.zx_navBarBackgroundColor = [UIColor whiteColor];
     }
-    
 }
 
 #pragma mark 点击了设置背景图片
 - (IBAction)setBacImageAction:(UISwitch *)sender {
     if(sender.on){
-        self.zx_navBar.zx_bacImage = [UIImage imageNamed:@"nav_bac"];
+        self.zx_navBarBackgroundImage = [UIImage imageNamed:@"nav_bac"];
     }else{
-        self.zx_navBar.zx_bacImage = nil;
+        self.zx_navBarBackgroundImage = nil;
     }
 }
 

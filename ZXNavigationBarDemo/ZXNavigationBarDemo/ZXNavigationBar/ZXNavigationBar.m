@@ -236,9 +236,15 @@
 #pragma mark - public
 #pragma mark 设置大小标题效果
 - (void)zx_setMultiTitle:(NSString *)title subTitle:(NSString *)subTitle{
+    [self zx_setMultiTitle:title subTitle:subTitle subTitleFont:[UIFont systemFontOfSize:ZXNavDefalutSubTitleSize] subTitleTextColor:self.zx_titleLabel.textColor];
+}
+
+#pragma mark 设置大小标题效果
+- (void)zx_setMultiTitle:(NSString *)title subTitle:(NSString *)subTitle subTitleFont:(UIFont *)subTitleFont subTitleTextColor:(UIColor *)subTitleColor{
     NSString *appendedStr = [NSString stringWithFormat:@"%@\n%@",title,subTitle];
     NSMutableAttributedString *titleAttrStr = [[NSMutableAttributedString alloc] initWithString:appendedStr];
-    [titleAttrStr addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:ZXNavDefalutSubTitleSize] range:NSMakeRange(title.length, appendedStr.length - title.length)];
+    [titleAttrStr addAttribute:NSFontAttributeName value:subTitleFont range:NSMakeRange(title.length, appendedStr.length - title.length)];
+    [titleAttrStr addAttribute:NSForegroundColorAttributeName value:subTitleColor range:NSMakeRange(title.length, appendedStr.length - title.length)];
     self.zx_titleLabel.numberOfLines = 2;
     self.zx_titleLabel.attributedText = titleAttrStr;
 }

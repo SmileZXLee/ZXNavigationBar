@@ -82,9 +82,29 @@ typedef void(^foldCompletionBlock) (void);
 @property (weak, nonatomic)ZXNavTitleLabel *zx_navTitleLabel;
 
 /**
+ 设置导航栏标题颜色
+ */
+@property (strong, nonatomic)UIColor *zx_navTitleColor;
+
+/**
+ 设置导航栏标题字体大小
+ */
+@property (assign, nonatomic)CGFloat zx_navTitleFontSize;
+
+/**
+ 设置导航栏标题字体
+ */
+@property (strong, nonatomic)UIFont *zx_navTitleFont;
+
+/**
  导航栏分割线View
  */
 @property (weak, nonatomic)UIView *zx_navLineView;
+
+/**
+ 导航栏分割线View背景颜色
+ */
+@property (strong, nonatomic)UIColor *zx_navLineViewBackgroundColor;
 
 /**
  左侧Button
@@ -107,9 +127,19 @@ typedef void(^foldCompletionBlock) (void);
 @property (weak, nonatomic)ZXNavigationBar *zx_navBar;
 
 /**
+ 设置导航栏背景颜色
+ */
+@property (strong, nonatomic)UIColor *zx_navBarBackgroundColor;
+
+/**
  导航栏背景ImageView
  */
 @property (weak, nonatomic)ZXNavBacImageView *zx_navBacImageView;
+
+/**
+ 设置导航栏背景图片
+ */
+@property (strong, nonatomic, nullable)UIImage *zx_navBarBackgroundImage;
 
 /**
  自定义的导航栏View，是ZXNavigationBar的SubView，如需设置自定义导航栏请使用-zx_addCustomNavBar方法
@@ -149,7 +179,8 @@ typedef void(^foldCompletionBlock) (void);
  @param imgName 图片名字
  @param clickBlock 点击回调
  */
--(void)zx_setLeftBtnWithImgName:(NSString *)imgName clickedBlock:(nullable leftBtnClickedBlock)clickBlock;
+- (void)zx_setLeftBtnWithImgName:(NSString *)imgName clickedBlock:(nullable leftBtnClickedBlock)clickBlock;
+
 
 /**
  设置最右侧Button的图片和点击回调
@@ -157,7 +188,7 @@ typedef void(^foldCompletionBlock) (void);
  @param imgName 图片名字
  @param clickBlock 点击回调
  */
--(void)zx_setRightBtnWithImgName:(NSString *)imgName clickedBlock:(nullable rightBtnClickedBlock)clickBlock;
+- (void)zx_setRightBtnWithImgName:(NSString *)imgName clickedBlock:(nullable rightBtnClickedBlock)clickBlock;
 
 /**
  设置右侧第二个Button的图片和点击回调
@@ -165,7 +196,8 @@ typedef void(^foldCompletionBlock) (void);
  @param imgName 图片名字
  @param clickBlock 点击回调
  */
--(void)zx_setSubRightBtnWithImgName:(NSString *)imgName clickedBlock:(nullable subRightBtnClickedBlock)clickBlock;
+- (void)zx_setSubRightBtnWithImgName:(NSString *)imgName clickedBlock:(nullable subRightBtnClickedBlock)clickBlock;
+
 
 /**
  设置左侧Button的文字和点击回调
@@ -173,7 +205,7 @@ typedef void(^foldCompletionBlock) (void);
  @param btnText 图片名字
  @param clickBlock 点击回调
  */
--(void)zx_setLeftBtnWithText:(NSString *)btnText clickedBlock:(nullable leftBtnClickedBlock)clickBlock;
+- (void)zx_setLeftBtnWithText:(NSString *)btnText clickedBlock:(nullable leftBtnClickedBlock)clickBlock;
 
 /**
  设置最右侧Button的文字和点击回调
@@ -181,35 +213,62 @@ typedef void(^foldCompletionBlock) (void);
  @param btnText 图片名字
  @param clickBlock 点击回调
  */
--(void)zx_setRightBtnWithText:(NSString *)btnText clickedBlock:(nullable rightBtnClickedBlock)clickBlock;
+- (void)zx_setRightBtnWithText:(NSString *)btnText clickedBlock:(nullable rightBtnClickedBlock)clickBlock;
+
+/**
+ 设置左侧Button的图片Url和点击回调
+ 
+ @param imgUrlStr 图片Url
+ @param placeholderImgName 占位图名称
+ @param clickBlock 点击回调
+ */
+- (void)zx_setLeftBtnWithImgUrl:(NSString *)imgUrlStr placeholderImgName:(NSString *)placeholderImgName clickedBlock:(nullable leftBtnClickedBlock)clickBlock;
+
+/**
+ 设置最右侧Button的图片Url和点击回调
+ 
+ @param imgUrlStr 图片Url
+ @param placeholderImgName 占位图名称
+ @param clickBlock 点击回调
+ */
+- (void)zx_setRightBtnWithImgUrl:(NSString *)imgUrlStr placeholderImgName:(NSString *)placeholderImgName clickedBlock:(nullable rightBtnClickedBlock)clickBlock;
+
+/**
+ 设置右侧第二个Button的图片Url和点击回调
+ 
+ @param imgUrlStr 图片Url
+ @param placeholderImgName 占位图名称
+ @param clickBlock 点击回调
+ */
+- (void)zx_setSubRightBtnWithImgUrl:(NSString *)imgUrlStr placeholderImgName:(NSString *)placeholderImgName clickedBlock:(nullable leftBtnClickedBlock)clickBlock;
 
 /**
  左侧Button的点击回调
  
  @param clickBlock 点击回调
  */
--(void)zx_leftClickedBlock:(leftBtnClickedBlock)clickBlock;
+- (void)zx_leftClickedBlock:(leftBtnClickedBlock)clickBlock;
 
 /**
  最右侧Button的点击回调
  
  @param clickBlock 点击回调
  */
--(void)zx_rightClickedBlock:(rightBtnClickedBlock)clickBlock;
+- (void)zx_rightClickedBlock:(rightBtnClickedBlock)clickBlock;
 
 /**
  右侧第二个Button的点击回调
  
  @param clickBlock 点击回调
  */
--(void)zx_subRightClickedBlock:(subRightBtnClickedBlock)clickBlock;
+- (void)zx_subRightClickedBlock:(subRightBtnClickedBlock)clickBlock;
 
 /**
  添加自定义导航栏
  
  @param navBar 自定义导航栏View
  */
--(void)zx_addCustomNavBar:(UIView *)navBar;
+- (void)zx_addCustomNavBar:(UIView *)navBar;
 
 /**
  设置大小标题效果
@@ -218,6 +277,16 @@ typedef void(^foldCompletionBlock) (void);
  @param subTitle 小标题
  */
 - (void)zx_setMultiTitle:(NSString *)title subTitle:(NSString *)subTitle;
+
+/**
+ 设置大小标题效果
+ 
+ @param title 大标题
+ @param subTitle 小标题
+ @param subTitleFont 小标题字体
+ @param subTitleColor 小标题颜色
+ */
+- (void)zx_setMultiTitle:(NSString *)title subTitle:(NSString *)subTitle subTitleFont:(UIFont *)subTitleFont subTitleTextColor:(UIColor *)subTitleColor;
 
 /**
  设置导航栏背景渐变(颜色渐变从fromColor到toColor)

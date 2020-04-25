@@ -94,6 +94,16 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)zx_setMultiTitle:(NSString *)title subTitle:(NSString *)subTitle;
 
+/**
+ 设置大小标题效果
+
+ @param title 大标题
+ @param subTitle 小标题
+ @param subTitleFont 小标题字体
+ @param subTitleColor 小标题颜色
+ */
+- (void)zx_setMultiTitle:(NSString *)title subTitle:(NSString *)subTitle subTitleFont:(UIFont *)subTitleFont subTitleTextColor:(UIColor *)subTitleColor;
+
 @end
 
 NS_ASSUME_NONNULL_END

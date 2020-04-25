@@ -7,6 +7,7 @@
 //  https://github.com/SmileZXLee/ZXNavigationBar
 
 #import "ZXNavigationBarController.h"
+#import <objc/message.h>
 #import "UIImage+ZXNavBundleExtension.h"
 @interface ZXNavigationBarController ()
 @property(assign, nonatomic)CGFloat orgNavOffset;
@@ -220,19 +221,38 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
         self.zx_navSubRightBtn.zx_tintColor = zx_navTintColor;
     }
     self.zx_navTitleLabel.textColor = zx_navTintColor;
-    [self.zx_navLeftBtn setTitleColor:zx_navTintColor forState:UIControlStateNormal];
-    [self.zx_navRightBtn setTitleColor:zx_navTintColor forState:UIControlStateNormal];
-    [self.zx_navSubRightBtn setTitleColor:zx_navTintColor forState:UIControlStateNormal];
-    if(self.zx_navLeftBtn.currentImage){
-        [self.zx_navLeftBtn setImage:[self.zx_navLeftBtn.currentImage zx_renderingColor:zx_navTintColor] forState:UIControlStateNormal];
-    }
-    if(self.zx_navRightBtn.currentImage){
-        [self.zx_navRightBtn setImage:[self.zx_navRightBtn.currentImage zx_renderingColor:zx_navTintColor] forState:UIControlStateNormal];
-    }
-    if(self.zx_navSubRightBtn.currentImage){
-        [self.zx_navSubRightBtn setImage:[self.zx_navSubRightBtn.currentImage zx_renderingColor:zx_navTintColor] forState:UIControlStateNormal];
-    }
 }
+
+- (void)setZx_navTitleColor:(UIColor *)zx_navTitleColor{
+    _zx_navTitleColor = zx_navTitleColor;
+    self.zx_navTitleLabel.textColor = zx_navTitleColor;
+}
+
+- (void)setZx_navTitleFontSize:(CGFloat )zx_navTitleFontSize{
+    _zx_navTitleFontSize = zx_navTitleFontSize;
+    self.zx_navTitleLabel.font = [UIFont systemFontOfSize:zx_navTitleFontSize];
+}
+
+- (void)setZx_navTitleFont:(UIFont *)zx_navTitleFont{
+    _zx_navTitleFont = zx_navTitleFont;
+    self.zx_navTitleLabel.font = zx_navTitleFont;
+}
+
+- (void)setZx_navBarBackgroundColor:(UIColor *)zx_navBarBackgroundColor{
+    _zx_navBarBackgroundColor = zx_navBarBackgroundColor;
+    self.zx_navBar.backgroundColor = zx_navBarBackgroundColor;
+}
+
+- (void)setZx_navBarBackgroundImage:(UIImage *)zx_navBarBackgroundImage{
+    _zx_navBarBackgroundImage = zx_navBarBackgroundImage;
+    self.zx_navBar.zx_bacImage = zx_navBarBackgroundImage;
+}
+
+- (void)setZx_navLineViewBackgroundColor:(UIColor *)zx_navLineViewBackgroundColor{
+    _zx_navLineViewBackgroundColor = zx_navLineViewBackgroundColor;
+    self.zx_navLineView.backgroundColor = zx_navLineViewBackgroundColor;
+}
+
 
 - (void)setZx_hideBaseNavBar:(BOOL)zx_hideBaseNavBar{
     if(_zx_hideBaseNavBar != zx_hideBaseNavBar){
@@ -358,7 +378,7 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
     };
 }
 
-#pragma mark 设置最右侧Button图片和点击回调
+#pragma mark 设置最右侧Button文字和点击回调
 - (void)zx_setRightBtnWithText:(NSString *)btnText clickedBlock:(rightBtnClickedBlock)clickBlock{
     [self.zx_navRightBtn setTitleColor:self.zx_navTitleLabel.textColor forState:UIControlStateNormal];
     [self.zx_navRightBtn setTitle:btnText forState:UIControlStateNormal];
@@ -367,13 +387,38 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
     };
 }
 
-#pragma mark 设置右侧第二个按钮图片和点击回调
+#pragma mark 设置右侧第二个按钮文字和点击回调
 - (void)zx_setSubRightBtnWithText:(NSString *)btnText clickedBlock:(subRightBtnClickedBlock)clickBlock{
     [self.zx_navSubRightBtn setTitleColor:self.zx_navTitleLabel.textColor forState:UIControlStateNormal];
     [self.zx_navSubRightBtn setTitle:btnText forState:UIControlStateNormal];
     ((ZXNavigationBar *)self.zx_navBar).zx_subRightBtnClickedBlock = ^(ZXNavItemBtn * _Nonnull btn) {
         clickBlock(btn);
     };
+}
+
+
+- (void)zx_setLeftBtnWithImgUrl:(NSString *)imgUrlStr placeholderImgName:(NSString *)placeholderImgName clickedBlock:(nullable leftBtnClickedBlock)clickBlock{
+    [self setNavItemBtnWithItem:self.zx_navLeftBtn imgUrl:imgUrlStr placeholderImgName:placeholderImgName];
+    ((ZXNavigationBar *)self.zx_navBar).zx_leftBtnClickedBlock = ^(ZXNavItemBtn * _Nonnull btn) {
+        clickBlock(btn);
+    };
+    
+}
+
+- (void)zx_setRightBtnWithImgUrl:(NSString *)imgUrlStr placeholderImgName:(NSString *)placeholderImgName clickedBlock:(nullable rightBtnClickedBlock)clickBlock{
+    [self setNavItemBtnWithItem:self.zx_navRightBtn imgUrl:imgUrlStr placeholderImgName:placeholderImgName];
+    ((ZXNavigationBar *)self.zx_navBar).zx_rightBtnClickedBlock = ^(ZXNavItemBtn * _Nonnull btn) {
+        clickBlock(btn);
+    };
+    
+}
+
+- (void)zx_setSubRightBtnWithImgUrl:(NSString *)imgUrlStr placeholderImgName:(NSString *)placeholderImgName clickedBlock:(nullable subRightBtnClickedBlock)clickBlock{
+    [self setNavItemBtnWithItem:self.zx_navSubRightBtn imgUrl:imgUrlStr placeholderImgName:placeholderImgName];
+    ((ZXNavigationBar *)self.zx_navBar).zx_subRightBtnClickedBlock = ^(ZXNavItemBtn * _Nonnull btn) {
+        clickBlock(btn);
+    };
+    
 }
 
 #pragma mark 左侧Button点击回调
@@ -440,6 +485,11 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
 #pragma mark 设置大小标题的效果
 - (void)zx_setMultiTitle:(NSString *)title subTitle:(NSString *)subTitle{
     [self.zx_navBar zx_setMultiTitle:title subTitle:subTitle];
+}
+
+#pragma mark 设置大小标题的效果
+- (void)zx_setMultiTitle:(NSString *)title subTitle:(NSString *)subTitle subTitleFont:(UIFont *)subTitleFont subTitleTextColor:(UIColor *)subTitleColor{
+    [self.zx_navBar zx_setMultiTitle:title subTitle:subTitle subTitleFont:subTitleFont subTitleTextColor:subTitleColor];
 }
 
 #pragma mark 设置导航栏折叠效果
@@ -512,6 +562,19 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
     [super viewDidLayoutSubviews];
     if(!self.isNavFoldAnimating){
         [self relayoutSubviews];
+    }
+}
+
+#pragma mark - Private
+#pragma mark 通过SDWebImage设置导航栏item
+- (void)setNavItemBtnWithItem:(UIButton *)btn imgUrl:(NSString *)imgUrlStr placeholderImgName:(NSString *)placeholderImgName{
+    NSURL *imgUrl = [NSURL URLWithString:imgUrlStr];
+    UIImage *placeholderImage = [UIImage imageNamed:placeholderImgName];
+    SEL sel = NSSelectorFromString(@"sd_setImageWithURL:forState:placeholderImage:completed:");
+    if([btn respondsToSelector:sel]){
+        ((void (*)(id,SEL,NSURL *, UIControlState,UIImage *,id))objc_msgSend)(btn, sel,imgUrl,UIControlStateNormal,placeholderImage,nil);
+    }else{
+        NSAssert(NO, @"请导入SDWebImage并在pch文件中#import <SDWebImage/UIButton+WebCache.h>");
     }
 }
 
