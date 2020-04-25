@@ -251,9 +251,13 @@ UIView *customTitleView = [[UIView alloc]init];
 UIView *customNav = [[UIView alloc]init];
 [self zx_addCustomNavBar:customNav];
 ```
+***
 
-#### 版本记录，请查阅[Release](https://github.com/SmileZXLee/ZXNavigationBar/releases)
-#### 更多示例，可下载Demo查阅，若有任何问题，可随时在issue中提出
+## 版本记录，请查阅[Release](https://github.com/SmileZXLee/ZXNavigationBar/releases)
+
+***
+
+## 更多示例，可下载Demo查阅，若有任何问题，可随时在issue中提出
 
 
 
