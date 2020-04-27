@@ -14,6 +14,12 @@ typedef enum {
     ZXNavStatusBarStyleDefault = 0x01,    // 状态栏颜色：黑色
     ZXNavStatusBarStyleLight = 0x02,    // 状态栏颜色：白色
 }ZXNavStatusBarStyle;
+
+typedef enum {
+    ZXNavPopBlockFromBackButtonClick = 0x01,    // 点击返回按钮触发pop
+    ZXNavPopBlockFromPopGesture = 0x02,    // 返回手势触发pop
+}ZXNavPopBlockFrom;
+
 typedef void(^leftBtnClickedBlock) (ZXNavItemBtn *btn);
 typedef void(^rightBtnClickedBlock) (ZXNavItemBtn *btn);
 typedef void(^subRightBtnClickedBlock) (ZXNavItemBtn *btn);
@@ -168,6 +174,13 @@ typedef void(^foldCompletionBlock) (void);
  currentNavOffset:即将设置的视图与顶部的距离
  */
 @property(nonatomic,copy)CGFloat(^zx_handleAdjustNavContainerOffsetBlock)(CGFloat oldNavOffset,CGFloat currentNavOffset);
+
+/**
+ 拦截点击返回事件和侧滑返回手势，若返回NO，则禁止pop;
+ viewController:当前控制器
+ popBlockFrom:通过什么方式(点击返回按钮或侧滑返回手势)触发pop操作
+ */
+@property(nonatomic,copy)BOOL(^zx_handlePopBlock)(ZXNavigationBarController *viewController,ZXNavPopBlockFrom popBlockFrom);
 
 /**
  导航栏固定高度

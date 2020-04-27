@@ -9,7 +9,7 @@
 #import "ZXNavigationBarController.h"
 #import <objc/message.h>
 #import "UIImage+ZXNavBundleExtension.h"
-@interface ZXNavigationBarController ()
+@interface ZXNavigationBarController ()<UIGestureRecognizerDelegate>
 @property(assign, nonatomic)CGFloat orgNavOffset;
 @property(assign, nonatomic)BOOL setFold;
 @property(assign, nonatomic)BOOL isNavFoldAnimating;
@@ -63,7 +63,9 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
         [self.zx_navLeftBtn setImage:backImg forState:UIControlStateNormal];
         __weak typeof(self) weakSelf = self;
         [self zx_leftClickedBlock:^(ZXNavItemBtn * _Nonnull btn) {
-            [weakSelf.navigationController popViewControllerAnimated:YES];
+            if(!(self.zx_handlePopBlock && !self.zx_handlePopBlock(self,ZXNavPopBlockFromBackButtonClick))){
+                [weakSelf.navigationController popViewControllerAnimated:YES];
+            }
         }];
     }
 }
@@ -563,6 +565,14 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
     if(!self.isNavFoldAnimating){
         [self relayoutSubviews];
     }
+}
+
+#pragma mark - UIGestureRecognizerDelegate
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer{
+    if(self.zx_handlePopBlock){
+        return self.zx_handlePopBlock(self,ZXNavPopBlockFromPopGesture);
+    }
+    return YES;
 }
 
 #pragma mark - Private
