@@ -95,12 +95,18 @@ self.zx_navTitle = @"ZXNavigationBar";
 ```
 #### 设置导航栏标题颜色
 ```objective-c
-self.zx_navTitleLabel.textColor = @"ZXNavigationBar";
+self.zx_navTitleColor = @"ZXNavigationBar";
 ```
 #### 设置导航栏标题字体大小
 ```objective-c
-self.zx_navTitleLabel.fontSize = [UIFont systemFontOfSize:20];
+self.zx_navTitleFontSize = 20;
 ```
+或
+
+```objective-c
+self.zx_navTitleFont = [UIFont systemFontOfSize:20];
+```
+
 * 设置导航栏标题其他属性，通过控制`self.zx_navTitleLabel`即可
 
 #### 快速设置左侧/右侧的按钮(以右侧按钮为例)
@@ -116,6 +122,14 @@ self.zx_navTitleLabel.fontSize = [UIFont systemFontOfSize:20];
     NSLog(@"点击了最右侧的Button");
 }];
 ```
+
+* 设置最右侧按钮的图片Url和点击回调(需导入SDWebImage并在pch文件中#import <SDWebImage/UIButton+WebCache.h>)
+```objective-c
+[self zx_setLeftBtnWithImgUrl:@"图片url地址" placeholderImgName:@"占位图名称" clickedBlock:^(ZXNavItemBtn * _Nonnull btn) {
+    NSLog(@"点击了最右侧的Button");  
+}];
+```
+
 #### 根据左侧/右侧的按钮对象进行具体设置(以左侧按钮为例)
 * 如果需要导航栏显示返回图标和返回文字
 ```objective-c
@@ -144,11 +158,11 @@ self.zx_navItemMargin = 0;
 
 #### 设置导航栏背景颜色
 ```objective-c
-self.zx_navBar.backgroundColor = [UIColor orangeColor];
+self.zx_navBarBackgroundColor = [UIColor orangeColor];
 ```
 #### 设置导航栏背景图片
 ```objective-c
-self.zx_navBar.zx_bacImage = [UIImage imageNamed:@"nav_bac"];
+self.zx_navBarBackgroundImage = [UIImage imageNamed:@"nav_bac"];
 ```
 #### 设置导航栏渐变背景
 ```objective-c
@@ -171,9 +185,14 @@ self.zx_navFixHeight = 30;
 ```objective-c
 [self zx_setMultiTitle:@"ZXNavigationBar" subTitle:@"subTitle"];
 ```
+或
+```objective-c
+[self zx_setMultiTitle:@"ZXNavigationBar" subTitle:@"subTitle" subTitleFont:[UIFont systemFontOfSize:10] subTitleTextColor:[UIColor redColor]];
+```
+
 #### 设置分割线背景颜色
 ```objective-c
-self.zx_navLineView.backgroundColor = [UIColor blueColor];
+self.zx_navLineViewBackgroundColor = [UIColor blueColor];
 ```
 * 分割线其他其他非frame相关属性通过`self.zx_navLineView`设置即可
 
@@ -232,7 +251,13 @@ UIView *customTitleView = [[UIView alloc]init];
 UIView *customNav = [[UIView alloc]init];
 [self zx_addCustomNavBar:customNav];
 ```
-#### 更多示例，可下载Demo查阅，若有任何问题，可随时在issue中提出
+***
+
+## 版本记录，请查阅[Release](https://github.com/SmileZXLee/ZXNavigationBar/releases)
+
+***
+
+## 更多示例，可下载Demo查阅，若有任何问题，可随时在issue中提出
 
 
 
