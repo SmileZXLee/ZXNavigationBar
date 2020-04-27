@@ -252,7 +252,7 @@ UIView *customNav = [[UIView alloc]init];
 [self zx_addCustomNavBar:customNav];
 ```
 
-#### 拦截侧滑返回手势和返回按钮点击
+#### 拦截侧滑返回手势和返回按钮点击事件
 ```objective-c
 //创建自定义View
 self.zx_handlePopBlock = ^BOOL(ZXNavigationBarController * _Nonnull viewController, ZXNavPopBlockFrom popBlockFrom) {
