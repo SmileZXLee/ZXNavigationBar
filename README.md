@@ -251,6 +251,19 @@ UIView *customTitleView = [[UIView alloc]init];
 UIView *customNav = [[UIView alloc]init];
 [self zx_addCustomNavBar:customNav];
 ```
+
+#### 拦截侧滑返回手势和返回按钮点击
+```objective-c
+//创建自定义View
+self.zx_handlePopBlock = ^BOOL(ZXNavigationBarController * _Nonnull viewController, ZXNavPopBlockFrom popBlockFrom) {
+    //viewController:当前控制
+    //popBlockFrom:通过什么方式(点击返回按钮或侧滑返回手势)触发pop操作
+    
+    //doSomething
+    //返回YES则代表不禁止pop操作，返回NO则禁止pop操作
+    return YES;
+};
+```
 ***
 
 ## 版本记录，请查阅[Release](https://github.com/SmileZXLee/ZXNavigationBar/releases)
@@ -258,9 +271,3 @@ UIView *customNav = [[UIView alloc]init];
 ***
 
 ## 更多示例，可下载Demo查阅，若有任何问题，可随时在issue中提出
-
-
-
-
-
-
