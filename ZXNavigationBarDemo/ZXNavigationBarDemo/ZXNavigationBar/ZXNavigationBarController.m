@@ -63,7 +63,7 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
         [self.zx_navLeftBtn setImage:backImg forState:UIControlStateNormal];
         __weak typeof(self) weakSelf = self;
         [self zx_leftClickedBlock:^(ZXNavItemBtn * _Nonnull btn) {
-            if(!(self.zx_handlePopBlock && !self.zx_handlePopBlock(self,ZXNavPopBlockFromBackButtonClick))){
+            if(!(weakSelf.zx_handlePopBlock && !weakSelf.zx_handlePopBlock(weakSelf,ZXNavPopBlockFromBackButtonClick))){
                 [weakSelf.navigationController popViewControllerAnimated:YES];
             }
         }];
@@ -520,6 +520,9 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
         UIScrollView.appearance.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
     }else{
         self.automaticallyAdjustsScrollViewInsets = NO;
+    }
+    if(_zx_navStatusBarStyle != 0){
+        [self setZx_navStatusBarStyle:_zx_navStatusBarStyle];
     }
     
 }
