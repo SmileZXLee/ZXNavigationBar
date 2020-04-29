@@ -18,13 +18,17 @@ pod 'ZXNavigationBar'
 ***
 ### 功能&特点
 - [x] 每个控制器单独管理自己的导航栏，导航栏属于各个子控制器，不再属于统一的导航控制器
-- [x] 兼容iOS8-iOS13，兼容各种设备，且无需担心系统更新需要重新适配导航栏
-- [x] 仅需一行代码即可轻松控制各种效果
+- [x] 兼容iOS8-iOS13，兼容刘海屏等各种设备，且无需担心系统更新需要重新适配导航栏
+- [x] 仅需一行代码即可轻松控制导航栏各种效果
+- [x] 仅需一行代码即可实现拦截pop手势，并决定是否要响应pop操作
 - [x] 支持随时切换为系统导航栏，且与系统导航栏之间无缝衔接
-- [x] 支持在自定义`ZXNavigationBar`高度
+- [x] 支持自定义`ZXNavigationBar`高度
 - [x] 支持在`ZXNavigationBar`上自定义titleView
+- [x] 支持单独控制每个控制器的状态栏样式
+- [x] 支持通过url加载导航栏Item
 - [x] 若`ZXNavigationBar`自带效果都无法满足，支持自定义导航栏
 - [x] 若从Xib中加载控制器View，添加子View无需手动设置距离导航栏顶部约束，`ZXNavigationBar`会自动处理
+
 
 ### 效果预览
 导航栏设置 | 仿微博热搜效果 |  自定义导航栏  
@@ -251,6 +255,19 @@ UIView *customTitleView = [[UIView alloc]init];
 UIView *customNav = [[UIView alloc]init];
 [self zx_addCustomNavBar:customNav];
 ```
+
+#### 拦截侧滑返回手势和返回按钮点击事件
+```objective-c
+//创建自定义View
+self.zx_handlePopBlock = ^BOOL(ZXNavigationBarController * _Nonnull viewController, ZXNavPopBlockFrom popBlockFrom) {
+    //viewController:当前控制
+    //popBlockFrom:通过什么方式(点击返回按钮或侧滑返回手势)触发pop操作
+    
+    //doSomething
+    //返回YES则代表不禁止pop操作，返回NO则禁止pop操作
+    return YES;
+};
+```
 ***
 
 ## 版本记录，请查阅[Release](https://github.com/SmileZXLee/ZXNavigationBar/releases)
@@ -258,9 +275,3 @@ UIView *customNav = [[UIView alloc]init];
 ***
 
 ## 更多示例，可下载Demo查阅，若有任何问题，可随时在issue中提出
-
-
-
-
-
-
