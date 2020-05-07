@@ -204,7 +204,7 @@ typedef void(^foldCompletionBlock) (void);
 - (void)zx_setRightBtnWithImgName:(NSString *)imgName clickedBlock:(nullable rightBtnClickedBlock)clickBlock;
 
 /**
- 设置右侧第二个Button的图片和点击回调
+ 设置右侧第二个Button的图片和点击回调(此按钮您支持设置图片)
  
  @param imgName 图片名字
  @param clickBlock 点击回调
@@ -215,7 +215,7 @@ typedef void(^foldCompletionBlock) (void);
 /**
  设置左侧Button的文字和点击回调
  
- @param btnText 图片名字
+ @param btnText 按钮文字
  @param clickBlock 点击回调
  */
 - (void)zx_setLeftBtnWithText:(NSString *)btnText clickedBlock:(nullable leftBtnClickedBlock)clickBlock;
@@ -223,7 +223,7 @@ typedef void(^foldCompletionBlock) (void);
 /**
  设置最右侧Button的文字和点击回调
  
- @param btnText 图片名字
+ @param btnText 按钮文字
  @param clickBlock 点击回调
  */
 - (void)zx_setRightBtnWithText:(NSString *)btnText clickedBlock:(nullable rightBtnClickedBlock)clickBlock;

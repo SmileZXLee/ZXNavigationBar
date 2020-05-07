@@ -28,7 +28,6 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
     self.zx_navFixHeight = -1;
     if(self.navigationController && !self.zx_hideBaseNavBar){
         [self initNavBar];
-        self.navigationController.interactivePopGestureRecognizer.delegate = (id)self;
         [self setAutoBack];
     }
 }
@@ -540,6 +539,7 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
         [self refNavStatusFromWillAppear:NO];
     }
     if(self.navigationController){
+        self.navigationController.interactivePopGestureRecognizer.delegate = (id)self;
         self.navigationController.interactivePopGestureRecognizer.enabled = self.navigationController.viewControllers.firstObject != self;
     }
 }
