@@ -258,9 +258,9 @@ UIView *customNav = [[UIView alloc]init];
 
 #### 拦截侧滑返回手势和返回按钮点击事件
 ```objective-c
-//创建自定义View
+//拦截侧滑返回手势和返回按钮点击事件
 self.zx_handlePopBlock = ^BOOL(ZXNavigationBarController * _Nonnull viewController, ZXNavPopBlockFrom popBlockFrom) {
-    //viewController:当前控制
+    //viewController:当前控制器
     //popBlockFrom:通过什么方式(点击返回按钮或侧滑返回手势)触发pop操作
     
     //doSomething
