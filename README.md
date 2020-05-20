@@ -78,7 +78,7 @@ pod 'ZXNavigationBar'
 
 
 #### 【重要】关于自定义导航栏view内容无法自动下移的处理方式
-* 如果是系统的导航栏，view的内容会自动下移，如64像素
+* 如果是系统的导航栏，view的内容会自动下移，如下移64像素
 * 设置了自定义的导航栏，它实际上就是普通的View，则view中的内容不会自动下移以避免挡住导航栏
 * `ZXNavigationBar`的处理方法是：
 * 如果您是通过frame或者Masonry设置控件布局，请设置y距离顶部高度为导航栏高度，可直接使用`ZXNavBarHeight`这个宏
@@ -89,6 +89,7 @@ pod 'ZXNavigationBar'
 self.zx_isEnableSafeArea = NO;
 ```
 ### 导航栏设置
+#### 注意:以下设置均在控制器中进行，self代表当前控制器(当前控制器需继承于`ZXNavigationBarController`)
 #### 设置导航栏标题
 ```objective-c
 self.title = @"ZXNavigationBar";
@@ -243,6 +244,18 @@ self.zx_navEnableSmoothFromSystemNavBar = YES;
 ```objective-c
 self.zx_disableNavAutoSafeLayout = YES;
 ```
+
+#### 自动将顶部View约束下移导航栏高度时的回调，可拦截并自定义下移距离(从xib加载控制器view时生效)
+```objective-c
+//oldNavOffset:视图在xib中所设置的约束与顶部距离
+//currentNavOffset:即将设置的视图与顶部的距离
+//返回值为当前需要自定义设置的视图与控制器顶部的距离
+self.zx_handleAdjustNavContainerOffsetBlock = ^CGFloat(CGFloat oldNavOffset, CGFloat currentNavOffset) {
+    //此设置代表从xib加载控制器view时，控制器view中的内容距离控制器顶部10像素(默认距离顶部为导航栏高度)
+    return 10;
+};
+```
+
 #### 自定义TitleView
 ```objective-c
 //创建自定义View
