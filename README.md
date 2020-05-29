@@ -75,6 +75,8 @@ pod 'ZXNavigationBar'
 }
 @end
 ```
+或将您的导航控制器继承于`ZXNavigationBarNavigationController`或使用`ZXNavigationBarNavigationController`作为您的导航控制器
+
 
 
 #### 【重要】关于自定义导航栏view内容无法自动下移的处理方式
@@ -125,6 +127,12 @@ self.zx_navTitleFont = [UIFont systemFontOfSize:20];
 ```objective-c
 [self zx_setRightBtnWithText:@"右侧按钮" clickedBlock:^(UIButton * _Nonnull btn) {
     NSLog(@"点击了最右侧的Button");
+}];
+```
+* 设置最右侧按钮的图片和点击回调
+```objective-c
+[self zx_setLeftBtnWithImg:image对象 clickedBlock:^(ZXNavItemBtn * _Nonnull btn) {
+    NSLog(@"点击了最右侧的Button");  
 }];
 ```
 
@@ -240,6 +248,8 @@ self.zx_hideBaseNavBar = YES;
 //务必仅当存在系统导航栏与自定义导航栏过渡时启用，非必要请勿启用，否则可能造成自定义导航栏跳动，若当前控制器显示了系统导航栏，请于当前控制器pop的上一个控制器中使用self.zx_navEnableSmoothFromSystemNavBar = YES)
 self.zx_navEnableSmoothFromSystemNavBar = YES;
 ```
+* 若需要更优的平滑过渡效果，请将您的导航控制器继承于`ZXNavigationBarNavigationController`或使用`ZXNavigationBarNavigationController`作为您的导航控制器
+
 #### 禁止Xib加载控制器情况下自动将顶部View约束下移导航栏高度(默认为否)
 ```objective-c
 self.zx_disableNavAutoSafeLayout = YES;
@@ -279,6 +289,30 @@ self.zx_handlePopBlock = ^BOOL(ZXNavigationBarController * _Nonnull viewControll
     //doSomething
     //返回YES则代表不禁止pop操作，返回NO则禁止pop操作
     return YES;
+};
+```
+#### 设置全屏返回手势
+```objective-c
+将您的导航控制器继承于`ZXNavigationBarNavigationController`或使用`ZXNavigationBarNavigationController`作为您的导航控制器即可
+```
+#### 设置全屏返回手势响应范围
+将您的导航控制器继承于`ZXNavigationBarNavigationController`或使用`ZXNavigationBarNavigationController`作为您的导航控制器
+```objective-c
+//在控制器中：
+//pop手势的触发范围比例，0-1，默认为1，即代表全屏触发
+self.zx_popGestureCoverRatio = 0.5;
+```
+禁用全屏pop手势，若禁用，则pop触发范围为屏幕宽度的五分之一
+```objective-c
+//在控制器中：
+self.zx_disableFullScreenGesture = YES;
+```
+#### 监听全屏返回手势进度
+将您的导航控制器继承于`ZXNavigationBarNavigationController`或使用`ZXNavigationBarNavigationController`作为您的导航控制器
+```objective-c
+//在控制器中：
+self.zx_handleCustomPopGesture = ^(CGFloat popOffsetProgress) {
+    NSLog(@"popOffsetProgress--%lf",popOffsetProgress);
 };
 ```
 ***
