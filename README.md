@@ -26,7 +26,10 @@ pod 'ZXNavigationBar'
 - [x] 支持在`ZXNavigationBar`上自定义titleView
 - [x] 支持单独控制每个控制器的状态栏样式
 - [x] 支持通过url加载导航栏Item
-- [x] 若`ZXNavigationBar`自带效果都无法满足，支持自定义导航栏
+- [x] 支持全屏手势返回
+- [x] 支持自定义手势返回范围
+- [x] 支持监听手势返回进度
+- [x] 若`ZXNavigationBar`自带效果都无法满足，支持任意自定义导航栏
 - [x] 若从Xib中加载控制器View，添加子View无需手动设置距离导航栏顶部约束，`ZXNavigationBar`会自动处理
 
 
