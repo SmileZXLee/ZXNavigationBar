@@ -8,6 +8,7 @@
 
 #import "DemoWeiboHotViewController.h"
 #import "UIView+ZXNavFrameExtension.h"
+#import "DemoSystemBarViewController.h"
 @interface DemoWeiboHotViewController()<UITableViewDelegate,UITableViewDataSource>
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) NSArray *datas;
@@ -27,9 +28,13 @@
     //左侧按钮添加”返回“文字
     [self.zx_navLeftBtn setTitle:@"返回" forState:UIControlStateNormal];
     //设置最右侧按钮的图片和点击事件
+    __weak typeof(self) weakSelf = self;
     [self zx_setRightBtnWithImgName:@"right_more_icon" clickedBlock:^(ZXNavItemBtn * _Nonnull btn) {
         NSLog(@"点击了最右边的按钮");
+        DemoSystemBarViewController *vc = [[DemoSystemBarViewController alloc]init];
+        [weakSelf.navigationController pushViewController:vc animated:YES];
     }];
+    self.zx_navEnableSmoothFromSystemNavBar = YES;
     [self setLightNav];
 }
 

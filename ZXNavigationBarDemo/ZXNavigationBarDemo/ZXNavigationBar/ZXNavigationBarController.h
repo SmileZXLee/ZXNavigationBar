@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "UINavigationController+ZXNavBarAllHiddenExtension.h"
+#import "ZXNavigationBarController+ZXNavSystemBarPopHandle.h"
 #import "ZXNavigationBar.h"
+#import "ZXNavigationBarNavigationController.h"
 NS_ASSUME_NONNULL_BEGIN
 typedef enum {
     ZXNavStatusBarStyleDefault = 0x01,    // 状态栏颜色：黑色
@@ -167,6 +169,17 @@ typedef void(^foldCompletionBlock) (void);
  */
 @property (assign, nonatomic, readonly)int zx_navFoldingSpeed;
 
+/**
+ 是否禁用全屏pop手势，若禁用，则pop触发范围为屏幕宽度的五分之一(导航控制器需为ZXNavigationBarNavigationController或继承于ZXNavigationBarNavigationController)
+ */
+@property (assign, nonatomic)BOOL zx_disableFullScreenGesture;
+
+
+/**
+ pop手势的触发范围比例，0-1，默认为1，即代表全屏触发(导航控制器需为ZXNavigationBarNavigationController或继承于ZXNavigationBarNavigationController)
+ */
+@property (assign, nonatomic) CGFloat zx_popGestureCoverRatio;
+
 
 /**
  自动将顶部View约束下移导航栏高度时的回调，可拦截并自定义下移距离(xib加载控制器view时生效)
@@ -181,6 +194,11 @@ typedef void(^foldCompletionBlock) (void);
  popBlockFrom:通过什么方式(点击返回按钮或侧滑返回手势)触发pop操作
  */
 @property(nonatomic,copy)BOOL(^zx_handlePopBlock)(ZXNavigationBarController *viewController,ZXNavPopBlockFrom popBlockFrom);
+
+/**
+ 监听自定义pop手势进度(导航控制器需为ZXNavigationBarNavigationController或继承于ZXNavigationBarNavigationController)。popOffsetProgress范围为0-1，0代表即将开始pop，1代表完成pop
+ */
+@property(nonatomic,copy)void(^zx_handleCustomPopGesture)(CGFloat popOffsetProgress);
 
 /**
  导航栏固定高度
@@ -254,6 +272,31 @@ typedef void(^foldCompletionBlock) (void);
  @param clickBlock 点击回调
  */
 - (void)zx_setSubRightBtnWithImgUrl:(NSString *)imgUrlStr placeholderImgName:(NSString *)placeholderImgName clickedBlock:(nullable leftBtnClickedBlock)clickBlock;
+
+
+/**
+ 设置左侧按钮图片和点击回调
+ 
+ @param img 图片
+ @param clickBlock 点击回调
+ */
+- (void)zx_setLeftBtnWithImg:(UIImage *)img clickedBlock:(nullable leftBtnClickedBlock)clickBlock;
+
+/**
+ 设置右侧按钮图片和点击回调
+ 
+ @param img 图片
+ @param clickBlock 点击回调
+ */
+- (void)zx_setRightBtnWithImg:(UIImage *)img clickedBlock:(nullable leftBtnClickedBlock)clickBlock;
+
+/**
+ 设置右侧按钮图片和点击回调
+ 
+ @param img 图片
+ @param clickBlock 点击回调
+ */
+- (void)zx_setSubRightBtnWithImg:(UIImage *)img clickedBlock:(nullable leftBtnClickedBlock)clickBlock;
 
 /**
  左侧Button的点击回调

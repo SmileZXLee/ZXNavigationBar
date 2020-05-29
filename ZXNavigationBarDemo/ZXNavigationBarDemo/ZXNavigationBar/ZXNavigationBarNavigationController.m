@@ -1,0 +1,153 @@
+//
+//  ZXNavigationBarNavigationController.m
+//  ZXNavigationBarDemo
+//
+//  Created by 李兆祥 on 2020/5/29.
+//  Copyright © 2020 ZXLee. All rights reserved.
+//
+
+#import "ZXNavigationBarNavigationController.h"
+#import "ZXNavigationBarController.h"
+@interface ZXNavigationBarNavigationController ()<UIGestureRecognizerDelegate>
+@property (assign, nonatomic) CGFloat touchBeginX;
+@property (assign, nonatomic) BOOL doingPopGesture;
+@property (strong, nonatomic) UIPanGestureRecognizer *popGestureRecognizer;
+
+@property (strong, nonatomic, nullable) ZXNavigationBarController *zx_topViewController;
+@end
+
+@implementation ZXNavigationBarNavigationController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.zx_popGestureCoverRatio = 1;
+    [self addFullScreenGesture];
+}
+
+#pragma mark - 重写父类pop和push相关方法
+- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated{
+    self.navigationBarHidden = YES;
+    [self updateTopViewController:viewController];
+    [super pushViewController:viewController animated:YES];
+}
+
+- (UIViewController *)popViewControllerAnimated:(BOOL)animated{
+    if(self.childViewControllers.count > 1 && !self.doingPopGesture){
+        [self updateTopViewController:self.childViewControllers[self.childViewControllers.count - 2]];
+    }
+    return [super popViewControllerAnimated:animated];
+}
+
+- (NSArray<UIViewController *> *)popToRootViewControllerAnimated:(BOOL)animated{
+    if(self.viewControllers.firstObject && !self.doingPopGesture){
+        [self updateTopViewController:self.viewControllers.firstObject];
+    }
+    return [super popToRootViewControllerAnimated:animated];
+}
+
+- (NSArray<UIViewController *> *)popToViewController:(UIViewController *)viewController animated:(BOOL)animated{
+    if(viewController && !self.doingPopGesture){
+        [self updateTopViewController:viewController];
+    }
+    return [super popToViewController:viewController animated:animated];
+}
+
+#pragma mark - public
+- (void)zx_disablePopGesture{
+    if(self.popGestureRecognizer){
+        [self.view removeGestureRecognizer:self.popGestureRecognizer];
+    }
+}
+
+#pragma mark - Private
+#pragma mark 添加全屏手势
+- (void)addFullScreenGesture{
+    self.interactivePopGestureRecognizer.enabled = NO;
+    UIPanGestureRecognizer *popGestureRecognizer = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(handleNavigationTransition:)];
+    
+    popGestureRecognizer.delegate = self;
+    [self.view addGestureRecognizer:popGestureRecognizer];
+    self.popGestureRecognizer = popGestureRecognizer;
+}
+
+#pragma mark 处理pop手势
+- (void)handleNavigationTransition:(UIPanGestureRecognizer *)panGesture{
+    //[self updateTopViewController:self.topViewController];
+    if(self.zx_topViewController && !self.doingPopGesture){
+        if(self.zx_topViewController.zx_handlePopBlock){
+            BOOL shouldPop = self.zx_topViewController.zx_handlePopBlock(self.zx_topViewController,ZXNavPopBlockFromPopGesture);
+            if(!shouldPop){
+                return;
+            }
+        }
+    }
+    CGFloat panGestureX = [panGesture locationInView:self.view].x;
+    self.doingPopGesture = YES;
+    [self.interactivePopGestureRecognizer.delegate performSelector:@selector(handleNavigationTransition:) withObject:panGesture];
+    CGFloat popOffsetX = panGestureX - self.touchBeginX;
+    if(self.zx_handleCustomPopGesture){
+        if(panGesture.state == UIGestureRecognizerStateEnded){
+            if(popOffsetX > self.view.frame.size.width / 2){
+                self.zx_handleCustomPopGesture(self.zx_topViewController,1);
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [self updateTopViewController:self.topViewController];
+                    self.doingPopGesture = NO;
+                });
+            }else{
+                self.zx_handleCustomPopGesture(self.zx_topViewController,0);
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [self updateTopViewController:self.topViewController];
+                    self.doingPopGesture = NO;
+                });
+                
+            }
+        }else{
+            if(popOffsetX >= 0){
+                self.zx_handleCustomPopGesture(self.zx_topViewController,(popOffsetX / self.view.frame.size.width));
+            }else{
+                self.zx_handleCustomPopGesture(self.zx_topViewController,0);
+            }
+        }
+    }
+}
+
+#pragma mark 更新栈顶控制器
+- (void)updateTopViewController:(UIViewController *)viewController{
+    self.zx_topViewController = nil;
+    if(viewController && [viewController isKindOfClass:[ZXNavigationBarController class]]){
+        self.zx_topViewController = (ZXNavigationBarController *)viewController;
+    }
+}
+
+#pragma mark - UIGestureRecognizerDelegate
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer{
+    CGFloat panGestureX = [gestureRecognizer locationInView:self.view].x;
+    CGFloat coverW = self.zx_popGestureCoverRatio * self.view.frame.size.width;
+    if(panGestureX > coverW){
+        return NO;
+    }
+    self.touchBeginX = [gestureRecognizer locationInView:self.view].x;
+    return self.childViewControllers.count != 1;
+}
+
+#pragma mark - getter&setter
+- (void)setZx_disableFullScreenGesture:(BOOL)zx_disableFullScreenGesture{
+    _zx_disableFullScreenGesture = zx_disableFullScreenGesture;
+    if(zx_disableFullScreenGesture){
+        self.zx_popGestureCoverRatio = 0.2;
+    }else{
+        self.zx_popGestureCoverRatio = 1;
+    }
+}
+
+
+- (void)setZx_popGestureCoverRatio:(CGFloat)zx_popGestureCoverRatio{
+    if(zx_popGestureCoverRatio > 1){
+        _zx_popGestureCoverRatio = 1;
+    }else if(zx_popGestureCoverRatio < 0){
+        _zx_popGestureCoverRatio = 0;
+    }else{
+        _zx_popGestureCoverRatio = zx_popGestureCoverRatio;
+    }
+}
+@end

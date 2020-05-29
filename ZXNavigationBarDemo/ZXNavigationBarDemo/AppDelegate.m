@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "DemoListViewController.h"
+#import "ZXNavigationBarNavigationController.h"
 @interface AppDelegate ()
 
 @end
@@ -18,7 +19,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     UIWindow *window = [[UIWindow alloc]initWithFrame:[UIScreen mainScreen].bounds];
     DemoListViewController *vc = [[DemoListViewController alloc]init];
-    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
+    ZXNavigationBarNavigationController *nav = [[ZXNavigationBarNavigationController alloc]initWithRootViewController:vc];
     window.rootViewController = nav;
     [window makeKeyAndVisible];
     self.window = window;

@@ -10,14 +10,17 @@
 
 @implementation UIImage (ZXNavColorRender)
 - (UIImage *)zx_renderingColor:(UIColor *)color{
-    UIGraphicsBeginImageContextWithOptions(self.size, NO, 0.0f);
+    UIGraphicsBeginImageContextWithOptions(self.size, NO, self.scale);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextTranslateCTM(context, 0, self.size.height);
+    CGContextScaleCTM(context, 1.0, -1.0);
+    CGContextSetBlendMode(context, kCGBlendModeNormal);
+    CGRect rect = CGRectMake(0, 0, self.size.width, self.size.height);
+    CGContextClipToMask(context, rect, self.CGImage);
     [color setFill];
-    CGRect bounds = CGRectMake(0, 0, self.size.width, self.size.height);
-    UIRectFill(bounds);
-    [self drawInRect:bounds blendMode:kCGBlendModeOverlay alpha:1.0f];
-    [self drawInRect:bounds blendMode:kCGBlendModeDestinationIn alpha:1.0f];
-    UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
+    CGContextFillRect(context, rect);
+    UIImage *renderedImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    return img;
+    return renderedImage;
 }
 @end

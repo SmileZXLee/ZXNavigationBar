@@ -16,6 +16,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     //设置导航栏标题
     self.title = @"ZXNavigationBar";
     
@@ -23,6 +24,7 @@
     [self zx_setRightBtnWithImgName:@"set_icon" clickedBlock:^(UIButton * _Nonnull btn) {
         NSLog(@"点击了最右侧的Button");
     }];
+    
     //最左侧的按钮添加”返回“文字，当当前控制器不是第0个的时候，ZXNavigationBar会自动显示返回图片，且点击返回上一个控制器
     [self.zx_navLeftBtn setTitle:@"返回" forState:UIControlStateNormal];
 }

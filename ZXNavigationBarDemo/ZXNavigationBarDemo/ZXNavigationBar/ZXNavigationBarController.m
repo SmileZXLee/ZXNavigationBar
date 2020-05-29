@@ -7,12 +7,15 @@
 //  https://github.com/SmileZXLee/ZXNavigationBar
 
 #import "ZXNavigationBarController.h"
+
 #import <objc/message.h>
 #import "UIImage+ZXNavBundleExtension.h"
 @interface ZXNavigationBarController ()<UIGestureRecognizerDelegate>
 @property(assign, nonatomic)CGFloat orgNavOffset;
 @property(assign, nonatomic)BOOL setFold;
 @property(assign, nonatomic)BOOL isNavFoldAnimating;
+@property(assign, nonatomic)BOOL doAutoSysBarAlphe;
+@property(strong, nonatomic)UIColor *orgWindowColor;
 @property(strong, nonatomic)CADisplayLink *displayLink;
 @property(copy, nonatomic)foldingOffsetBlock offsetBlock;
 @property(copy, nonatomic)foldCompletionBlock completionBlock;
@@ -30,6 +33,8 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
         [self initNavBar];
         [self setAutoBack];
     }
+    [self checkDoAutoSysBarAlpha];
+    [self hanldeCustomPopGesture];
 }
 
 #pragma mark - private
@@ -76,7 +81,7 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
     }
     if(self.zx_isEnableSafeArea){
         if (@available(iOS 11.0, *)) {
-            offset -= [UIApplication sharedApplication].delegate.window.safeAreaInsets.top;
+            //offset -= [UIApplication sharedApplication].delegate.window.safeAreaInsets.top;
         }
     }
     if(self.xibTopConstraint){
@@ -202,6 +207,38 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
     }
 }
 
+#pragma mark 监听自定义pop手势进度，导航控制器需为ZXNavigationBarNavigationController或继承于ZXNavigationBarNavigationController
+- (void)hanldeCustomPopGesture{
+    if(self.navigationController && [self.navigationController isKindOfClass:[ZXNavigationBarNavigationController class]]){
+        __weak ZXNavigationBarNavigationController *nav = (ZXNavigationBarNavigationController *)self.navigationController;
+        __weak typeof(self) weakSelf = self;
+        nav.zx_handleCustomPopGesture = ^(UIViewController * _Nonnull currentViewController, CGFloat popOffsetProgress) {
+            if(currentViewController == weakSelf){
+                if(weakSelf.zx_handleCustomPopGesture){
+                    weakSelf.zx_handleCustomPopGesture(popOffsetProgress);
+                }
+                if(weakSelf.doAutoSysBarAlphe){
+                    nav.navigationBar.alpha = 1 - popOffsetProgress;
+                    if(nav.navigationBar.alpha == 0){
+                        [UIApplication sharedApplication].keyWindow.backgroundColor = weakSelf.orgWindowColor;
+                    }else{
+                        if([UIApplication sharedApplication].keyWindow.backgroundColor != weakSelf.orgWindowColor){
+                            weakSelf.orgWindowColor = [UIApplication sharedApplication].keyWindow.backgroundColor;
+                            if(nav.navigationBar.backgroundColor){
+                                [UIApplication sharedApplication].keyWindow.backgroundColor = nav.navigationBar.backgroundColor;
+                            }else{
+                                [UIApplication sharedApplication].keyWindow.backgroundColor = [UIColor whiteColor];
+                            }
+                        }
+                        
+                    }
+                }
+            }
+        };
+    }
+}
+
+
 
 #pragma mark - Setter
 -(void)setZx_navTitle:(NSString *)zx_navTitle{
@@ -299,6 +336,7 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
         self.zx_hideBaseNavBar = YES;
         self.navigationController.navigationBar.translucent = !zx_showSystemNavBar;
         self.navigationController.navigationBarHidden = !zx_showSystemNavBar;
+        [self checkDoAutoSysBarAlpha];
     }
 }
 
@@ -327,6 +365,7 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
     if(self.zx_navBar){
         [self.zx_navBar setValue:@(zx_navEnableSmoothFromSystemNavBar) forKey:@"zx_navEnableSmoothFromSystemNavBar"];
         [UIApplication sharedApplication].keyWindow.backgroundColor = self.zx_navBar.backgroundColor;
+        [self checkDoAutoSysBarAlpha];
     }
 }
 
@@ -343,7 +382,30 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
     [self adjustNavContainerOffset:[self getCurrentNavHeight]];
 }
 
+- (void)setZx_handleCustomPopGesture:(void (^)(CGFloat))zx_handleCustomPopGesture{
+    _zx_handleCustomPopGesture = zx_handleCustomPopGesture;
+    if(!(self.navigationController && [self.navigationController isKindOfClass:[ZXNavigationBarNavigationController class]])){
+        NSAssert(NO, @"监听自定义手势时，您的导航控制器需为ZXNavigationBarNavigationController或继承于ZXNavigationBarNavigationController");
+    }
+}
 
+- (void)setZx_disableFullScreenGesture:(BOOL)zx_disableFullScreenGesture{
+    _zx_disableFullScreenGesture = zx_disableFullScreenGesture;
+    if(!(self.navigationController && [self.navigationController isKindOfClass:[ZXNavigationBarNavigationController class]])){
+        NSAssert(NO, @"监听自定义手势时，您的导航控制器需为ZXNavigationBarNavigationController或继承于ZXNavigationBarNavigationController");
+    }else{
+        ((ZXNavigationBarNavigationController *)self.navigationController).zx_disableFullScreenGesture = zx_disableFullScreenGesture;
+    }
+}
+
+- (void)setZx_popGestureCoverRatio:(CGFloat)zx_popGestureCoverRatio{
+    _zx_popGestureCoverRatio = zx_popGestureCoverRatio;
+    if(!(self.navigationController && [self.navigationController isKindOfClass:[ZXNavigationBarNavigationController class]])){
+        NSAssert(NO, @"监听自定义手势时，您的导航控制器需为ZXNavigationBarNavigationController或继承于ZXNavigationBarNavigationController");
+    }else{
+        ((ZXNavigationBarNavigationController *)self.navigationController).zx_popGestureCoverRatio = zx_popGestureCoverRatio;
+    }
+}
 
 
 #pragma mark - Public
@@ -351,7 +413,9 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
 - (void)zx_setLeftBtnWithImgName:(NSString *)imgName clickedBlock:(leftBtnClickedBlock)clickBlock{
     [self.zx_navLeftBtn setImage:[UIImage imageNamed:imgName] forState:UIControlStateNormal];
     ((ZXNavigationBar *)self.zx_navBar).zx_leftBtnClickedBlock = ^(ZXNavItemBtn * _Nonnull btn) {
-        clickBlock(btn);
+        if(clickBlock){
+            clickBlock(btn);
+        }
     };
 }
 
@@ -359,7 +423,9 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
 - (void)zx_setRightBtnWithImgName:(NSString *)imgName clickedBlock:(rightBtnClickedBlock)clickBlock{
     [self.zx_navRightBtn setImage:[UIImage imageNamed:imgName] forState:UIControlStateNormal];
     ((ZXNavigationBar *)self.zx_navBar).zx_rightBtnClickedBlock = ^(ZXNavItemBtn * _Nonnull btn) {
-        clickBlock(btn);
+        if(clickBlock){
+            clickBlock(btn);
+        }
     };
 }
 
@@ -367,7 +433,9 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
 - (void)zx_setSubRightBtnWithImgName:(NSString *)imgName clickedBlock:(subRightBtnClickedBlock)clickBlock{
     [self.zx_navSubRightBtn setImage:[UIImage imageNamed:imgName] forState:UIControlStateNormal];
     ((ZXNavigationBar *)self.zx_navBar).zx_subRightBtnClickedBlock = ^(ZXNavItemBtn * _Nonnull btn) {
-        clickBlock(btn);
+        if(clickBlock){
+            clickBlock(btn);
+        }
     };
 }
 
@@ -375,7 +443,9 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
 - (void)zx_setLeftBtnWithText:(NSString *)btnText clickedBlock:(leftBtnClickedBlock)clickBlock{
     [self.zx_navLeftBtn setTitle:btnText forState:UIControlStateNormal];
     ((ZXNavigationBar *)self.zx_navBar).zx_leftBtnClickedBlock = ^(ZXNavItemBtn * _Nonnull btn) {
-        clickBlock(btn);
+        if(clickBlock){
+            clickBlock(btn);
+        }
     };
 }
 
@@ -384,7 +454,9 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
     [self.zx_navRightBtn setTitleColor:self.zx_navTitleLabel.textColor forState:UIControlStateNormal];
     [self.zx_navRightBtn setTitle:btnText forState:UIControlStateNormal];
     ((ZXNavigationBar *)self.zx_navBar).zx_rightBtnClickedBlock = ^(ZXNavItemBtn * _Nonnull btn) {
-        clickBlock(btn);
+        if(clickBlock){
+            clickBlock(btn);
+        }
     };
 }
 
@@ -393,31 +465,74 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
     [self.zx_navSubRightBtn setTitleColor:self.zx_navTitleLabel.textColor forState:UIControlStateNormal];
     [self.zx_navSubRightBtn setTitle:btnText forState:UIControlStateNormal];
     ((ZXNavigationBar *)self.zx_navBar).zx_subRightBtnClickedBlock = ^(ZXNavItemBtn * _Nonnull btn) {
-        clickBlock(btn);
+        if(clickBlock){
+            clickBlock(btn);
+        }
     };
 }
 
-
+#pragma mark 设置左侧按钮的图片地址和点击回调
 - (void)zx_setLeftBtnWithImgUrl:(NSString *)imgUrlStr placeholderImgName:(NSString *)placeholderImgName clickedBlock:(nullable leftBtnClickedBlock)clickBlock{
     [self setNavItemBtnWithItem:self.zx_navLeftBtn imgUrl:imgUrlStr placeholderImgName:placeholderImgName];
     ((ZXNavigationBar *)self.zx_navBar).zx_leftBtnClickedBlock = ^(ZXNavItemBtn * _Nonnull btn) {
-        clickBlock(btn);
+        if(clickBlock){
+            clickBlock(btn);
+        }
     };
     
 }
 
+#pragma mark 设置右侧按钮图片地址和点击回调
 - (void)zx_setRightBtnWithImgUrl:(NSString *)imgUrlStr placeholderImgName:(NSString *)placeholderImgName clickedBlock:(nullable rightBtnClickedBlock)clickBlock{
     [self setNavItemBtnWithItem:self.zx_navRightBtn imgUrl:imgUrlStr placeholderImgName:placeholderImgName];
     ((ZXNavigationBar *)self.zx_navBar).zx_rightBtnClickedBlock = ^(ZXNavItemBtn * _Nonnull btn) {
-        clickBlock(btn);
+        if(clickBlock){
+            clickBlock(btn);
+        }
     };
     
 }
 
+#pragma mark 设置右侧第二个按钮图片地址和点击回调
 - (void)zx_setSubRightBtnWithImgUrl:(NSString *)imgUrlStr placeholderImgName:(NSString *)placeholderImgName clickedBlock:(nullable subRightBtnClickedBlock)clickBlock{
     [self setNavItemBtnWithItem:self.zx_navSubRightBtn imgUrl:imgUrlStr placeholderImgName:placeholderImgName];
     ((ZXNavigationBar *)self.zx_navBar).zx_subRightBtnClickedBlock = ^(ZXNavItemBtn * _Nonnull btn) {
-        clickBlock(btn);
+        if(clickBlock){
+            clickBlock(btn);
+        }
+    };
+    
+}
+
+#pragma mark 设置左侧按钮图片和点击回调
+- (void)zx_setLeftBtnWithImg:(UIImage *)img clickedBlock:(nullable leftBtnClickedBlock)clickBlock{
+    [self.zx_navLeftBtn setImage:img forState:UIControlStateNormal];
+    ((ZXNavigationBar *)self.zx_navBar).zx_subRightBtnClickedBlock = ^(ZXNavItemBtn * _Nonnull btn) {
+        if(clickBlock){
+            clickBlock(btn);
+        }
+    };
+    
+}
+
+#pragma mark 设置右侧按钮图片和点击回调
+- (void)zx_setRightBtnWithImg:(UIImage *)img clickedBlock:(nullable leftBtnClickedBlock)clickBlock{
+    [self.zx_navRightBtn setImage:img forState:UIControlStateNormal];
+    ((ZXNavigationBar *)self.zx_navBar).zx_subRightBtnClickedBlock = ^(ZXNavItemBtn * _Nonnull btn) {
+        if(clickBlock){
+            clickBlock(btn);
+        }
+    };
+    
+}
+
+#pragma mark 设置右侧第二个按钮图片和点击回调
+- (void)zx_setSubRightBtnWithImg:(UIImage *)img clickedBlock:(nullable leftBtnClickedBlock)clickBlock{
+    [self.zx_navSubRightBtn setImage:img forState:UIControlStateNormal];
+    ((ZXNavigationBar *)self.zx_navBar).zx_subRightBtnClickedBlock = ^(ZXNavItemBtn * _Nonnull btn) {
+        if(clickBlock){
+            clickBlock(btn);
+        }
     };
     
 }
@@ -425,21 +540,27 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
 #pragma mark 左侧Button点击回调
 - (void)zx_leftClickedBlock:(leftBtnClickedBlock)clickBlock{
     ((ZXNavigationBar *)self.zx_navBar).zx_leftBtnClickedBlock = ^(ZXNavItemBtn * _Nonnull btn) {
-        clickBlock(btn);
+        if(clickBlock){
+            clickBlock(btn);
+        }
     };
 }
 
 #pragma mark 最右侧Button点击回调
 - (void)zx_rightClickedBlock:(rightBtnClickedBlock)clickBlock{
     ((ZXNavigationBar *)self.zx_navBar).zx_rightBtnClickedBlock = ^(ZXNavItemBtn * _Nonnull btn) {
-        clickBlock(btn);
+        if(clickBlock){
+            clickBlock(btn);
+        }
     };
 }
 
 #pragma mark 右侧第二个Button点击回调
 - (void)zx_subRightClickedBlock:(subRightBtnClickedBlock)clickBlock{
     ((ZXNavigationBar *)self.zx_navBar).zx_subRightBtnClickedBlock = ^(ZXNavItemBtn * _Nonnull btn) {
-        clickBlock(btn);
+        if(clickBlock){
+            clickBlock(btn);
+        }
     };
 }
 
@@ -538,7 +659,7 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
     if(self.zx_navEnableSmoothFromSystemNavBar){
         [self refNavStatusFromWillAppear:NO];
     }
-    if(self.navigationController){
+    if(self.navigationController && ![self.navigationController isKindOfClass:NSClassFromString(@"ZXNavigationBarNavigationController")]){
         self.navigationController.interactivePopGestureRecognizer.delegate = (id)self;
         self.navigationController.interactivePopGestureRecognizer.enabled = self.navigationController.viewControllers.firstObject != self;
     }
@@ -591,5 +712,46 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
     }
 }
 
+#pragma mark 点击了系统导航栏返回按钮处理
+- (BOOL)zx_navSystemBarPopHandle{
+    if(self.doAutoSysBarAlphe){
+        self.orgWindowColor = [UIApplication sharedApplication].keyWindow.backgroundColor;
+        if(self.navigationController.navigationBar.backgroundColor){
+           [UIApplication sharedApplication].keyWindow.backgroundColor = self.navigationController.navigationBar.backgroundColor;
+        }else{
+            [UIApplication sharedApplication].keyWindow.backgroundColor = [UIColor whiteColor];
+        }
+        
+        [UIView animateWithDuration:0.2 animations:^{
+            self.navigationController.navigationBar.alpha = 0.0;
+        } completion:^(BOOL finished) {
+            [UIApplication sharedApplication].keyWindow.backgroundColor = self.orgWindowColor;
+        }];
+    }
+    if(self.zx_handlePopBlock){
+        return self.zx_handlePopBlock(self,ZXNavPopBlockFromBackButtonClick);
+    }
+    return YES;
+}
+
+#pragma mark 获取上一个控制器
+- (ZXNavigationBarController *)getPreviousViewController{
+    if(self.navigationController && self.navigationController.childViewControllers.count > 1){
+        return self.navigationController.childViewControllers[self.navigationController.childViewControllers.count - 2];
+    }
+    return nil;
+}
+
+#pragma mark 验证是否需要自动调整系统导航栏透明度
+- (void)checkDoAutoSysBarAlpha{
+    ZXNavigationBarController *previousViewController = [self getPreviousViewController];
+    BOOL doAutoSysBarAlphe = NO;
+    if([previousViewController isKindOfClass:[ZXNavigationBarController class]]){
+        if(previousViewController.zx_navEnableSmoothFromSystemNavBar && self.zx_showSystemNavBar){
+            doAutoSysBarAlphe = YES;
+        }
+    }
+    self.doAutoSysBarAlphe = doAutoSysBarAlphe;
+}
 
 @end
