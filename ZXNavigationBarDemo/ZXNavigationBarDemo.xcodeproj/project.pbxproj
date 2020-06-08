@@ -26,7 +26,6 @@
 		74BC1B452417D14A0032A424 /* DemoXibViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BC1B432417D14A0032A424 /* DemoXibViewController.m */; };
 		74BC1B462417D14A0032A424 /* DemoXibViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74BC1B442417D14A0032A424 /* DemoXibViewController.xib */; };
 		74BC1B4A2418E6D20032A424 /* DemoSystemBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BC1B492418E6D10032A424 /* DemoSystemBarViewController.m */; };
-		74BC1B4D24192BB00032A424 /* ZXNavigationBar.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 74BC1B4C24192BB00032A424 /* ZXNavigationBar.bundle */; };
 		74BC1B5024192F2E0032A424 /* UIImage+ZXNavBundleExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BC1B4F24192F2E0032A424 /* UIImage+ZXNavBundleExtension.m */; };
 		74BC1B542419F1E80032A424 /* DemoWeiboHotViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BC1B532419F1E80032A424 /* DemoWeiboHotViewController.m */; };
 		74BC1B57241A05700032A424 /* DemoCustomNavViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BC1B56241A05700032A424 /* DemoCustomNavViewController.m */; };
@@ -41,6 +40,7 @@
 		74BC1B83241B7EB30032A424 /* DemoFoldXibViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BC1B81241B7EB30032A424 /* DemoFoldXibViewController.m */; };
 		74DAA1DF2480E50300EF7493 /* ZXNavigationBarNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74DAA1DE2480E50300EF7493 /* ZXNavigationBarNavigationController.m */; };
 		74DAA1E524811D2500EF7493 /* ZXNavigationBarController+ZXNavSystemBarPopHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 74DAA1E424811D2500EF7493 /* ZXNavigationBarController+ZXNavSystemBarPopHandle.m */; };
+		74DD73E5248E376900C46E53 /* ZXNavigationBar.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 74DD73E4248E376900C46E53 /* ZXNavigationBar.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -92,7 +92,6 @@
 		74BC1B442417D14A0032A424 /* DemoXibViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DemoXibViewController.xib; sourceTree = "<group>"; };
 		74BC1B482418E6D10032A424 /* DemoSystemBarViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DemoSystemBarViewController.h; sourceTree = "<group>"; };
 		74BC1B492418E6D10032A424 /* DemoSystemBarViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DemoSystemBarViewController.m; sourceTree = "<group>"; };
-		74BC1B4C24192BB00032A424 /* ZXNavigationBar.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ZXNavigationBar.bundle; sourceTree = "<group>"; };
 		74BC1B4E24192F2E0032A424 /* UIImage+ZXNavBundleExtension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+ZXNavBundleExtension.h"; sourceTree = "<group>"; };
 		74BC1B4F24192F2E0032A424 /* UIImage+ZXNavBundleExtension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ZXNavBundleExtension.m"; sourceTree = "<group>"; };
 		74BC1B522419F1E80032A424 /* DemoWeiboHotViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DemoWeiboHotViewController.h; sourceTree = "<group>"; };
@@ -118,6 +117,7 @@
 		74DAA1DE2480E50300EF7493 /* ZXNavigationBarNavigationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZXNavigationBarNavigationController.m; sourceTree = "<group>"; };
 		74DAA1E324811D2500EF7493 /* ZXNavigationBarController+ZXNavSystemBarPopHandle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ZXNavigationBarController+ZXNavSystemBarPopHandle.h"; sourceTree = "<group>"; };
 		74DAA1E424811D2500EF7493 /* ZXNavigationBarController+ZXNavSystemBarPopHandle.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "ZXNavigationBarController+ZXNavSystemBarPopHandle.m"; sourceTree = "<group>"; };
+		74DD73E4248E376900C46E53 /* ZXNavigationBar.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ZXNavigationBar.bundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -192,7 +192,7 @@
 				74DAA1DD2480E50300EF7493 /* ZXNavigationBarNavigationController.h */,
 				74DAA1DE2480E50300EF7493 /* ZXNavigationBarNavigationController.m */,
 				74BC1B10241364C50032A424 /* ZXNavigationBarDefine.h */,
-				74BC1B4C24192BB00032A424 /* ZXNavigationBar.bundle */,
+				74DD73E4248E376900C46E53 /* ZXNavigationBar.bundle */,
 			);
 			path = ZXNavigationBar;
 			sourceTree = "<group>";
@@ -441,8 +441,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				74BC1AF5241362C50032A424 /* LaunchScreen.storyboard in Resources */,
-				74BC1B4D24192BB00032A424 /* ZXNavigationBar.bundle in Resources */,
 				74BC1AF2241362C50032A424 /* Assets.xcassets in Resources */,
+				74DD73E5248E376900C46E53 /* ZXNavigationBar.bundle in Resources */,
 				74BC1B6B241A23DF0032A424 /* DemoCustomTitleView.xib in Resources */,
 				74BC1B462417D14A0032A424 /* DemoXibViewController.xib in Resources */,
 				74BC1B61241A0DFB0032A424 /* DemoCustomNav.xib in Resources */,
