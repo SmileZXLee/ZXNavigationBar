@@ -318,6 +318,14 @@ self.zx_handleCustomPopGesture = ^(CGFloat popOffsetProgress) {
     NSLog(@"popOffsetProgress--%lf",popOffsetProgress);
 };
 ```
+#### push自动隐藏tabbar
+将您的导航控制器继承于`ZXNavigationBarNavigationController`或使用`ZXNavigationBarNavigationController`作为您的导航控制器即可
+若您要禁用这一功能
+```objective-c
+//在控制器中：
+self.navigationController.zx_disableAutoHidesBottomBarWhenPushed = YES;
+};
+```
 ***
 
 ## 版本记录，请查阅[Release](https://github.com/SmileZXLee/ZXNavigationBar/releases)
