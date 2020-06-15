@@ -81,7 +81,7 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
     }
     if(self.zx_isEnableSafeArea){
         if (@available(iOS 11.0, *)) {
-            //offset -= [UIApplication sharedApplication].delegate.window.safeAreaInsets.top;
+             offset -= [UIApplication sharedApplication].delegate.window.safeAreaInsets.top;
         }
     }
     if(self.xibTopConstraint){
@@ -296,11 +296,7 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
         if(zx_hideBaseNavBar){
             [self adjustNavContainerOffset:0];
         }else{
-            if(self.zx_isEnableSafeArea && [[UIDevice currentDevice].systemVersion doubleValue] >= 11){
-                [self adjustNavContainerOffset:([self getCurrentNavHeight] - ZXAppStatusBarHeight)];
-            }else{
-                [self adjustNavContainerOffset:[self getCurrentNavHeight]];
-            }
+            [self adjustNavContainerOffset:[self getCurrentNavHeight]];
         }
         
     }
@@ -333,6 +329,12 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
     _zx_showSystemNavBar = zx_showSystemNavBar;
     if(self.navigationController){
         self.zx_hideBaseNavBar = YES;
+        if(self.zx_isEnableSafeArea){
+            if (@available(iOS 11.0, *)) {
+                [self adjustNavContainerOffset:[UIApplication sharedApplication].delegate.window.safeAreaInsets.top];
+            }
+        }
+        
         self.navigationController.navigationBar.translucent = !zx_showSystemNavBar;
         self.navigationController.navigationBarHidden = !zx_showSystemNavBar;
         [self checkDoAutoSysBarAlpha];
