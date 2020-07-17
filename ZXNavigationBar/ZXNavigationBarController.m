@@ -13,6 +13,7 @@
 @interface ZXNavigationBarController ()<UIGestureRecognizerDelegate>
 @property(assign, nonatomic)CGFloat orgNavOffset;
 @property(assign, nonatomic)BOOL setFold;
+@property(assign, nonatomic) CGFloat lastNavAlphe;
 @property(assign, nonatomic)BOOL isNavFoldAnimating;
 @property(assign, nonatomic)BOOL doAutoSysBarAlphe;
 @property(strong, nonatomic)UIColor *orgWindowColor;
@@ -586,22 +587,22 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
 
 #pragma mark 添加自定义导航栏
 - (void)zx_addCustomNavBar:(UIView *)navBar{
-    if(self.zx_navCustomNavBar){
-        [self.zx_navCustomNavBar removeFromSuperview];
+    if(_zx_navCustomNavBar){
+        [_zx_navCustomNavBar removeFromSuperview];
     }
     [self.zx_navBar addSubview:navBar];
-    self.zx_navCustomNavBar = navBar;
+    _zx_navCustomNavBar = navBar;
     self.zx_navBar.zx_customNavBar = navBar;
 }
 
 #pragma mark 添加自定义TitleView
 - (void)zx_addCustomTitleView:(UIView *)customTitleView{
-    if(self.zx_navCustomTitleView){
-        [self.zx_navCustomTitleView removeFromSuperview];
+    if(_zx_navCustomTitleView){
+        [_zx_navCustomTitleView removeFromSuperview];
     }
     self.zx_navTitleLabel.text = @"";
     [self.zx_navTitleView addSubview:customTitleView];
-    self.zx_navCustomTitleView = customTitleView;
+    _zx_navCustomTitleView = customTitleView;
     self.zx_navBar.zx_customTitleView = customTitleView;
 }
 
@@ -632,6 +633,37 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
     }
     
 }
+
+#pragma mark 通过ScrollView滚动自动控制导航栏透明效果
+- (void)zx_setNavTransparentGradientsWithScrollView:(UIScrollView *)scrollView fullChangeHeight:(CGFloat)fullChangeHeight changeLimitNavAlphe:(CGFloat)changeLimitNavAlphe transparentGradientsTransparentBlock:(transparentGradientsTransparentBlock)transparentBlock transparentGradientsOpaqueBlock:(transparentGradientsOpaqueBlock)opaqueBlock{
+    
+    if(changeLimitNavAlphe < 0 || changeLimitNavAlphe > 1){
+        changeLimitNavAlphe = 0.7;
+    }
+    //获取ScrollView当前滚动的y值
+    CGFloat offsetY = scrollView.contentOffset.y;
+    //offsetY 到 fullChangeHeight变化时 导航栏透明度从0 到 1
+    CGFloat navAlphe = offsetY / fullChangeHeight;
+    if(self.lastNavAlphe >= 0 && self.lastNavAlphe <= 1){
+        //当上次的透明度小于0或者大于1之后，没有必要再设置导航栏背景颜色
+        self.zx_navBar.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:navAlphe];
+    }
+    //当上次的导航栏透明度小于changeLimitNavAlphe且当前导航栏透明度大于changeLimitNavAlphe时，才有必要改变导航栏颜色
+    if(navAlphe > changeLimitNavAlphe && self.lastNavAlphe <= changeLimitNavAlphe){
+        if(opaqueBlock){
+            opaqueBlock();
+        }
+    }
+    //当上次的导航栏透明度大于changeLimitNavAlphe且当前导航栏透明度小于changeLimitNavAlphe时，才有必要改变导航栏颜色
+    if(navAlphe < changeLimitNavAlphe && self.lastNavAlphe >= changeLimitNavAlphe){
+        if(transparentBlock){
+            transparentBlock();
+        }
+    }
+    //记录上次的导航栏透明度
+    self.lastNavAlphe = navAlphe;
+}
+
 
 #pragma mark - Other
 -(void)viewWillAppear:(BOOL)animated{

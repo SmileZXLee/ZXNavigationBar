@@ -27,6 +27,9 @@ typedef void(^rightBtnClickedBlock) (ZXNavItemBtn *btn);
 typedef void(^subRightBtnClickedBlock) (ZXNavItemBtn *btn);
 typedef void(^foldingOffsetBlock) (CGFloat offset);
 typedef void(^foldCompletionBlock) (void);
+
+typedef void(^transparentGradientsTransparentBlock) (void);
+typedef void(^transparentGradientsOpaqueBlock) (void);
 @interface ZXNavigationBarController : UIViewController
 
 /**
@@ -152,12 +155,12 @@ typedef void(^foldCompletionBlock) (void);
 /**
  自定义的导航栏View，是ZXNavigationBar的SubView，如需设置自定义导航栏请使用-zx_addCustomNavBar方法
  */
-@property (weak, nonatomic)UIView *zx_navCustomNavBar;
+@property (weak, nonatomic, readonly)UIView *zx_navCustomNavBar;
 
 /**
  自定义的titleView，是TitleView的SubView，如需设置自定义导航栏请使用-zx_addCustomTitleView方法
  */
-@property (weak, nonatomic)UIView *zx_navCustomTitleView;
+@property (weak, nonatomic, readonly)UIView *zx_navCustomTitleView;
 
 /**
  导航栏是否已被折叠，默认为否
@@ -374,6 +377,15 @@ typedef void(^foldCompletionBlock) (void);
  @param completionBlock 折叠动画结束回调
  */
 - (void)zx_setNavFolded:(BOOL)folded speed:(int)speed foldingOffsetBlock:(nullable foldingOffsetBlock)offsetBlock foldCompletionBlock:(nullable foldCompletionBlock)completionBlock;
+
+
+/// 通过ScrollView滚动自动控制导航栏透明效果(类似微博热搜页面)
+/// @param scrollView 滚动控制的scrollView，tableView或collectionView
+/// @param fullChangeHeight scrollView.contentOffset.y达到fullChangeHeight时，导航栏变为完全不透明
+/// @param changeLimitNavAlphe 当导航栏透明度达到changeLimitNavAlphe时，将触发opaqueBlock，通知控制器设置导航栏不透明时的效果
+/// @param transparentBlock 导航栏切换到透明状态时的回调（默认透明度0.7为临界点）
+/// @param opaqueBlock 导航栏切换到不透明状态时的回调（默认透明度0.7为临界点）
+- (void)zx_setNavTransparentGradientsWithScrollView:(UIScrollView *)scrollView fullChangeHeight:(CGFloat)fullChangeHeight changeLimitNavAlphe:(CGFloat)changeLimitNavAlphe transparentGradientsTransparentBlock:(transparentGradientsTransparentBlock)transparentBlock transparentGradientsOpaqueBlock:(transparentGradientsOpaqueBlock)opaqueBlock;
 
 @end
 
