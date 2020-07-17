@@ -228,6 +228,24 @@ __weak typeof(self) weakSelf = self;
     weakSelf.tableView.height -= offset;
 } 
 ```
+
+#### 通过ScrollView滚动自动控制导航栏透明效果（仿微博热搜效果）
+```objective-c
+#pragma mark - UIScrollViewDelegate
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    //scrollView:滚动控制的scrollView，tableView或collectionView
+    //fullChangeHeight:scrollView.contentOffset.y达到fullChangeHeight时，导航栏变为完全不透明
+    //changeLimitNavAlphe:当导航栏透明度达到changeLimitNavAlphe时，将触发opaqueBlock，通知控制器设置导航栏不透明时的效果
+    //transparentBlock:导航栏切换到透明状态时的回调（默认透明度0.7为临界点）
+    //opaqueBlock:导航栏切换到不透明状态时的回调（默认透明度0.7为临界点）
+    [self zx_setNavTransparentGradientsWithScrollView:scrollView fullChangeHeight:100 changeLimitNavAlphe:0.7 transparentGradientsTransparentBlock:^{
+        //导航栏透明时的额外效果设置
+    } transparentGradientsOpaqueBlock:^{
+        //导航栏透明时的额外效果设置
+    }];
+}
+```
+
 #### 设置状态栏为白色
 ```objective-c
 self.zx_navStatusBarStyle = ZXNavStatusBarStyleLight;
@@ -324,7 +342,6 @@ self.zx_handleCustomPopGesture = ^(CGFloat popOffsetProgress) {
 ```objective-c
 //在控制器中：
 self.navigationController.zx_disableAutoHidesBottomBarWhenPushed = YES;
-};
 ```
 ***
 
