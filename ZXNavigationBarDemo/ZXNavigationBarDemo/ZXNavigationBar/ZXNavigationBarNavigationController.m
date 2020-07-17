@@ -14,11 +14,14 @@
 @property (strong, nonatomic) UIPanGestureRecognizer *popGestureRecognizer;
 
 @property (strong, nonatomic, nullable) ZXNavigationBarController *zx_topViewController;
+
+@property (strong, nonatomic) id orgInteractivePopGestureRecognizerDelegate;
 @end
 
 @implementation ZXNavigationBarNavigationController
 
 - (void)viewDidLoad {
+    self.orgInteractivePopGestureRecognizerDelegate = self.interactivePopGestureRecognizer.delegate;
     [super viewDidLoad];
     self.zx_popGestureCoverRatio = 1;
     [self addFullScreenGesture];
@@ -86,7 +89,7 @@
     }
     CGFloat panGestureX = [panGesture locationInView:self.view].x;
     self.doingPopGesture = YES;
-    [self.interactivePopGestureRecognizer.delegate performSelector:@selector(handleNavigationTransition:) withObject:panGesture];
+    [self.orgInteractivePopGestureRecognizerDelegate performSelector:@selector(handleNavigationTransition:) withObject:panGesture];
     CGFloat popOffsetX = panGestureX - self.touchBeginX;
     if(self.zx_handleCustomPopGesture){
         if(panGesture.state == UIGestureRecognizerStateEnded){

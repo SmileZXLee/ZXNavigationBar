@@ -12,7 +12,6 @@
 @interface DemoWeiboHotViewController()<UITableViewDelegate,UITableViewDataSource>
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) NSArray *datas;
-@property (assign, nonatomic) CGFloat lastNavAlphe;
 @end
 @implementation DemoWeiboHotViewController
 
@@ -77,26 +76,11 @@
 
 #pragma mark - UIScrollViewDelegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    //获取ScrollView当前滚动的y值
-    CGFloat offsetY = scrollView.contentOffset.y;
-    //如果超过fullChangeHeight 则把导航栏样式变成黑色
-    static CGFloat fullChangeHeight = 100;
-    //offsetY 到 fullChangeHeight变化时 导航栏透明度从0 到 1
-    CGFloat navAlphe = offsetY / fullChangeHeight;
-    if(self.lastNavAlphe >= 0 && self.lastNavAlphe <= 1){
-        //当上次的透明度小于0或者大于1之后，没有必要再设置导航栏背景颜色
-        self.zx_navBar.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:navAlphe];
-    }
-    //当上次的导航栏透明度小于0.7且当前导航栏透明度大于0.7时，才有必要改变导航栏颜色
-    if(navAlphe > 0.7 && self.lastNavAlphe <= 0.7){
-        [self setDarkNav];
-    }
-    //当上次的导航栏透明度大于0.7且当前导航栏透明度小于0.7时，才有必要改变导航栏颜色
-    if(navAlphe < 0.7 && self.lastNavAlphe >= 0.7){
+    [self zx_setNavTransparentGradientsWithScrollView:scrollView fullChangeHeight:100 changeLimitNavAlphe:0.7 transparentGradientsTransparentBlock:^{
         [self setLightNav];
-    }
-    //记录上次的导航栏透明度
-    self.lastNavAlphe = navAlphe;
+    } transparentGradientsOpaqueBlock:^{
+        [self setDarkNav];
+    }];
 }
 
 
