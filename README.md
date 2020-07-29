@@ -17,14 +17,15 @@ pod 'ZXNavigationBar'
 ```
 ***
 ### 功能&特点
-- [x] 每个控制器单独管理自己的导航栏，导航栏属于各个子控制器，不再属于统一的导航控制器
-- [x] 兼容iOS8-iOS13，兼容刘海屏等各种设备，且无需担心系统更新需要重新适配导航栏
-- [x] 仅需一行代码即可轻松控制导航栏各种效果
-- [x] 仅需一行代码即可实现拦截pop手势，并决定是否要响应pop操作
+- [x] 每个控制器单独管理自己的导航栏，导航栏属于控制器的子view，不再属于统一的导航控制器
+- [x] 兼容iOS8-iOS14，兼容刘海屏等各种设备，且无需担心系统更新需要重新适配导航栏
+- [x] 灵活自定义导航栏背景图片、背景色、导航栏渐变等
+- [x] 仅需一行代码即可轻松设置导航栏各种属性
+- [x] 仅需一行代码即可实现拦截pop手势与点击返回事件，并决定是否要响应pop操作
 - [x] 支持随时切换为系统导航栏，且与系统导航栏之间无缝衔接
 - [x] 支持自定义`ZXNavigationBar`高度
 - [x] 支持在`ZXNavigationBar`上自定义titleView
-- [x] 支持单独控制每个控制器的状态栏样式
+- [x] 支持导航栏折叠、跟随ScrollView滚动透明度自动改变
 - [x] 支持通过url加载导航栏Item
 - [x] 支持全屏手势返回
 - [x] 支持自定义手势返回范围
@@ -82,13 +83,12 @@ pod 'ZXNavigationBar'
 
 
 
-#### 【重要】关于自定义导航栏view内容无法自动下移的处理方式
-* 如果是系统的导航栏，view的内容会自动下移，如下移64像素
-* 设置了自定义的导航栏，它实际上就是普通的View，则view中的内容不会自动下移以避免挡住导航栏
+#### 【重要】`ZXNavigationBar`对于自定义导航栏view内容无法自动下移的处理方式
+如果App使用的是系统的导航栏且不透明，view的内容会自动下移，例如非刘海屏会下移64像素；若设置了自定义的导航栏，因为它实际上就是普通的View，则控制器view中的内容不会自动下移以避免挡住导航栏。
 * `ZXNavigationBar`的处理方法是：
 * 如果您是通过frame或者Masonry设置控件布局，请设置y距离顶部高度为导航栏高度，可直接使用`ZXNavBarHeight`这个宏
 * 如果您是通过Xib加载控制器View，则`ZXNavigationBar`会自动将内部约束设置为距离顶部为导航栏高度+原始高度，您无需作任何处理
-* 若您是通过Xib加载控制器View，且禁用了SafeArea，请设置：
+* 若您是通过Xib加载控制器View，且禁用了SafeArea，请设置（若使用了SafeArea，请忽略）：
 ```objective-c
 //若大多数控制器都从Xib加载并禁用了SafeArea，可以直接在Base控制器中设置
 self.zx_isEnableSafeArea = NO;
@@ -105,7 +105,7 @@ self.zx_navTitle = @"ZXNavigationBar";
 ```
 #### 设置导航栏标题颜色
 ```objective-c
-self.zx_navTitleColor = @"ZXNavigationBar";
+self.zx_navTitleColor = [UIColor redColor];
 ```
 #### 设置导航栏标题字体大小
 ```objective-c
@@ -117,10 +117,10 @@ self.zx_navTitleFontSize = 20;
 self.zx_navTitleFont = [UIFont systemFontOfSize:20];
 ```
 
-* 设置导航栏标题其他属性，通过控制`self.zx_navTitleLabel`即可
+* 设置导航栏标题其他非frame属性，通过控制`self.zx_navTitleLabel`即可
 
-#### 快速设置左侧/右侧的按钮(以右侧按钮为例)
-* 设置最右侧按钮的图片和点击回调
+#### 快速设置左侧/右侧的按钮和点击回调(以右侧按钮为例)
+* 设置最右侧按钮的图片名和点击回调
 ```objective-c
 [self zx_setRightBtnWithImgName:@"set_icon" clickedBlock:^(UIButton * _Nonnull btn) {
     NSLog(@"点击了最右侧的Button");
@@ -132,7 +132,7 @@ self.zx_navTitleFont = [UIFont systemFontOfSize:20];
     NSLog(@"点击了最右侧的Button");
 }];
 ```
-* 设置最右侧按钮的图片和点击回调
+* 设置最右侧按钮的图片对象和点击回调
 ```objective-c
 [self zx_setLeftBtnWithImg:image对象 clickedBlock:^(ZXNavItemBtn * _Nonnull btn) {
     NSLog(@"点击了最右侧的Button");  
@@ -170,7 +170,7 @@ self.zx_navItemSize = 30;
 self.zx_navItemMargin = 0;
 ```
 #### 设置右侧第二个按钮
-* 将上诉例子中`zx_navLeftBtn`/`zx_navRightBtn`修改为`zx_navSubRightBtn`即可
+* 将上述例子中`zx_navLeftBtn`/`zx_navRightBtn`修改为`zx_navSubRightBtn`即可
 
 #### 设置导航栏背景颜色
 ```objective-c
@@ -228,6 +228,24 @@ __weak typeof(self) weakSelf = self;
     weakSelf.tableView.height -= offset;
 } 
 ```
+
+#### 通过ScrollView滚动自动控制导航栏透明效果（仿微博热搜效果）
+```objective-c
+#pragma mark - UIScrollViewDelegate
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    //scrollView:滚动控制的scrollView，tableView或collectionView
+    //fullChangeHeight:scrollView.contentOffset.y达到fullChangeHeight时，导航栏变为完全不透明
+    //changeLimitNavAlphe:当导航栏透明度达到changeLimitNavAlphe时，将触发opaqueBlock，通知控制器设置导航栏不透明时的效果
+    //transparentBlock:导航栏切换到透明状态时的回调（默认透明度0.7为临界点）
+    //opaqueBlock:导航栏切换到不透明状态时的回调（默认透明度0.7为临界点）
+    [self zx_setNavTransparentGradientsWithScrollView:scrollView fullChangeHeight:100 changeLimitNavAlphe:0.7 transparentGradientsTransparentBlock:^{
+        //导航栏透明时的额外效果设置
+    } transparentGradientsOpaqueBlock:^{
+        //导航栏透明时的额外效果设置
+    }];
+}
+```
+
 #### 设置状态栏为白色
 ```objective-c
 self.zx_navStatusBarStyle = ZXNavStatusBarStyleLight;
@@ -324,7 +342,6 @@ self.zx_handleCustomPopGesture = ^(CGFloat popOffsetProgress) {
 ```objective-c
 //在控制器中：
 self.navigationController.zx_disableAutoHidesBottomBarWhenPushed = YES;
-};
 ```
 ***
 
