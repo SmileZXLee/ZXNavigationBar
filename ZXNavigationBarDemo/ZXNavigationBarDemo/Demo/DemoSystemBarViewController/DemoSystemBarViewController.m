@@ -20,5 +20,7 @@
     label.textAlignment = NSTextAlignmentCenter;
     label.text = @"这是一个系统导航栏的控制器";
     [self.view addSubview:label];
+    
+    
 }
 @end

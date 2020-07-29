@@ -14,6 +14,7 @@
 #import "DemoSystemBarViewController.h"
 #import "DemoFoldFrameViewController.h"
 #import "DemoFoldXibViewController.h"
+#import "DemoCompatibleScrollViewViewController.h"
 @interface DemoListViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) NSArray *datas;
@@ -33,7 +34,7 @@
 }
 
 - (void)setUpViewAndData{
-    self.datas = @[@"ZXNavigationBar属性设置",@"仿微博热搜页面导航栏",@"可伸缩式导航栏(从Xib中设置tableView约束)",@"可伸缩式导航栏(通过Frame设置tableView约束)",@"自定义导航栏",@"自定义TitleView",@"跳转到使用系统导航栏的控制器"];
+    self.datas = @[@"ZXNavigationBar属性设置",@"仿微博热搜页面导航栏",@"可伸缩式导航栏(从Xib中设置tableView约束)",@"可伸缩式导航栏(通过Frame设置tableView约束)",@"自定义导航栏",@"自定义TitleView",@"跳转到使用系统导航栏的控制器",@"ScrollView与侧滑返回手势冲突处理"];
     self.tableView = [[UITableView alloc]init];
     [self.view addSubview:self.tableView];
     self.tableView.delegate = self;
@@ -100,10 +101,17 @@
             vc = [[DemoSystemBarViewController alloc]init];
             break;
         }
+        case 7:{
+            //与ScrollView侧滑返回手势冲突处理
+            vc = [[DemoCompatibleScrollViewViewController alloc]init];
+            break;
+        }
+
         default:
             break;
     }
     if(vc){
+        vc.title = self.datas[indexPath.row];
         [self.navigationController pushViewController:vc animated:YES];
     }
 }

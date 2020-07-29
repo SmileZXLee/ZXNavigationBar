@@ -409,6 +409,16 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
     }
 }
 
+- (void)setZx_popGestureShouldRecognizeSimultaneously:(BOOL (^)(UIGestureRecognizer * _Nonnull))zx_popGestureShouldRecognizeSimultaneously{
+    _zx_popGestureShouldRecognizeSimultaneously = zx_popGestureShouldRecognizeSimultaneously;
+    if(self.navigationController && [self.navigationController isKindOfClass:[ZXNavigationBarNavigationController class]]){
+        ZXNavigationBarNavigationController *navigationController = (ZXNavigationBarNavigationController *)self.navigationController;
+        navigationController.zx_popGestureShouldRecognizeSimultaneously = ^BOOL(UIGestureRecognizer * _Nonnull otherGestureRecognizer) {
+            return zx_popGestureShouldRecognizeSimultaneously(otherGestureRecognizer);
+        };
+    }
+}
+
 
 #pragma mark - Public
 #pragma mark 设置左侧Button图片和点击回调
@@ -662,6 +672,52 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
     }
     //记录上次的导航栏透明度
     self.lastNavAlphe = navAlphe;
+}
+
+#pragma mark 设置与pop手势冲突的scrollView数组以兼容pop手势与scrollView手势
+- (void)zx_setPopGestureCompatibleScrollViews:(NSArray <UIScrollView *>*)scrollViewArr{
+    if(scrollViewArr && scrollViewArr.count){
+        if(!self.navigationController){
+            NSAssert(NO, @"当前控制器不是导航控制器的子控制器！");
+            return;
+        }
+        NSArray *navGestureArray = self.navigationController.view.gestureRecognizers;
+        for(UIScrollView *scrollView in scrollViewArr){
+            if([self.navigationController isKindOfClass:[ZXNavigationBarNavigationController class]]){
+                ZXNavigationBarNavigationController *navigationController = (ZXNavigationBarNavigationController *)self.navigationController;
+                for(UIGestureRecognizer *gestureRecognizer in navGestureArray) {
+                    if (gestureRecognizer == navigationController.zx_popGestureRecognizer) {
+                        scrollView.bounces = NO;
+                        navigationController.zx_popGestureShouldRecognizeSimultaneously = ^BOOL(UIGestureRecognizer * _Nonnull otherGestureRecognizer) {
+                            if(scrollView.contentOffset.x < scrollView.frame.size.width){
+                                return YES;
+                            }else{
+                                return NO;
+                            }
+                        };
+                        break;
+                    }
+                        
+                }
+            }else{
+                for(UIGestureRecognizer *gestureRecognizer in navGestureArray) {
+                    if ([gestureRecognizer isKindOfClass:[UIScreenEdgePanGestureRecognizer class]]) {
+                        [scrollView.panGestureRecognizer requireGestureRecognizerToFail:gestureRecognizer];
+                        break;
+                    }
+                    
+                }
+            }
+        }
+    }
+}
+
+#pragma mark 设置与pop手势冲突的scrollView以兼容pop手势与scrollView手势
+- (void)zx_setPopGestureCompatibleScrollView:(UIScrollView *)scrollView{
+    if(scrollView){
+        [self zx_setPopGestureCompatibleScrollViews:@[scrollView]];
+    }
+    
 }
 
 

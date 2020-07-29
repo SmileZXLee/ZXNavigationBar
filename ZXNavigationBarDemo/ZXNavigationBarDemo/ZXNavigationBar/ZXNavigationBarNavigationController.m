@@ -11,10 +11,7 @@
 @interface ZXNavigationBarNavigationController ()<UIGestureRecognizerDelegate>
 @property (assign, nonatomic) CGFloat touchBeginX;
 @property (assign, nonatomic) BOOL doingPopGesture;
-@property (strong, nonatomic) UIPanGestureRecognizer *popGestureRecognizer;
-
 @property (strong, nonatomic, nullable) ZXNavigationBarController *zx_topViewController;
-
 @property (strong, nonatomic) id orgInteractivePopGestureRecognizerDelegate;
 @end
 
@@ -60,8 +57,8 @@
 
 #pragma mark - public
 - (void)zx_disablePopGesture{
-    if(self.popGestureRecognizer){
-        [self.view removeGestureRecognizer:self.popGestureRecognizer];
+    if(self.zx_popGestureRecognizer){
+        [self.view removeGestureRecognizer:self.zx_popGestureRecognizer];
     }
 }
 
@@ -73,7 +70,7 @@
     
     popGestureRecognizer.delegate = self;
     [self.view addGestureRecognizer:popGestureRecognizer];
-    self.popGestureRecognizer = popGestureRecognizer;
+    _zx_popGestureRecognizer = popGestureRecognizer;
 }
 
 #pragma mark 处理pop手势
@@ -136,11 +133,20 @@
     return self.childViewControllers.count != 1;
 }
 
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+    BOOL shouldRecognizeSimultaneously = NO;
+    if(self.zx_popGestureShouldRecognizeSimultaneously){
+        shouldRecognizeSimultaneously = self.zx_popGestureShouldRecognizeSimultaneously(otherGestureRecognizer);
+    }
+    return shouldRecognizeSimultaneously;
+}
+
+
 #pragma mark - getter&setter
 - (void)setZx_disableFullScreenGesture:(BOOL)zx_disableFullScreenGesture{
     _zx_disableFullScreenGesture = zx_disableFullScreenGesture;
     if(zx_disableFullScreenGesture){
-        self.zx_popGestureCoverRatio = 0.2;
+        self.zx_popGestureCoverRatio = 0.1;
     }else{
         self.zx_popGestureCoverRatio = 1;
     }

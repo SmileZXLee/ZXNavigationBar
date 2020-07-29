@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		742D08B024D16BED00F76EEE /* DemoCompatibleScrollViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 742D08AF24D16BED00F76EEE /* DemoCompatibleScrollViewViewController.m */; };
 		749BBF4F2424CE6400C63132 /* UINavigationController+ZXNavBarAllHiddenExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 749BBF4E2424CE6400C63132 /* UINavigationController+ZXNavBarAllHiddenExtension.m */; };
 		74BC1AEA241362C10032A424 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BC1AE9241362C10032A424 /* AppDelegate.m */; };
 		74BC1AF2241362C50032A424 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 74BC1AF1241362C50032A424 /* Assets.xcassets */; };
@@ -54,6 +55,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		742D08AE24D16BED00F76EEE /* DemoCompatibleScrollViewViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DemoCompatibleScrollViewViewController.h; sourceTree = "<group>"; };
+		742D08AF24D16BED00F76EEE /* DemoCompatibleScrollViewViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DemoCompatibleScrollViewViewController.m; sourceTree = "<group>"; };
 		749BBF4D2424CE6400C63132 /* UINavigationController+ZXNavBarAllHiddenExtension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+ZXNavBarAllHiddenExtension.h"; sourceTree = "<group>"; };
 		749BBF4E2424CE6400C63132 /* UINavigationController+ZXNavBarAllHiddenExtension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+ZXNavBarAllHiddenExtension.m"; sourceTree = "<group>"; };
 		74BC1AE5241362C10032A424 /* ZXNavigationBarDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZXNavigationBarDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -138,6 +141,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		742D08A824D16B5200F76EEE /* DemoCompatibleScrollViewViewController */ = {
+			isa = PBXGroup;
+			children = (
+				742D08AE24D16BED00F76EEE /* DemoCompatibleScrollViewViewController.h */,
+				742D08AF24D16BED00F76EEE /* DemoCompatibleScrollViewViewController.m */,
+			);
+			path = DemoCompatibleScrollViewViewController;
+			sourceTree = "<group>";
+		};
 		74BC1ADC241362C10032A424 = {
 			isa = PBXGroup;
 			children = (
@@ -251,6 +263,7 @@
 				74BC1B58241A057C0032A424 /* DemoCustomNavViewController */,
 				74BC1B62241A232B0032A424 /* DemoCustomTitleViewViewController */,
 				74BC1B4B2418E6DE0032A424 /* DemoSystemBarViewController */,
+				742D08A824D16B5200F76EEE /* DemoCompatibleScrollViewViewController */,
 			);
 			path = Demo;
 			sourceTree = "<group>";
@@ -471,6 +484,7 @@
 				74BC1B2224138BCB0032A424 /* ZXNavigationBarController.m in Sources */,
 				74DAA1DF2480E50300EF7493 /* ZXNavigationBarNavigationController.m in Sources */,
 				74BC1B1424136C5C0032A424 /* ZXNavTitleLabel.m in Sources */,
+				742D08B024D16BED00F76EEE /* DemoCompatibleScrollViewViewController.m in Sources */,
 				74BC1B6F241B2E170032A424 /* DemoFoldFrameViewController.m in Sources */,
 				74BC1B3F2417C9D60032A424 /* DemoBaseViewController.m in Sources */,
 				74BC1B5C241A05C90032A424 /* DemoCustomNav.m in Sources */,

@@ -189,19 +189,24 @@ typedef void(^transparentGradientsOpaqueBlock) (void);
  oldNavOffset:视图在xib中所设置的约束与顶部距离
  currentNavOffset:即将设置的视图与顶部的距离
  */
-@property(nonatomic,copy)CGFloat(^zx_handleAdjustNavContainerOffsetBlock)(CGFloat oldNavOffset,CGFloat currentNavOffset);
+@property(copy, nonatomic)CGFloat(^zx_handleAdjustNavContainerOffsetBlock)(CGFloat oldNavOffset,CGFloat currentNavOffset);
 
 /**
  拦截点击返回事件和侧滑返回手势，若返回NO，则禁止pop;
  viewController:当前控制器
  popBlockFrom:通过什么方式(点击返回按钮或侧滑返回手势)触发pop操作
  */
-@property(nonatomic,copy)BOOL(^zx_handlePopBlock)(ZXNavigationBarController *viewController,ZXNavPopBlockFrom popBlockFrom);
+@property(copy, nonatomic)BOOL(^zx_handlePopBlock)(ZXNavigationBarController *viewController,ZXNavPopBlockFrom popBlockFrom);
 
 /**
  监听自定义pop手势进度(导航控制器需为ZXNavigationBarNavigationController或继承于ZXNavigationBarNavigationController)。popOffsetProgress范围为0-1，0代表即将开始pop，1代表完成pop
  */
-@property(nonatomic,copy)void(^zx_handleCustomPopGesture)(CGFloat popOffsetProgress);
+@property(copy, nonatomic)void(^zx_handleCustomPopGesture)(CGFloat popOffsetProgress);
+
+/**
+pop手势是否支持多层级的手势同时触发，默认为否。若设置了此block，zx_setPopGestureCompatibleScrollView与zx_setPopGestureCompatibleScrollViews方法将失效
+*/
+@property(copy, nonatomic)BOOL(^zx_popGestureShouldRecognizeSimultaneously)(UIGestureRecognizer *otherGestureRecognizer);
 
 /**
  导航栏固定高度
@@ -386,6 +391,14 @@ typedef void(^transparentGradientsOpaqueBlock) (void);
 /// @param transparentBlock 导航栏切换到透明状态时的回调（默认透明度0.7为临界点）
 /// @param opaqueBlock 导航栏切换到不透明状态时的回调（默认透明度0.7为临界点）
 - (void)zx_setNavTransparentGradientsWithScrollView:(UIScrollView *)scrollView fullChangeHeight:(CGFloat)fullChangeHeight changeLimitNavAlphe:(CGFloat)changeLimitNavAlphe transparentGradientsTransparentBlock:(transparentGradientsTransparentBlock)transparentBlock transparentGradientsOpaqueBlock:(transparentGradientsOpaqueBlock)opaqueBlock;
+
+/// 设置与pop手势冲突的scrollView数组以兼容pop手势与scrollView手势
+/// @param scrollViewArr scrollView数组
+- (void)zx_setPopGestureCompatibleScrollViews:(NSArray <UIScrollView *>*)scrollViewArr;
+
+/// 设置与pop手势冲突的scrollView以兼容pop手势与scrollView手势
+/// @param scrollView scrollView
+- (void)zx_setPopGestureCompatibleScrollView:(UIScrollView *)scrollView;
 
 @end
 
