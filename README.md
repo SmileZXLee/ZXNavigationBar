@@ -232,6 +232,12 @@ __weak typeof(self) weakSelf = self;
 ```
 
 #### 通过ScrollView滚动自动控制导航栏透明效果（仿微博热搜效果）
+* 在页面加载的时候，需要先设置导航栏透明（注意，不要直接设置导航栏的alpha或设置导航栏的背景色为[UIColor clearColor]），请使用
+```objective-c
+//这一行代码实际上是把导航栏背景色的透明度改为0，仅改变RGBA中A(alpha)的值，如果导航栏有自定义背景色，则会从透明-自定义背景色过渡
+self.zx_navBarBackgroundColorAlpha = 0;
+```
+* 在scrollViewDidScroll中
 ```objective-c
 #pragma mark - UIScrollViewDelegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
@@ -243,7 +249,25 @@ __weak typeof(self) weakSelf = self;
     [self zx_setNavTransparentGradientsWithScrollView:scrollView fullChangeHeight:100 changeLimitNavAlphe:0.7 transparentGradientsTransparentBlock:^{
         //导航栏透明时的额外效果设置
     } transparentGradientsOpaqueBlock:^{
+        //导航栏不透明时的额外效果设置
+    }];
+}
+```
+* 若需要复杂的自定义场景（例如导航栏有背景图片，因默认处理方式是通过控制导航栏背景颜色的透明度实现，因此此时需要监听导航栏透明度改变回调，并写上`self.zx_navBacImageView.alpha = alpha;`）
+```objective-c
+#pragma mark - UIScrollViewDelegate
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    //scrollView:滚动控制的scrollView，tableView或collectionView
+    //fullChangeHeight:scrollView.contentOffset.y达到fullChangeHeight时，导航栏变为完全不透明
+    //changeLimitNavAlphe:当导航栏透明度达到changeLimitNavAlphe时，将触发opaqueBlock，通知控制器设置导航栏不透明时的效果
+    //transparentBlock:导航栏切换到透明状态时的回调（默认透明度0.7为临界点）
+    //opaqueBlock:导航栏切换到不透明状态时的回调（默认透明度0.7为临界点）
+    [self zx_setNavTransparentGradientsWithScrollView:scrollView fullChangeHeight:100 changeLimitNavAlphe:0.7 transparentGradientsChangingBlock:^(CGFloat alpha) {
+        //导航栏透明度正在改变时候处理
+    } transparentGradientsTransparentBlock:^{
         //导航栏透明时的额外效果设置
+    } transparentGradientsOpaqueBlock:^{
+        //导航栏不透明时的额外效果设置
     }];
 }
 ```
@@ -251,6 +275,10 @@ __weak typeof(self) weakSelf = self;
 #### 设置状态栏为白色
 ```objective-c
 self.zx_navStatusBarStyle = ZXNavStatusBarStyleLight;
+```
+#### 是否禁止根据zx_navStatusBarStyle自动调整状态栏颜色，默认为否
+```objective-c
+self.zx_disableAutoSetStatusBarStyle = YES;
 ```
 #### 设置状态栏为黑色
 ```objective-c
