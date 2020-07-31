@@ -10,7 +10,7 @@
 #define random(r, g, b, a) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:(a)/255.0]
 #define randomColor random(arc4random_uniform(200), arc4random_uniform(200), arc4random_uniform(200), 255.0)
 
-@interface DemoCompatibleScrollViewViewController ()<UIScrollViewDelegate,UIGestureRecognizerDelegate>
+@interface DemoCompatibleScrollViewViewController ()
 @property (strong, nonatomic) UIScrollView *scrollView;
 @end
 
@@ -28,7 +28,7 @@
     [self zx_setPopGestureCompatibleScrollView:self.scrollView];
     
     //当导航控制器为ZXNavigationBarNavigationController或继承于ZXNavigationBarNavigationController时，如果需要更复杂的定制化的情况，可以使用下方的方式，以下代码的作用是在scrollView滚动到第一页的时候，支持pop手势多层级同时触发，为了更好的展示效果，建议关闭scrollView的bounces
-    
+
     /*
     self.scrollView.bounces = NO;
     __weak typeof(self) weakSelf = self;

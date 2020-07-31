@@ -22,8 +22,8 @@
 }
 
 - (void)setUpNav{
-    //设置导航栏背景色为透明色
-    self.zx_navBar.backgroundColor = [UIColor clearColor];
+    //设置导航栏背景色RGB中Alpha为0
+    self.zx_navBarBackgroundColorAlpha = 0;
     //左侧按钮添加”返回“文字
     [self.zx_navLeftBtn setTitle:@"返回" forState:UIControlStateNormal];
     //设置最右侧按钮的图片和点击事件

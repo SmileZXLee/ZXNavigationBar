@@ -135,7 +135,11 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
     self.isNavFoldAnimating = YES;
     if(self.setFold){
         if(self.zx_navBar.height > ZXAppStatusBarHeight){
-            self.zx_navBar.height -= self.zx_navFoldingSpeed;
+            if(self.zx_navBar.height - self.zx_navFoldingSpeed < 0){
+                self.zx_navBar.height = 0;
+            }else{
+                self.zx_navBar.height -= self.zx_navFoldingSpeed;
+            }
             if(self.xibTopConstraint){
                 self.xibTopConstraint.constant -= self.zx_navFoldingSpeed;
             }
@@ -281,6 +285,32 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
     self.zx_navBar.backgroundColor = zx_navBarBackgroundColor;
 }
 
+- (void)setZx_navBarBackgroundColorAlpha:(CGFloat)zx_navBarBackgroundColorAlpha{
+    if(zx_navBarBackgroundColorAlpha < 0){
+        zx_navBarBackgroundColorAlpha = 0;
+    }else if(zx_navBarBackgroundColorAlpha > 1){
+        zx_navBarBackgroundColorAlpha = 1;
+    }
+    _zx_navBarBackgroundColorAlpha = zx_navBarBackgroundColorAlpha;
+    if(self.zx_navBar){
+        CGFloat r = 1;
+        CGFloat g = 1;
+        CGFloat b = 1;
+        if(self.zx_navBar.zx_backgroundColorComponents){
+            r = [self.zx_navBar.zx_backgroundColorComponents[0] floatValue];
+            g = [self.zx_navBar.zx_backgroundColorComponents[1] floatValue];
+            b = [self.zx_navBar.zx_backgroundColorComponents[2] floatValue];
+        }
+        SEL sel = NSSelectorFromString(@"privateSetBackgroundColor:");
+        if([self.zx_navBar respondsToSelector:sel]){
+            IMP imp = [self.zx_navBar methodForSelector:sel];
+            void (*func)(id, SEL, UIColor *) = (void *)imp;
+            func(self.zx_navBar, sel, [UIColor colorWithRed:r green:g blue:b alpha:zx_navBarBackgroundColorAlpha]);
+        }
+        
+    }
+}
+
 - (void)setZx_navBarBackgroundImage:(UIImage *)zx_navBarBackgroundImage{
     _zx_navBarBackgroundImage = zx_navBarBackgroundImage;
     self.zx_navBar.zx_bacImage = zx_navBarBackgroundImage;
@@ -311,7 +341,9 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
     if(@available(iOS 11.0, *)) {
         if(_zx_isEnableSafeArea != zx_isEnableSafeArea){
             if(zx_isEnableSafeArea){
-                [self adjustNavContainerOffset:([self getCurrentNavHeight] - ZXAppStatusBarHeight)];
+                CGFloat safeAreaHeight = ZXIsHorizontalScreen ? 0 : ZXAppStatusBarHeight;
+                [self adjustNavContainerOffset:([self getCurrentNavHeight] - safeAreaHeight)];
+                
             }else{
                 [self adjustNavContainerOffset:[self getCurrentNavHeight]];
             }
@@ -323,7 +355,9 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
 - (void)setZx_navStatusBarStyle:(ZXNavStatusBarStyle)zx_navStatusBarStyle{
     _zx_navStatusBarStyle = zx_navStatusBarStyle;
     defaultNavStatusBarStyle = zx_navStatusBarStyle;
-    [self setNeedsStatusBarAppearanceUpdate];
+    if(!self.zx_disableAutoSetStatusBarStyle){
+        [self setNeedsStatusBarAppearanceUpdate];
+    }
 }
 
 - (void)setZx_showSystemNavBar:(BOOL)zx_showSystemNavBar{
@@ -647,6 +681,10 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
 #pragma mark 通过ScrollView滚动自动控制导航栏透明效果
 - (void)zx_setNavTransparentGradientsWithScrollView:(UIScrollView *)scrollView fullChangeHeight:(CGFloat)fullChangeHeight changeLimitNavAlphe:(CGFloat)changeLimitNavAlphe transparentGradientsTransparentBlock:(transparentGradientsTransparentBlock)transparentBlock transparentGradientsOpaqueBlock:(transparentGradientsOpaqueBlock)opaqueBlock{
     
+    [self zx_setNavTransparentGradientsWithScrollView:scrollView fullChangeHeight:fullChangeHeight changeLimitNavAlphe:changeLimitNavAlphe transparentGradientsChangingBlock:nil transparentGradientsTransparentBlock:transparentBlock transparentGradientsOpaqueBlock:opaqueBlock];
+}
+
+- (void)zx_setNavTransparentGradientsWithScrollView:(UIScrollView *)scrollView fullChangeHeight:(CGFloat)fullChangeHeight changeLimitNavAlphe:(CGFloat)changeLimitNavAlphe transparentGradientsChangingBlock:(__nullable transparentGradientsChangingBlock)changeBlock transparentGradientsTransparentBlock:(transparentGradientsTransparentBlock)transparentBlock transparentGradientsOpaqueBlock:(transparentGradientsOpaqueBlock)opaqueBlock{
     if(changeLimitNavAlphe < 0 || changeLimitNavAlphe > 1){
         changeLimitNavAlphe = 0.7;
     }
@@ -655,8 +693,12 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
     //offsetY 到 fullChangeHeight变化时 导航栏透明度从0 到 1
     CGFloat navAlphe = offsetY / fullChangeHeight;
     if(self.lastNavAlphe >= 0 && self.lastNavAlphe <= 1){
-        //当上次的透明度小于0或者大于1之后，没有必要再设置导航栏背景颜色
-        self.zx_navBar.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:navAlphe];
+        //导航栏透明度正在改变
+        if(changeBlock){
+           changeBlock(navAlphe);
+        }else{
+           self.zx_navBarBackgroundColorAlpha = navAlphe;
+        }
     }
     //当上次的导航栏透明度小于changeLimitNavAlphe且当前导航栏透明度大于changeLimitNavAlphe时，才有必要改变导航栏颜色
     if(navAlphe > changeLimitNavAlphe && self.lastNavAlphe <= changeLimitNavAlphe){
@@ -689,6 +731,9 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
                     if (gestureRecognizer == navigationController.zx_popGestureRecognizer) {
                         scrollView.bounces = NO;
                         navigationController.zx_popGestureShouldRecognizeSimultaneously = ^BOOL(UIGestureRecognizer * _Nonnull otherGestureRecognizer) {
+                            if(otherGestureRecognizer.view != scrollView){
+                                return NO;;
+                            }
                             if(scrollView.contentOffset.x < scrollView.frame.size.width){
                                 return YES;
                             }else{
@@ -760,6 +805,9 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
 
 
 - (UIStatusBarStyle)preferredStatusBarStyle{
+    if(self.zx_disableAutoSetStatusBarStyle){
+        return [super preferredStatusBarStyle];
+    }
     [super preferredStatusBarStyle];
     ZXNavStatusBarStyle statusBarStyle = self.zx_navStatusBarStyle;
     if(statusBarStyle == 0x00){
