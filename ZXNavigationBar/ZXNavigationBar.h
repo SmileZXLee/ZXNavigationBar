@@ -86,6 +86,11 @@ NS_ASSUME_NONNULL_BEGIN
  右侧第二个Button点击回调
  */
 @property (copy, nonatomic) void (^zx_subRightBtnClickedBlock)(ZXNavItemBtn *btn);
+
+/**
+ 导航栏背景色Components
+ */
+@property (strong, nonatomic, readonly) NSArray* zx_backgroundColorComponents;
 /**
  设置大小标题效果
 

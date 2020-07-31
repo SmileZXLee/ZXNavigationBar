@@ -145,14 +145,14 @@
 #pragma mark 刷新子控件布局
 - (void)relayoutSubviews{
     if(self.zx_leftBtn && self.zx_rightBtn && self.zx_titleLabel){
-        CGFloat centerOffSet = ZXAppStatusBarHeight;
+        CGFloat centerOffSet = ZXIsHorizontalScreen ? 0 : ZXAppStatusBarHeight;
         CGSize leftBtnSize = CGSizeZero;
         if((self.zx_leftBtn.size.height == 0 && self.zx_leftBtn.size.width == 0) || self.shouldRefLayout){
             leftBtnSize = CGSizeMake(self.zx_itemSize, self.zx_itemSize);
         }else{
             leftBtnSize = self.zx_leftBtn.size;
         }
-        self.zx_leftBtn.frame = CGRectMake(self.zx_itemMargin,(self.height - self.zx_itemSize + centerOffSet) / 2, leftBtnSize.width, leftBtnSize.height);
+        self.zx_leftBtn.frame = CGRectMake(self.zx_itemMargin + ZXHorizontaledSafeArea,(self.height - self.zx_itemSize + centerOffSet) / 2, leftBtnSize.width, leftBtnSize.height);
         CGSize rightBtnSize = CGSizeZero;
         CGFloat rightBtnW = 0;
         if((self.zx_rightBtn.size.height == 0 && self.zx_rightBtn.size.width == 0 && self.zx_rightBtn.x == 0) || self.shouldRefLayout){
@@ -162,7 +162,7 @@
             rightBtnSize = self.zx_rightBtn.size;
             rightBtnW = self.zx_rightBtn.width;
         }
-        self.zx_rightBtn.frame = CGRectMake(self.width - self.zx_itemMargin - rightBtnW,(self.height - self.zx_itemSize + centerOffSet) / 2, rightBtnSize.width,rightBtnSize.height);
+        self.zx_rightBtn.frame = CGRectMake(self.width - self.zx_itemMargin - rightBtnW - ZXHorizontaledSafeArea,(self.height - self.zx_itemSize + centerOffSet) / 2, rightBtnSize.width,rightBtnSize.height);
         if(self.shouldRefLayout){
             [self layoutItemBtn:self.zx_leftBtn];
             [self layoutItemBtn:self.zx_rightBtn];
@@ -177,7 +177,7 @@
             rightBtnFakeWidth = self.zx_rightBtn.width + self.zx_itemSize + self.zx_itemMargin;
         }
         CGFloat maxItemWidth = MAX(self.zx_leftBtn.width,rightBtnFakeWidth);
-        self.zx_titleLabel.frame = CGRectMake(maxItemWidth + 2 * self.zx_itemMargin, centerOffSet, self.width - 2 * maxItemWidth - 4 * self.zx_itemMargin, self.height - centerOffSet);
+        self.zx_titleLabel.frame = CGRectMake(maxItemWidth + 2 * self.zx_itemMargin + ZXHorizontaledSafeArea, centerOffSet, self.width - 2 * maxItemWidth - 4 * self.zx_itemMargin - ZXHorizontaledSafeArea * 2, self.height - centerOffSet);
         self.zx_titleView.frame = self.zx_titleLabel.frame;
         self.lineView.frame = CGRectMake(0, self.height - 1, self.width, 1);
         self.zx_bacImageView.frame = self.frame;
@@ -231,6 +231,23 @@
     if(self.zx_navEnableSmoothFromSystemNavBar){
         [UIApplication sharedApplication].keyWindow.backgroundColor = backgroundColor;
     }
+    CGFloat components[3];
+    CGColorSpaceRef rgbColorSpace = CGColorSpaceCreateDeviceRGB();
+    unsigned char resultingPixel[4];
+    CGContextRef context = CGBitmapContextCreate(&resultingPixel,1,1,8,4,rgbColorSpace,(CGBitmapInfo)kCGImageAlphaNoneSkipLast);
+
+    CGContextSetFillColorWithColor(context, [backgroundColor CGColor]);
+    CGContextFillRect(context, CGRectMake(0, 0, 1, 1));
+    CGContextRelease(context);
+    CGColorSpaceRelease(rgbColorSpace);
+    for (int component = 0; component < 3; component++) {
+        components[component] = resultingPixel[component] / 255.0f;
+    }
+    _zx_backgroundColorComponents = @[@(components[0]),@(components[1]),@(components[2])];
+}
+
+- (void)privateSetBackgroundColor:(UIColor *)backgroundColor{
+    [super setBackgroundColor:backgroundColor];
 }
 
 #pragma mark - public

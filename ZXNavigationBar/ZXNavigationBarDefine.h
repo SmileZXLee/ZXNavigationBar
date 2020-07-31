@@ -29,7 +29,7 @@
 #define ZXIsBangScreen ({\
 int cFlag = 0;\
 if (@available(iOS 11.0, *)) {\
-if ([UIApplication sharedApplication].delegate.window.safeAreaInsets.top == 44) {\
+if ([UIApplication sharedApplication].delegate.window.safeAreaInsets.bottom > 0) {\
 cFlag = 1;\
 }else{\
 cFlag = 0;\
@@ -39,6 +39,13 @@ cFlag = 0;\
 }\
 cFlag;\
 })
+
+/**
+判断手机是否是横屏
+
+@return 手机是否是横屏
+*/
+#define ZXIsHorizontalScreen ([UIApplication sharedApplication].statusBarOrientation == UIDeviceOrientationLandscapeRight || [UIApplication sharedApplication].statusBarOrientation == UIDeviceOrientationLandscapeLeft)
 
 /**
  获取屏幕宽度
@@ -61,14 +68,50 @@ cFlag;\
  */
 //#define ZXAppStatusBarHeight [[UIApplication sharedApplication] statusBarFrame].size.height
 //适配iOS13以下系统开启热点或音频时的导航栏
-#define ZXAppStatusBarHeight (ZXIsBangScreen ? 44 : 20)
+#define ZXAppStatusBarHeight (ZXIsHorizontalScreen ? 0 : (ZXIsBangScreen ? 44 : 20))
 
 /**
  获取导航栏高度
-
- @param IsBangScreen 是否是刘海屏
+ 
  @return 导航栏高度
  */
-#define ZXNavBarHeight (ZXAppStatusBarHeight + 44)
+#define ZXNavBarHeight (ZXIsHorizontalScreen ? 44 : (ZXAppStatusBarHeight + 44))
+
+/**
+ 获取安全区域顶部高度
+ 
+ @return 安全区域顶部高度
+ */
+#define ZXSafeAreaTop ({\
+int height = 0;\
+if (@available(iOS 11.0, *)) {\
+height = [UIApplication sharedApplication].delegate.window.safeAreaInsets.top;\
+}else{\
+height = 0;\
+}\
+height;\
+})
+
+/**
+ 获取安全区域底部高度
+ 
+ @return 安全区域底部高度
+ */
+#define ZXSafeAreaBottom ({\
+int height = 0;\
+if (@available(iOS 11.0, *)) {\
+height = [UIApplication sharedApplication].delegate.window.safeAreaInsets.bottom;\
+}else{\
+height = 0;\
+}\
+height;\
+})
+
+/**
+ 获取横屏后左右安全距离
+ 
+ @return 横屏后左右安全距离
+ */
+#define ZXHorizontaledSafeArea ((ZXIsHorizontalScreen && ZXIsBangScreen)? 44 : 0)
 
 #endif /* ZXNavigationBarDefine_h */

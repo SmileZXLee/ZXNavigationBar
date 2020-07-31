@@ -28,6 +28,7 @@ typedef void(^subRightBtnClickedBlock) (ZXNavItemBtn *btn);
 typedef void(^foldingOffsetBlock) (CGFloat offset);
 typedef void(^foldCompletionBlock) (void);
 
+typedef void(^__nullable transparentGradientsChangingBlock) (CGFloat alpha);
 typedef void(^transparentGradientsTransparentBlock) (void);
 typedef void(^transparentGradientsOpaqueBlock) (void);
 @interface ZXNavigationBarController : UIViewController
@@ -46,6 +47,11 @@ typedef void(^transparentGradientsOpaqueBlock) (void);
  状态栏颜色
  */
 @property(assign, nonatomic)ZXNavStatusBarStyle zx_navStatusBarStyle;
+
+/**
+ 是否禁止根据zx_navStatusBarStyle自动调整状态栏颜色，默认为否
+ */
+@property(assign, nonatomic)BOOL zx_disableAutoSetStatusBarStyle;
 
 /**
  是否隐藏ZXNavigationBar导航栏，默认为否
@@ -141,6 +147,11 @@ typedef void(^transparentGradientsOpaqueBlock) (void);
  设置导航栏背景颜色
  */
 @property (strong, nonatomic)UIColor *zx_navBarBackgroundColor;
+
+/**
+ 设置导航栏背景颜色透明度(与设置为导航栏不同，此设置仅会改变导航栏背景色RGBA中的Alpha值)
+ */
+@property (assign, nonatomic)CGFloat zx_navBarBackgroundColorAlpha;
 
 /**
  导航栏背景ImageView
@@ -391,6 +402,15 @@ pop手势是否支持多层级的手势同时触发，默认为否。若设置�
 /// @param transparentBlock 导航栏切换到透明状态时的回调（默认透明度0.7为临界点）
 /// @param opaqueBlock 导航栏切换到不透明状态时的回调（默认透明度0.7为临界点）
 - (void)zx_setNavTransparentGradientsWithScrollView:(UIScrollView *)scrollView fullChangeHeight:(CGFloat)fullChangeHeight changeLimitNavAlphe:(CGFloat)changeLimitNavAlphe transparentGradientsTransparentBlock:(transparentGradientsTransparentBlock)transparentBlock transparentGradientsOpaqueBlock:(transparentGradientsOpaqueBlock)opaqueBlock;
+
+/// 通过ScrollView滚动自动控制导航栏透明效果(类似微博热搜页面)
+/// @param scrollView 滚动控制的scrollView，tableView或collectionView
+/// @param fullChangeHeight scrollView.contentOffset.y达到fullChangeHeight时，导航栏变为完全不透明
+/// @param changeLimitNavAlphe 当导航栏透明度达到changeLimitNavAlphe时，将触发opaqueBlock，通知控制器设置导航栏不透明时的效果
+/// @param changeBlock 导航栏透明度正在改变回调
+/// @param transparentBlock 导航栏切换到透明状态时的回调（默认透明度0.7为临界点）
+/// @param opaqueBlock 导航栏切换到不透明状态时的回调（默认透明度0.7为临界点）
+- (void)zx_setNavTransparentGradientsWithScrollView:(UIScrollView *)scrollView fullChangeHeight:(CGFloat)fullChangeHeight changeLimitNavAlphe:(CGFloat)changeLimitNavAlphe transparentGradientsChangingBlock:(transparentGradientsChangingBlock)changeBlock transparentGradientsTransparentBlock:(transparentGradientsTransparentBlock)transparentBlock transparentGradientsOpaqueBlock:(transparentGradientsOpaqueBlock)opaqueBlock;
 
 /// 设置与pop手势冲突的scrollView数组以兼容pop手势与scrollView手势
 /// @param scrollViewArr scrollView数组
