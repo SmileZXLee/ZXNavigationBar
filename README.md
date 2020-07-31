@@ -22,6 +22,7 @@ pod 'ZXNavigationBar'
 - [x] 灵活自定义导航栏背景图片、背景色、导航栏渐变等
 - [x] 仅需一行代码即可轻松设置导航栏各种属性
 - [x] 仅需一行代码即可实现拦截pop手势与点击返回事件，并决定是否要响应pop操作
+- [x] 仅需一行代码即可兼容scrollView横向滚动
 - [x] 支持随时切换为系统导航栏，且与系统导航栏之间无缝衔接
 - [x] 支持自定义`ZXNavigationBar`高度
 - [x] 支持在`ZXNavigationBar`上自定义titleView
@@ -39,9 +40,10 @@ pod 'ZXNavigationBar'
 -|-|-
 ![](http://www.zxlee.cn/github/ZXNavigationBar/ZXNavigationBarDemo1.gif) | ![](http://www.zxlee.cn/github/ZXNavigationBar/ZXNavigationBarDemo2.gif) | ![](http://www.zxlee.cn/github/ZXNavigationBar/ZXNavigationBarDemo3.gif) |
 
-自定义titleView | 切换系统导航栏 |   可伸缩式导航栏
+自定义titleView | 兼容scrollView横向滚动 |   可伸缩式导航栏
 -|-|-
-![](http://www.zxlee.cn/github/ZXNavigationBar/ZXNavigationBarDemo4.gif) | ![](http://www.zxlee.cn/github/ZXNavigationBar/ZXNavigationBarDemo5.gif) | ![](http://www.zxlee.cn/github/ZXNavigationBar/ZXNavigationBarDemo6.gif) | 
+![](http://www.zxlee.cn/github/ZXNavigationBar/ZXNavigationBarDemo4.gif) | ![](http://www.zxlee.cn/github/ZXNavigationBar/ZXNavigationBarDemo8.gif) | ![](http://www.zxlee.cn/github/ZXNavigationBar/ZXNavigationBarDemo6.gif) | 
+
 ### 开始使用
 #### 将控制器继承于`ZXNavigationBarController`，建议将Base控制器继承于`ZXNavigationBarController`
 ```objective-c
@@ -336,6 +338,26 @@ self.zx_handleCustomPopGesture = ^(CGFloat popOffsetProgress) {
     NSLog(@"popOffsetProgress--%lf",popOffsetProgress);
 };
 ```
+
+#### 兼容pop返回手势与scrollView横向滚动手势
+```objective-c
+//在控制器中：
+[self zx_setPopGestureCompatibleScrollView:self.scrollView];
+```
+#### 兼容pop返回手势与scrollView横向滚动手势（自定义处理）
+当导航控制器为`ZXNavigationBarNavigationController`或继承于`ZXNavigationBarNavigationController`时，如果需要更复杂的定制化的情况，可以使用下方的方式，以下代码的作用是在scrollView滚动到第一页的时候，支持pop手势多层级同时触发，为了更好的展示效果，建议关闭scrollView的bounces。此段代码与上方效果一致
+```objective-c
+//在控制器中：
+self.scrollView.bounces = NO;
+__weak typeof(self) weakSelf = self;
+self.zx_popGestureShouldRecognizeSimultaneously = ^BOOL(UIGestureRecognizer * _Nonnull otherGestureRecognizer) {
+    if(weakSelf.scrollView.contentOffset.x < weakSelf.scrollView.width){
+        return YES;
+    }
+    return NO;
+};
+```
+
 #### push自动隐藏tabbar
 将您的导航控制器继承于`ZXNavigationBarNavigationController`或使用`ZXNavigationBarNavigationController`作为您的导航控制器即可
 若您要禁用这一功能
