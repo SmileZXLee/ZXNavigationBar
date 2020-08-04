@@ -20,7 +20,12 @@
 #define ZXNavDefalutItemSize 25
 #define ZXNavDefalutItemMargin 10
 
+/**
+获取主Window
 
+@return 主Window
+*/
+#define ZXMainWindow ([UIApplication sharedApplication].keyWindow ?: [UIApplication sharedApplication].windows.firstObject)
 /**
  判断是否是刘海屏
 
@@ -29,7 +34,7 @@
 #define ZXIsBangScreen ({\
 int cFlag = 0;\
 if (@available(iOS 11.0, *)) {\
-if ([UIApplication sharedApplication].delegate.window.safeAreaInsets.bottom > 0) {\
+if (ZXMainWindow.safeAreaInsets.bottom > 0) {\
 cFlag = 1;\
 }else{\
 cFlag = 0;\
