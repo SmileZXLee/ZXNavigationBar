@@ -90,7 +90,7 @@ cFlag;\
 #define ZXSafeAreaTop ({\
 int height = 0;\
 if (@available(iOS 11.0, *)) {\
-height = [UIApplication sharedApplication].delegate.window.safeAreaInsets.top;\
+height = ZXMainWindow.safeAreaInsets.top;\
 }else{\
 height = 0;\
 }\
@@ -105,7 +105,7 @@ height;\
 #define ZXSafeAreaBottom ({\
 int height = 0;\
 if (@available(iOS 11.0, *)) {\
-height = [UIApplication sharedApplication].delegate.window.safeAreaInsets.bottom;\
+height = ZXMainWindow.safeAreaInsets.bottom;\
 }else{\
 height = 0;\
 }\
