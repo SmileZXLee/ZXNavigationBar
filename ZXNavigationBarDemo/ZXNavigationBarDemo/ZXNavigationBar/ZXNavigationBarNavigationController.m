@@ -123,7 +123,22 @@
 }
 
 #pragma mark - UIGestureRecognizerDelegate
-- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer{
+- (BOOL)gestureRecognizerShouldBegin:(UIPanGestureRecognizer *)gestureRecognizer{
+    if(gestureRecognizer != self.zx_popGestureRecognizer){
+        return YES;
+    }
+    if ([[self valueForKey:@"_isTransitioning"] boolValue]) {
+        return NO;
+    }
+    /* **********************************************/
+    // Thanks to @forkingdog  https://github.com/forkingdog/FDFullscreenPopGesture Respect!
+    CGPoint translation = [gestureRecognizer translationInView:self.view];
+    BOOL isLeftToRight = [UIApplication sharedApplication].userInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionLeftToRight;
+    CGFloat multiplier = isLeftToRight ? 1 : - 1;
+    if ((translation.x * multiplier) <= 0) {
+        return NO;
+    }
+    /* **********************************************/
     CGFloat panGestureX = [gestureRecognizer locationInView:self.view].x;
     CGFloat coverW = self.zx_popGestureCoverRatio * self.view.frame.size.width;
     if(panGestureX > coverW){

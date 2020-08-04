@@ -734,7 +734,7 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
                             if(otherGestureRecognizer.view != scrollView){
                                 return NO;;
                             }
-                            if(scrollView.contentOffset.x < scrollView.frame.size.width){
+                            if(scrollView.contentOffset.x <= 0){
                                 return YES;
                             }else{
                                 return NO;

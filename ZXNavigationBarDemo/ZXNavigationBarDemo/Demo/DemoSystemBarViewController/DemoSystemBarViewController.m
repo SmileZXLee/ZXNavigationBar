@@ -11,7 +11,7 @@
 @implementation DemoSystemBarViewController
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"系统导航栏";
+    self.title = @"系统导航栏(继承于ZXNavigationBarController)";
     self.zx_showSystemNavBar = YES;
     self.view.backgroundColor = [UIColor whiteColor];
     
@@ -20,7 +20,6 @@
     label.textAlignment = NSTextAlignmentCenter;
     label.text = @"这是一个系统导航栏的控制器";
     [self.view addSubview:label];
-    
     
 }
 @end

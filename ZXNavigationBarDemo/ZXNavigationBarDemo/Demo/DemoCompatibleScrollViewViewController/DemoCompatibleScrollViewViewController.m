@@ -33,7 +33,7 @@
     self.scrollView.bounces = NO;
     __weak typeof(self) weakSelf = self;
     self.zx_popGestureShouldRecognizeSimultaneously = ^BOOL(UIGestureRecognizer * _Nonnull otherGestureRecognizer) {
-        if(weakSelf.scrollView.contentOffset.x < weakSelf.scrollView.width){
+        if(weakSelf.scrollView.contentOffset.x <= 0){
             return YES;
         }
         return NO;
@@ -48,7 +48,12 @@
     self.scrollView.frame = CGRectMake(0, ZXNavBarHeight, self.view.width, self.view.height - ZXNavBarHeight);
     self.scrollView.pagingEnabled = YES;
     [self.view addSubview:self.scrollView];
+    [self reloadScrollViewData];
+}
+
+- (void)reloadScrollViewData{
     UIView *lastView;
+    [self.scrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     for(int i = 0; i < 10; i++){
         UIView *view = [[UIView alloc]init];
         view.backgroundColor = randomColor;
@@ -66,13 +71,20 @@
     if(lastView){
         [self.scrollView setContentSize:CGSizeMake(CGRectGetMaxX(lastView.frame), 0)];
     }
-    
-    
+    [self.scrollView setContentOffset:CGPointZero];
 }
+
+- (void)viewDidLayoutSubviews{
+    [super viewDidLayoutSubviews];
+    self.scrollView.frame = CGRectMake(0, ZXNavBarHeight, self.view.width, self.view.height - ZXNavBarHeight);
+    [self reloadScrollViewData];
+}
+
 
 - (UIScrollView *)scrollView{
     if(!_scrollView){
         _scrollView = [[UIScrollView alloc]init];
+        [self.view addSubview:_scrollView];
     }
     return _scrollView;
 }

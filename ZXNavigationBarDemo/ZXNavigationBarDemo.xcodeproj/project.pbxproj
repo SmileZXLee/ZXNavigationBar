@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		742D08B024D16BED00F76EEE /* DemoCompatibleScrollViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 742D08AF24D16BED00F76EEE /* DemoCompatibleScrollViewViewController.m */; };
 		749BBF4F2424CE6400C63132 /* UINavigationController+ZXNavBarAllHiddenExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 749BBF4E2424CE6400C63132 /* UINavigationController+ZXNavBarAllHiddenExtension.m */; };
+		74A4B60B24D9716A00F7768A /* DemoPublicSystemBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74A4B60A24D9716A00F7768A /* DemoPublicSystemBarViewController.m */; };
 		74BC1AEA241362C10032A424 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BC1AE9241362C10032A424 /* AppDelegate.m */; };
 		74BC1AF2241362C50032A424 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 74BC1AF1241362C50032A424 /* Assets.xcassets */; };
 		74BC1AF5241362C50032A424 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 74BC1AF3241362C50032A424 /* LaunchScreen.storyboard */; };
@@ -59,6 +60,8 @@
 		742D08AF24D16BED00F76EEE /* DemoCompatibleScrollViewViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DemoCompatibleScrollViewViewController.m; sourceTree = "<group>"; };
 		749BBF4D2424CE6400C63132 /* UINavigationController+ZXNavBarAllHiddenExtension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+ZXNavBarAllHiddenExtension.h"; sourceTree = "<group>"; };
 		749BBF4E2424CE6400C63132 /* UINavigationController+ZXNavBarAllHiddenExtension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+ZXNavBarAllHiddenExtension.m"; sourceTree = "<group>"; };
+		74A4B60924D9716A00F7768A /* DemoPublicSystemBarViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DemoPublicSystemBarViewController.h; sourceTree = "<group>"; };
+		74A4B60A24D9716A00F7768A /* DemoPublicSystemBarViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DemoPublicSystemBarViewController.m; sourceTree = "<group>"; };
 		74BC1AE5241362C10032A424 /* ZXNavigationBarDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZXNavigationBarDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		74BC1AE8241362C10032A424 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		74BC1AE9241362C10032A424 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -301,6 +304,8 @@
 			children = (
 				74BC1B482418E6D10032A424 /* DemoSystemBarViewController.h */,
 				74BC1B492418E6D10032A424 /* DemoSystemBarViewController.m */,
+				74A4B60924D9716A00F7768A /* DemoPublicSystemBarViewController.h */,
+				74A4B60A24D9716A00F7768A /* DemoPublicSystemBarViewController.m */,
 			);
 			path = DemoSystemBarViewController;
 			sourceTree = "<group>";
@@ -480,6 +485,7 @@
 				74BC1B4A2418E6D20032A424 /* DemoSystemBarViewController.m in Sources */,
 				74BC1B36241787760032A424 /* UIImage+ZXNavColorRender.m in Sources */,
 				74BC1B3C2417C8100032A424 /* DemoListViewController.m in Sources */,
+				74A4B60B24D9716A00F7768A /* DemoPublicSystemBarViewController.m in Sources */,
 				74BC1B69241A23C00032A424 /* DemoCustomTitleView.m in Sources */,
 				74BC1B2224138BCB0032A424 /* ZXNavigationBarController.m in Sources */,
 				74DAA1DF2480E50300EF7493 /* ZXNavigationBarNavigationController.m in Sources */,

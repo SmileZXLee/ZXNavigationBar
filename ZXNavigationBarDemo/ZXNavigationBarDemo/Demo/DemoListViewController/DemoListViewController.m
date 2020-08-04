@@ -15,6 +15,7 @@
 #import "DemoFoldFrameViewController.h"
 #import "DemoFoldXibViewController.h"
 #import "DemoCompatibleScrollViewViewController.h"
+#import "DemoPublicSystemBarViewController.h"
 @interface DemoListViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) NSArray *datas;
@@ -98,7 +99,7 @@
         }
         case 6:{
             //跳转到使用系统导航栏的控制器
-            vc = [[DemoSystemBarViewController alloc]init];
+            vc = [[DemoPublicSystemBarViewController alloc]init];
             break;
         }
         case 7:{
