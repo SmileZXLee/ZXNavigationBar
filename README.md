@@ -20,7 +20,7 @@ pod 'ZXNavigationBar'
 - [x] 每个控制器单独管理自己的导航栏，导航栏属于控制器的子view，不再属于统一的导航控制器
 - [x] 兼容iOS8-iOS14，兼容刘海屏等各种设备，且无需担心系统更新需要重新适配导航栏
 - [x] 横竖屏完美适配
-- [x] 仅需一行代码即可轻松设置导航栏背景图片、背景色、导航栏渐变、状态栏颜色等各类属性
+- [x] 仅需一行代码即可轻松设置导航栏背景图片、背景色、导航栏渐变、状态栏颜色、Item大小和边距等各类属性
 - [x] 仅需一行代码即可实现拦截pop手势与点击返回事件，并决定是否要响应pop操作
 - [x] 仅需一行代码即可解决scrollView横向滚动与pop手势冲突问题
 - [x] 支持随时切换为系统导航栏，且与系统导航栏之间无缝衔接
@@ -288,7 +288,8 @@ self.zx_handlePopBlock = ^BOOL(ZXNavigationBarController * _Nonnull viewControll
 将您的导航控制器继承于`ZXNavigationBarNavigationController`或使用`ZXNavigationBarNavigationController`作为您的导航控制器即可
 ```
 #### 设置全屏返回手势响应范围
-将您的导航控制器继承于`ZXNavigationBarNavigationController`或使用`ZXNavigationBarNavigationController`作为您的导航控制器
+将您的导航控制器继承于`ZXNavigationBarNavigationController`或使用`ZXNavigationBarNavigationController`作为您的导航控制器  
+注意：因设置`全屏返回手势响应范围`与`禁用全屏pop手势`属于同一导航控制器，为避免此属性被其他子控制器修改，以下代码建议写在子控制器的`-viewWillAppear`或`-viewDidAppear`中
 ```objective-c
 //在控制器中：
 //pop手势的触发范围比例，0-1，默认为1，即代表全屏触发
@@ -300,7 +301,8 @@ self.zx_popGestureCoverRatio = 0.5;
 self.zx_disableFullScreenGesture = YES;
 ```
 #### 监听全屏返回手势进度
-将您的导航控制器继承于`ZXNavigationBarNavigationController`或使用`ZXNavigationBarNavigationController`作为您的导航控制器
+将您的导航控制器继承于`ZXNavigationBarNavigationController`或使用`ZXNavigationBarNavigationController`作为您的导航控制器  
+注意：因`手势进度监听的block`属于同一导航控制器，为避免block被子控制器覆盖后失效，以下代码建议写在子控制器的`-viewWillAppear`或`-viewDidAppear`中
 ```objective-c
 //在控制器中：
 self.zx_handleCustomPopGesture = ^(CGFloat popOffsetProgress) {
@@ -316,13 +318,15 @@ self.zx_handleCustomPopGesture = ^(CGFloat popOffsetProgress) {
 self.navigationController.zx_disableAutoHidesBottomBarWhenPushed = YES;
 ```
 
-#### 兼容pop返回手势与scrollView横向滚动手势
+#### 兼容pop返回手势与scrollView横向滚动手势  
+注意：因`判断是否支持多层级的手势同时触发的block`属于同一导航控制器，为避免block被子控制器覆盖后失效，以下代码建议写在子控制器的`-viewWillAppear`或`-viewDidAppear`中
 ```objective-c
 //在控制器中：
 [self zx_setPopGestureCompatibleScrollView:self.scrollView];
 ```
 #### 兼容pop返回手势与scrollView横向滚动手势（自定义处理）
-当导航控制器为`ZXNavigationBarNavigationController`或继承于`ZXNavigationBarNavigationController`时，如果需要更复杂的定制化的情况，可以使用下方的方式，以下代码的作用是在scrollView滚动到第一页的时候，支持pop手势多层级同时触发，为了更好的展示效果，建议关闭scrollView的bounces。此段代码与上方效果一致
+当导航控制器为`ZXNavigationBarNavigationController`或继承于`ZXNavigationBarNavigationController`时，如果需要更复杂的定制化的情况，可以使用下方的方式，以下代码的作用是在scrollView滚动到第一页的时候，支持pop手势多层级同时触发，为了更好的展示效果，建议关闭scrollView的bounces。此段代码与上方效果一致  
+注意：因`判断是否支持多层级的手势同时触发的block`属于同一导航控制器，为避免block被子控制器覆盖后失效，以下代码建议写在子控制器的`-viewWillAppear`或`-viewDidAppear`中
 ```objective-c
 //在控制器中：
 self.scrollView.bounces = NO;
