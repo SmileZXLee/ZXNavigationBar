@@ -11,16 +11,16 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface UIView (ZXNavFrameExtension)
-@property (nonatomic) CGFloat x;
-@property (nonatomic) CGFloat y;
-@property (nonatomic) CGFloat width;
-@property (nonatomic) CGFloat height;
-@property (nonatomic) CGFloat right;
-@property (nonatomic) CGFloat bottom;
-@property (nonatomic) CGFloat centerX;
-@property (nonatomic) CGFloat centerY;
-@property (nonatomic) CGPoint origin;
-@property (nonatomic) CGSize size;
+@property (nonatomic) CGFloat zx_x;
+@property (nonatomic) CGFloat zx_y;
+@property (nonatomic) CGFloat zx_width;
+@property (nonatomic) CGFloat zx_height;
+@property (nonatomic) CGFloat zx_right;
+@property (nonatomic) CGFloat zx_bottom;
+@property (nonatomic) CGFloat zx_centerX;
+@property (nonatomic) CGFloat zx_centerY;
+@property (nonatomic) CGPoint zx_origin;
+@property (nonatomic) CGSize zx_size;
 @end
 
 NS_ASSUME_NONNULL_END

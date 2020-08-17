@@ -11,8 +11,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface NSString (ZXNavCalcSizeExtension)
-- (CGFloat)getRectHeightWithLimitW:(CGFloat)limitW fontSize:(CGFloat)fontSize;
-- (CGFloat)getRectWidthWithLimitH:(CGFloat)limitH fontSize:(CGFloat)fontSize;
+- (CGFloat)zx_getRectHeightWithLimitW:(CGFloat)limitW fontSize:(CGFloat)fontSize;
+- (CGFloat)zx_getRectWidthWithLimitH:(CGFloat)limitH fontSize:(CGFloat)fontSize;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -26,15 +26,43 @@
 @return 主Window
 */
 #define ZXMainWindow ([UIApplication sharedApplication].keyWindow ?: [UIApplication sharedApplication].windows.firstObject)
-/**
- 判断是否是刘海屏
 
- @return 是否是刘海屏
+/**
+获取是否是iPad设备
+
+@return 是否是iPad设备
+*/
+#define ZXIsIPad ([[UIDevice currentDevice] userInterfaceIdiom]==UIUserInterfaceIdiomPad)
+
+/**
+ 判断是否是刘海屏(全面屏iPad不算)
+
+ @return 是否是刘海屏(全面屏iPad不算)
  */
 #define ZXIsBangScreen ({\
 int cFlag = 0;\
-if (@available(iOS 11.0, *)) {\
-if (ZXMainWindow.safeAreaInsets.bottom > 0) {\
+if(ZXIsIPad){cFlag = 0;}\
+else if(@available(iOS 11.0, *)){\
+if(ZXMainWindow.safeAreaInsets.bottom > 0){\
+cFlag = 1;\
+}else{\
+cFlag = 0;\
+}\
+}else{\
+cFlag = 0;\
+}\
+cFlag;\
+})
+
+/**
+ 是否是全面屏iPad
+
+ @return 是否是全面屏iPad
+ */
+#define ZXIsFullScreenIpad ({\
+int cFlag = 0;\
+if(@available(iOS 11.0, *)){\
+if(ZXMainWindow.safeAreaInsets.bottom > 0 && ZXIsIPad){\
 cFlag = 1;\
 }else{\
 cFlag = 0;\
@@ -67,20 +95,34 @@ cFlag;\
 #define ZXScreenHeight [UIScreen mainScreen].bounds.size.height
 
 /**
+ 获取导航栏高度(不包含状态栏高度)
+
+ @return 导航栏高度(不包含状态栏高度)
+ */
+#define ZXNavBarHeightNotIncludeStatusBar (ZXIsIPad ? 50 : 44)
+
+/**
  获取状态栏高度
 
  @return 状态栏高度
  */
 //#define ZXAppStatusBarHeight [[UIApplication sharedApplication] statusBarFrame].size.height
-//适配iOS13以下系统开启热点或音频时的导航栏
-#define ZXAppStatusBarHeight (ZXIsHorizontalScreen ? 0 : (ZXIsBangScreen ? 44 : 20))
+//适配iOS13以下系统开启热点或音视频时的导航栏(因为iOS13以下系统开启或音视频时状态栏会增高，从而导致计算出来的整个导航栏增高)
+#define ZXAppStatusBarHeight (ZXIsHorizontalScreen ? ZXRealAppStatusBarHeight : ZXIsFullScreenIpad ? ZXRealAppStatusBarHeight : (ZXIsBangScreen ? 44 : 20))
+
+/**
+ 获取真实状态栏高度
+
+ @return 真实状态栏高度
+ */
+#define ZXRealAppStatusBarHeight [[UIApplication sharedApplication] statusBarFrame].size.height
 
 /**
  获取导航栏高度
  
  @return 导航栏高度
  */
-#define ZXNavBarHeight (ZXIsHorizontalScreen ? 44 : (ZXAppStatusBarHeight + 44))
+#define ZXNavBarHeight (ZXAppStatusBarHeight + ZXNavBarHeightNotIncludeStatusBar)
 
 /**
  获取安全区域顶部高度
@@ -117,6 +159,6 @@ height;\
  
  @return 横屏后左右安全距离
  */
-#define ZXHorizontaledSafeArea ((ZXIsHorizontalScreen && ZXIsBangScreen)? 44 : 0)
+#define ZXHorizontaledSafeArea ((ZXIsHorizontalScreen && ZXIsBangScreen)? ZXNavBarHeightNotIncludeStatusBar : 0)
 
 #endif /* ZXNavigationBarDefine_h */

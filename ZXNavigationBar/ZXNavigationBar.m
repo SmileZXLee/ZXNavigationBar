@@ -85,12 +85,12 @@
     self.lineView = lineView;
     self.zx_titleView = titleView;
     
-    CGFloat orgRigthBtnX = rightBtn.x;
-    CGFloat orgLeftBtnX = leftBtn.x;
+    CGFloat orgRigthBtnX = rightBtn.zx_x;
+    CGFloat orgLeftBtnX = leftBtn.zx_x;
     __weak typeof(self) weakSelf = self;
     rightBtn.zx_barItemBtnFrameUpdateBlock = ^(ZXNavItemBtn * _Nonnull barItemBtn) {
         [weakSelf layoutItemBtn:barItemBtn];
-        barItemBtn.x = orgRigthBtnX - (barItemBtn.width + 5 - weakSelf.zx_itemSize) - weakSelf.zx_itemMargin * 10;
+        barItemBtn.zx_x = orgRigthBtnX - (barItemBtn.zx_width + 5 - weakSelf.zx_itemSize) - weakSelf.zx_itemMargin * 10;
         [weakSelf refNavBar];
     };
     
@@ -100,7 +100,7 @@
     
     leftBtn.zx_barItemBtnFrameUpdateBlock = ^(ZXNavItemBtn * _Nonnull barItemBtn) {
         [weakSelf layoutItemBtn:barItemBtn];
-        rightBtn.x = orgLeftBtnX + (barItemBtn.width + 5 - weakSelf.zx_itemSize);
+        rightBtn.zx_x = orgLeftBtnX + (barItemBtn.zx_width + 5 - weakSelf.zx_itemSize);
         [weakSelf refNavBar];
 
     };
@@ -110,21 +110,21 @@
 #pragma mark 当Button中有文字时，刷新Button布局
 - (void)layoutItemBtn:(ZXNavItemBtn *)barItemBtn{
     if(barItemBtn.currentTitle && barItemBtn.currentTitle.length){
-        CGFloat btnw = [[NSString stringWithFormat:@"%@",barItemBtn.currentTitle] getRectWidthWithLimitH:barItemBtn.height fontSize:barItemBtn.titleLabel.font.pointSize];
+        CGFloat btnw = [[NSString stringWithFormat:@"%@",barItemBtn.currentTitle] zx_getRectWidthWithLimitH:barItemBtn.zx_height fontSize:barItemBtn.titleLabel.font.pointSize];
         if(!barItemBtn.currentTitle.length){
             btnw = 0;
         }
         if(barItemBtn.imageView.image){
-            btnw = btnw + barItemBtn.imageView.width;
+            btnw = btnw + barItemBtn.imageView.zx_width;
         }
-        barItemBtn.width = btnw + 5;
+        barItemBtn.zx_width = btnw + 5;
     }
 }
 
 #pragma mark 刷新导航栏titleView布局
 - (void)refNavBar{
-    self.zx_titleLabel.width = CGRectGetMinX(self.zx_rightBtn.frame) - self.zx_itemMargin * 3 - self.zx_itemSize;
-    self.zx_titleView.width = self.zx_titleLabel.width;
+    self.zx_titleLabel.zx_width = CGRectGetMinX(self.zx_rightBtn.frame) - self.zx_itemMargin * 3 - self.zx_itemSize;
+    self.zx_titleView.zx_width = self.zx_titleLabel.zx_width;
 }
 
 #pragma mark 点击了左侧Button
@@ -145,41 +145,41 @@
 #pragma mark 刷新子控件布局
 - (void)relayoutSubviews{
     if(self.zx_leftBtn && self.zx_rightBtn && self.zx_titleLabel){
-        CGFloat centerOffSet = ZXIsHorizontalScreen ? 0 : ZXAppStatusBarHeight;
+        CGFloat centerOffSet = ZXAppStatusBarHeight;
         CGSize leftBtnSize = CGSizeZero;
-        if((self.zx_leftBtn.size.height == 0 && self.zx_leftBtn.size.width == 0) || self.shouldRefLayout){
+        if((self.zx_leftBtn.zx_size.height == 0 && self.zx_leftBtn.zx_size.width == 0) || self.shouldRefLayout){
             leftBtnSize = CGSizeMake(self.zx_itemSize, self.zx_itemSize);
         }else{
-            leftBtnSize = self.zx_leftBtn.size;
+            leftBtnSize = self.zx_leftBtn.zx_size;
         }
-        self.zx_leftBtn.frame = CGRectMake(self.zx_itemMargin + ZXHorizontaledSafeArea,(self.height - self.zx_itemSize + centerOffSet) / 2, leftBtnSize.width, leftBtnSize.height);
+        self.zx_leftBtn.frame = CGRectMake(self.zx_itemMargin + ZXHorizontaledSafeArea,(self.zx_height - self.zx_itemSize + centerOffSet) / 2, leftBtnSize.width, leftBtnSize.height);
         CGSize rightBtnSize = CGSizeZero;
         CGFloat rightBtnW = 0;
-        if((self.zx_rightBtn.size.height == 0 && self.zx_rightBtn.size.width == 0 && self.zx_rightBtn.x == 0) || self.shouldRefLayout){
+        if((self.zx_rightBtn.zx_size.height == 0 && self.zx_rightBtn.zx_size.width == 0 && self.zx_rightBtn.zx_x == 0) || self.shouldRefLayout){
             rightBtnSize = CGSizeMake(self.zx_itemSize, self.zx_itemSize);
             rightBtnW = self.zx_itemSize;
         }else{
-            rightBtnSize = self.zx_rightBtn.size;
-            rightBtnW = self.zx_rightBtn.width;
+            rightBtnSize = self.zx_rightBtn.zx_size;
+            rightBtnW = self.zx_rightBtn.zx_width;
         }
-        self.zx_rightBtn.frame = CGRectMake(self.width - self.zx_itemMargin - rightBtnW - ZXHorizontaledSafeArea,(self.height - self.zx_itemSize + centerOffSet) / 2, rightBtnSize.width,rightBtnSize.height);
+        self.zx_rightBtn.frame = CGRectMake(self.zx_width - self.zx_itemMargin - rightBtnW - ZXHorizontaledSafeArea,(self.zx_height - self.zx_itemSize + centerOffSet) / 2, rightBtnSize.width,rightBtnSize.height);
         if(self.shouldRefLayout){
             [self layoutItemBtn:self.zx_leftBtn];
             [self layoutItemBtn:self.zx_rightBtn];
         }
         if(self.zx_subRightBtn.imageView.image){
-            self.zx_subRightBtn.frame = CGRectMake(CGRectGetMinX(self.zx_rightBtn.frame) - self.zx_itemMargin - self.zx_itemSize, self.zx_rightBtn.y, self.zx_itemSize, self.zx_itemSize);
+            self.zx_subRightBtn.frame = CGRectMake(CGRectGetMinX(self.zx_rightBtn.frame) - self.zx_itemMargin - self.zx_itemSize, self.zx_rightBtn.zx_y, self.zx_itemSize, self.zx_itemSize);
         }else{
-            self.zx_subRightBtn.frame = CGRectMake(CGRectGetMinX(self.zx_rightBtn.frame) - self.zx_itemMargin, self.zx_rightBtn.y, 0, 0);
+            self.zx_subRightBtn.frame = CGRectMake(CGRectGetMinX(self.zx_rightBtn.frame) - self.zx_itemMargin, self.zx_rightBtn.zx_y, 0, 0);
         }
-        CGFloat rightBtnFakeWidth = self.zx_rightBtn.width;
+        CGFloat rightBtnFakeWidth = self.zx_rightBtn.zx_width;
         if(self.zx_subRightBtn.imageView.image){
-            rightBtnFakeWidth = self.zx_rightBtn.width + self.zx_itemSize + self.zx_itemMargin;
+            rightBtnFakeWidth = self.zx_rightBtn.zx_width + self.zx_itemSize + self.zx_itemMargin;
         }
-        CGFloat maxItemWidth = MAX(self.zx_leftBtn.width,rightBtnFakeWidth);
-        self.zx_titleLabel.frame = CGRectMake(maxItemWidth + 2 * self.zx_itemMargin + ZXHorizontaledSafeArea, centerOffSet, self.width - 2 * maxItemWidth - 4 * self.zx_itemMargin - ZXHorizontaledSafeArea * 2, self.height - centerOffSet);
+        CGFloat maxItemWidth = MAX(self.zx_leftBtn.zx_width,rightBtnFakeWidth);
+        self.zx_titleLabel.frame = CGRectMake(maxItemWidth + 2 * self.zx_itemMargin + ZXHorizontaledSafeArea, centerOffSet, self.zx_width - 2 * maxItemWidth - 4 * self.zx_itemMargin - ZXHorizontaledSafeArea * 2, self.zx_height - centerOffSet);
         self.zx_titleView.frame = self.zx_titleLabel.frame;
-        self.lineView.frame = CGRectMake(0, self.height - 1, self.width, 1);
+        self.lineView.frame = CGRectMake(0, self.zx_height - 1, self.zx_width, 1);
         self.zx_bacImageView.frame = self.frame;
         self.shouldRefLayout = NO;
     }

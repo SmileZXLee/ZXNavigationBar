@@ -11,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface UIImage (ZXNavBundleExtension)
-+ (UIImage *)imageFromBundleWithImageName:(NSString *)imageName;
++ (UIImage *)zx_imageFromBundleWithImageName:(NSString *)imageName;
 @end
 
 NS_ASSUME_NONNULL_END
