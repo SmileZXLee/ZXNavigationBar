@@ -10,7 +10,7 @@
 #import "ZXNavigationBar.h"
 @implementation UIImage (ZXNavBundleExtension)
 
-+ (UIImage *)imageFromBundleWithImageName:(NSString *)imageName{
++ (UIImage *)zx_imageFromBundleWithImageName:(NSString *)imageName{
     static UIImage *image = nil;
     if (image == nil) {
         NSBundle *bundle = [NSBundle bundleWithPath:[[NSBundle bundleForClass:[ZXNavigationBar class]] pathForResource:@"ZXNavigationBar" ofType:@"bundle"]];

@@ -9,14 +9,14 @@
 #import "NSString+ZXNavCalcSizeExtension.h"
 
 @implementation NSString (ZXNavCalcSizeExtension)
-- (CGFloat)getRectWidthWithLimitH:(CGFloat)limitH fontSize:(CGFloat)fontSize{
+- (CGFloat)zx_getRectWidthWithLimitH:(CGFloat)limitH fontSize:(CGFloat)fontSize{
     CGRect rect = [self boundingRectWithSize:CGSizeMake(MAXFLOAT, limitH)
                                      options:NSStringDrawingUsesLineFragmentOrigin
                                   attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:fontSize]}
                                      context:nil];
     return rect.size.width;
 }
-- (CGFloat)getRectHeightWithLimitW:(CGFloat)limitW fontSize:(CGFloat)fontSize{
+- (CGFloat)zx_getRectHeightWithLimitW:(CGFloat)limitW fontSize:(CGFloat)fontSize{
     CGRect rect = [self boundingRectWithSize:CGSizeMake(limitW,MAXFLOAT )
                                      options:NSStringDrawingUsesLineFragmentOrigin
                                   attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:fontSize]}

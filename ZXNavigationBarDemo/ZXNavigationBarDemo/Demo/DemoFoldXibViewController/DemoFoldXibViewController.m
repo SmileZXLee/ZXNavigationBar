@@ -73,7 +73,7 @@
         }
         
     }
-    if (distance < 0 && distanceFromBottom > scrollView.height) {
+    if (distance < 0 && distanceFromBottom > scrollView.zx_height) {
         //向下滚动
         if(self.zx_navIsFolded){
             //如果有折叠 就展开

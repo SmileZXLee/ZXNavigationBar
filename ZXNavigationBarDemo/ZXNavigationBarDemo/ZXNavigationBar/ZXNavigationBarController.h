@@ -114,6 +114,11 @@ typedef void(^transparentGradientsOpaqueBlock) (void);
 @property (strong, nonatomic)UIFont *zx_navTitleFont;
 
 /**
+ 返回按钮的图片名，若不设置则使用默认的返回按钮图片
+ */
+@property (copy, nonatomic)NSString *zx_backBtnImageName;
+
+/**
  导航栏分割线View
  */
 @property (weak, nonatomic)UIView *zx_navLineView;
@@ -191,6 +196,7 @@ typedef void(^transparentGradientsOpaqueBlock) (void);
 
 /**
  pop手势的触发范围比例，0-1，默认为1，即代表全屏触发(导航控制器需为ZXNavigationBarNavigationController或继承于ZXNavigationBarNavigationController)
+ 注意：因设置全屏返回手势响应范围与禁用全屏pop手势属于同一导航控制器，为避免此属性被其他子控制器修改，以下代码建议写在子控制器的-viewWillAppear或-viewDidAppear中
  */
 @property (assign, nonatomic) CGFloat zx_popGestureCoverRatio;
 
@@ -211,11 +217,13 @@ typedef void(^transparentGradientsOpaqueBlock) (void);
 
 /**
  监听自定义pop手势进度(导航控制器需为ZXNavigationBarNavigationController或继承于ZXNavigationBarNavigationController)。popOffsetProgress范围为0-1，0代表即将开始pop，1代表完成pop
+ 注意：因手势进度监听的block属于同一导航控制器，为避免block被子控制器覆盖后失效，以下代码建议写在子控制器的-viewWillAppear或-viewDidAppear中
  */
 @property(copy, nonatomic)void(^zx_handleCustomPopGesture)(CGFloat popOffsetProgress);
 
 /**
 pop手势是否支持多层级的手势同时触发，默认为否。若设置了此block，zx_setPopGestureCompatibleScrollView与zx_setPopGestureCompatibleScrollViews方法将失效
+注意：因判断是否支持多层级的手势同时触发的block属于同一导航控制器，为避免block被子控制器覆盖后失效，以下代码建议写在子控制器的-viewWillAppear或-viewDidAppear中
 */
 @property(copy, nonatomic)BOOL(^zx_popGestureShouldRecognizeSimultaneously)(UIGestureRecognizer *otherGestureRecognizer);
 
@@ -414,10 +422,12 @@ pop手势是否支持多层级的手势同时触发，默认为否。若设置�
 
 /// 设置与pop手势冲突的scrollView数组以兼容pop手势与scrollView手势
 /// @param scrollViewArr scrollView数组
+/// 注意：因判断是否支持多层级的手势同时触发的block属于同一导航控制器，为避免block被子控制器覆盖后失效，以下代码建议写在子控制器的-viewWillAppear或-viewDidAppear中
 - (void)zx_setPopGestureCompatibleScrollViews:(NSArray <UIScrollView *>*)scrollViewArr;
 
 /// 设置与pop手势冲突的scrollView以兼容pop手势与scrollView手势
 /// @param scrollView scrollView
+/// 注意：因判断是否支持多层级的手势同时触发的block属于同一导航控制器，为避免block被子控制器覆盖后失效，以下代码建议写在子控制器的-viewWillAppear或-viewDidAppear中
 - (void)zx_setPopGestureCompatibleScrollView:(UIScrollView *)scrollView;
 
 @end

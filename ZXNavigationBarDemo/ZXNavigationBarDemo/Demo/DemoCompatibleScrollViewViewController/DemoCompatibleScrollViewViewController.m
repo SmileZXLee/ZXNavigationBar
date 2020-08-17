@@ -45,7 +45,7 @@
 - (void)setUpView{
     self.view.backgroundColor = [UIColor whiteColor];
     
-    self.scrollView.frame = CGRectMake(0, ZXNavBarHeight, self.view.width, self.view.height - ZXNavBarHeight);
+    self.scrollView.frame = CGRectMake(0, ZXNavBarHeight, self.view.zx_width, self.view.zx_height - ZXNavBarHeight);
     self.scrollView.pagingEnabled = YES;
     [self.view addSubview:self.scrollView];
     [self reloadScrollViewData];
@@ -57,7 +57,7 @@
     for(int i = 0; i < 10; i++){
         UIView *view = [[UIView alloc]init];
         view.backgroundColor = randomColor;
-        view.frame = CGRectMake(i * self.scrollView.width, 0, self.scrollView.width, self.scrollView.height);
+        view.frame = CGRectMake(i * self.scrollView.zx_width, 0, self.scrollView.zx_width, self.scrollView.zx_height);
         UILabel *titleLabel = [[UILabel alloc]init];
         titleLabel.frame = view.bounds;
         titleLabel.font = [UIFont boldSystemFontOfSize:70];
@@ -76,7 +76,7 @@
 
 - (void)viewDidLayoutSubviews{
     [super viewDidLayoutSubviews];
-    self.scrollView.frame = CGRectMake(0, ZXNavBarHeight, self.view.width, self.view.height - ZXNavBarHeight);
+    self.scrollView.frame = CGRectMake(0, ZXNavBarHeight, self.view.zx_width, self.view.zx_height - ZXNavBarHeight);
     [self reloadScrollViewData];
 }
 

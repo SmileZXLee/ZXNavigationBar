@@ -64,7 +64,7 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
 #pragma mark 设置自动显示返回Button且点击pop到上一个控制器
 - (void)setAutoBack{
     if(self.navigationController && self.navigationController.viewControllers.count > 1){
-        UIImage *backImg = [UIImage imageFromBundleWithImageName:@"back_icon"];
+        UIImage *backImg = [self getBackBtnImage];
         [self.zx_navLeftBtn setImage:backImg forState:UIControlStateNormal];
         __weak typeof(self) weakSelf = self;
         [self zx_leftClickedBlock:^(ZXNavItemBtn * _Nonnull btn) {
@@ -134,11 +134,11 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
 - (void)updateNavFoldingFrame:(CADisplayLink *)displayLink{
     self.isNavFoldAnimating = YES;
     if(self.setFold){
-        if(self.zx_navBar.height > ZXAppStatusBarHeight){
-            if(self.zx_navBar.height - self.zx_navFoldingSpeed < 0){
-                self.zx_navBar.height = 0;
+        if(self.zx_navBar.zx_height > ZXAppStatusBarHeight){
+            if(self.zx_navBar.zx_height - self.zx_navFoldingSpeed < 0){
+                self.zx_navBar.zx_height = 0;
             }else{
-                self.zx_navBar.height -= self.zx_navFoldingSpeed;
+                self.zx_navBar.zx_height -= self.zx_navFoldingSpeed;
             }
             if(self.xibTopConstraint){
                 self.xibTopConstraint.constant -= self.zx_navFoldingSpeed;
@@ -146,7 +146,7 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
             if(self.offsetBlock){
                 self.offsetBlock(-self.zx_navFoldingSpeed);
             }
-            [self setAlphaOfNavSubViews:(self.zx_navBar.height - ZXAppStatusBarHeight) / ([self getCurrentNavHeight] - ZXAppStatusBarHeight)];
+            [self setAlphaOfNavSubViews:(self.zx_navBar.zx_height - ZXAppStatusBarHeight) / ([self getCurrentNavHeight] - ZXAppStatusBarHeight)];
         }else{
             self.isNavFoldAnimating = NO;
             [self.displayLink invalidate];
@@ -159,15 +159,15 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
             [self relayoutSubviews];
         }
     }else{
-        if(self.zx_navBar.height < [self getCurrentNavHeight]){
-            self.zx_navBar.height += self.zx_navFoldingSpeed;
+        if(self.zx_navBar.zx_height < [self getCurrentNavHeight]){
+            self.zx_navBar.zx_height += self.zx_navFoldingSpeed;
             if(self.xibTopConstraint){
                 self.xibTopConstraint.constant += self.zx_navFoldingSpeed;
             }
             if(self.offsetBlock){
                 self.offsetBlock(self.zx_navFoldingSpeed);
             }
-            [self setAlphaOfNavSubViews:(self.zx_navBar.height - ZXAppStatusBarHeight) / ([self getCurrentNavHeight] - ZXAppStatusBarHeight)];
+            [self setAlphaOfNavSubViews:(self.zx_navBar.zx_height - ZXAppStatusBarHeight) / ([self getCurrentNavHeight] - ZXAppStatusBarHeight)];
         }else{
             self.isNavFoldAnimating = NO;
             [self.displayLink invalidate];
@@ -195,6 +195,18 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
         return ZXNavBarHeight;
     }
     return self.zx_navFixHeight;
+}
+
+#pragma mark 获取返回按钮的体魄
+- (UIImage *)getBackBtnImage{
+    UIImage *backImg = nil;
+    if(self.zx_backBtnImageName && self.zx_backBtnImageName.length){
+        backImg = [UIImage imageNamed:self.zx_backBtnImageName];
+    }
+    if(!backImg){
+        backImg = [UIImage zx_imageFromBundleWithImageName:@"back_icon"];
+    }
+    return backImg;
 }
 
 #pragma mark 刷新导航栏状态
@@ -275,6 +287,12 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
     self.zx_navTitleLabel.font = [UIFont systemFontOfSize:zx_navTitleFontSize];
 }
 
+- (void)setZx_backBtnImageName:(NSString *)zx_backBtnImageName{
+    _zx_backBtnImageName = zx_backBtnImageName;
+    UIImage *backImg = [self getBackBtnImage];
+    [self.zx_navLeftBtn setImage:backImg forState:UIControlStateNormal];
+}
+
 - (void)setZx_navTitleFont:(UIFont *)zx_navTitleFont{
     _zx_navTitleFont = zx_navTitleFont;
     self.zx_navTitleLabel.font = zx_navTitleFont;
@@ -341,7 +359,7 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
     if(@available(iOS 11.0, *)) {
         if(_zx_isEnableSafeArea != zx_isEnableSafeArea){
             if(zx_isEnableSafeArea){
-                CGFloat safeAreaHeight = ZXIsHorizontalScreen ? 0 : ZXAppStatusBarHeight;
+                CGFloat safeAreaHeight = ZXAppStatusBarHeight;
                 [self adjustNavContainerOffset:([self getCurrentNavHeight] - safeAreaHeight)];
                 
             }else{
@@ -692,6 +710,7 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
     CGFloat offsetY = scrollView.contentOffset.y;
     //offsetY 到 fullChangeHeight变化时 导航栏透明度从0 到 1
     CGFloat navAlphe = offsetY / fullChangeHeight;
+    navAlphe = navAlphe < 0 ? 0 : navAlphe > 1 ? 1 : navAlphe;
     if(self.lastNavAlphe >= 0 && self.lastNavAlphe <= 1){
         //导航栏透明度正在改变
         if(changeBlock){

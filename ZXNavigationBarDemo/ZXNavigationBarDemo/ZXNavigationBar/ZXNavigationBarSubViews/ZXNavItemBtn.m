@@ -72,7 +72,7 @@
 
 #pragma mark ButtonLayout
 - (void)layoutImageAndTitle{
-    CGFloat btnw = [[NSString stringWithFormat:@"%@",self.currentTitle] getRectWidthWithLimitH:self.frame.size.height fontSize:self.titleLabel.font.pointSize] + 5;
+    CGFloat btnw = [[NSString stringWithFormat:@"%@",self.currentTitle] zx_getRectWidthWithLimitH:self.frame.size.height fontSize:self.titleLabel.font.pointSize] + 5;
     if(self.imageView.image){
         self.imageView.frame = CGRectMake(0, 0, self.frame.size.height, self.frame.size.height);
         self.titleLabel.frame = CGRectMake(CGRectGetMaxX(self.imageView.frame), 0, btnw, self.frame.size.height);

@@ -76,7 +76,7 @@
         }
 
     }
-    if (distance < 0 && distanceFromBottom > scrollView.height) {
+    if (distance < 0 && distanceFromBottom > scrollView.zx_height) {
         //向下滚动
         if(self.zx_navIsFolded){
             //如果有折叠 就展开
@@ -90,9 +90,9 @@
     __weak typeof(self) weakSelf = self;
     [self zx_setNavFolded:shouldFold speed:3 foldingOffsetBlock:^(CGFloat offset) {
         //tableView的y值跟随导航栏变化(导航栏高度减小，tableView的y值减小)
-        weakSelf.tableView.y += offset;
+        weakSelf.tableView.zx_y += offset;
         //tableView的高度值跟随这导航栏变化(导航栏高度减小，tableView高度增加)
-        weakSelf.tableView.height -= offset;
+        weakSelf.tableView.zx_height -= offset;
     } foldCompletionBlock:nil];
 }
 @end
