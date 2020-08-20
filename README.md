@@ -50,6 +50,12 @@ pod 'ZXNavigationBar'
 
 @end
 ```
+#### 【建议，非必须】将导航控制器继承于`ZXNavigationBarNavigationController`，建议将Base导航控制器继承于`ZXNavigationBarNavigationController`
+```objective-c
+@interface DemoBaseNavigationController : ZXNavigationBarNavigationController
+
+@end
+```
 #### 【重要】注意事项
 * `ZXNavigationBar`会自动显示返回按钮，且实现点击pop功能，您无需设置，若需要自定义返回按钮，直接覆盖`self.zx_navLeftBtn`的图片和点击回调即可
 * 如果项目中存在黑白状态栏交替的需求，建议先在base控制器的`viewDidLoad`方法中统一设置状态栏颜色，以避免设置成白色状态栏后返回上一个页面无法自动恢复为黑色状态栏
@@ -62,11 +68,11 @@ pod 'ZXNavigationBar'
 @end
 ```
 
-* `ZXNavigationBarController`作了自动隐藏导航栏的处理，但由于导航栏早于内部子控制器加载，因此有可能造成自定义导航栏抖动或状态栏颜色黑白相嵌的问题，
-若您遇到此问题，请在base导航控制器的`pushViewController:animated:`中设置`self.navigationBarHidden = YES;`或在Appdelegate的`application:didFinishLaunchingWithOptions:`中调用方法`[UINavigationController zx_hideAllNavBar]`【需要先`#import "ZXNavigationBarController.h"`】
+
+* 【导航控制器为`ZXNavigationBarNavigationController`或其子类时，可忽略此步操作】`ZXNavigationBarController`作了自动隐藏导航栏的处理，但由于导航栏早于内部子控制器加载，因此有可能造成自定义导航栏抖动或状态栏颜色黑白相嵌的问题，
+若您遇到此问题，请在base导航控制器的`pushViewController:animated:`中设置`self.navigationBarHidden = YES;`或在Appdelegate的`application:didFinishLaunchingWithOptions:`中调用方法`[UINavigationController zx_hideAllNavBar]`(需要先`#import "ZXNavigationBarController.h"`)
 ```objective-c
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-
     //这个方法需要在导航控制器加载前调用
     [UINavigationController zx_hideAllNavBar];
     
@@ -80,8 +86,6 @@ pod 'ZXNavigationBar'
 }
 @end
 ```
-或将您的导航控制器继承于`ZXNavigationBarNavigationController`或使用`ZXNavigationBarNavigationController`作为您的导航控制器
-
 
 
 #### 【重要】`ZXNavigationBar`对于自定义导航栏view内容无法自动下移的处理方式
