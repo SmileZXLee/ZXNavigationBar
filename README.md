@@ -129,7 +129,7 @@ self.zx_navTitleFont = [UIFont systemFontOfSize:20];
 self.zx_backBtnImageName = @"newBackImageName";
 ```
 
-#### 快速设置左侧/右侧的按钮和点击回调(以右侧按钮为例)
+#### 快速设置左侧/右侧的按钮和点击回调(以最右侧按钮为例)
 * 设置最右侧按钮的图片名和点击回调
 ```objective-c
 [self zx_setRightBtnWithImgName:@"set_icon" clickedBlock:^(UIButton * _Nonnull btn) {
@@ -181,6 +181,40 @@ self.zx_navItemMargin = 0;
 ```
 #### 设置右侧第二个按钮
 * 将上述例子中`zx_navLeftBtn`/`zx_navRightBtn`修改为`zx_navSubRightBtn`即可
+
+#### 设置左侧第二个按钮
+* 将上述例子中`zx_navLeftBtn`/`zx_navRightBtn`修改为`zx_navSubLeftBtn`即可
+
+#### 单独设置指定`ZXNavItemBtn`的属性（`ZXNavItemBtn`在导航栏中从左到右分别为`zx_navLeftBtn`,`zx_navSubLeftBtn`,`zx_navSubRightBtn`,`zx_navRightBtn`），以下以`zx_navLeftBtn`为例：
+
+* 设置NavItemBtn的image颜色
+```objective-c
+self.zx_navLeftBtn.zx_imageColor = [UIColor redColor];
+```
+* 设置NavItemBtn的tintColor
+```objective-c
+self.zx_navLeftBtn.zx_tintColor = [UIColor redColor];
+```
+* 设置NavItemBtn的字体大小
+```objective-c
+self.zx_navLeftBtn.zx_fontSize = 12;
+```
+* 设置NavItemBtn的固定宽度，若设置，则自动计算宽度无效
+```objective-c
+self.zx_navLeftBtn.zx_fixWidth = 100;
+```
+* 设置NavItemBtn的固定高度，若设置，则ZXNavDefalutItemSize无效
+```objective-c
+self.zx_navLeftBtn.zx_fixHeight = 20;
+```
+* 设置NavItemBtn image的固定大小
+```objective-c
+self.zx_navLeftBtn.zx_fixImageSize = CGSizeMake(10,10);
+```
+* 设置NavItemBtn自动计算宽度后的附加宽度
+```objective-c
+self.zx_navLeftBtn.zx_textAttachWidth = 20;
+```
 
 #### 设置导航栏背景颜色
 ```objective-c
