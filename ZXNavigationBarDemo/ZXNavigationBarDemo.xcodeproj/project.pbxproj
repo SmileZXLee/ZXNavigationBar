@@ -43,6 +43,7 @@
 		74DAA1DF2480E50300EF7493 /* ZXNavigationBarNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74DAA1DE2480E50300EF7493 /* ZXNavigationBarNavigationController.m */; };
 		74DAA1E524811D2500EF7493 /* ZXNavigationBarController+ZXNavSystemBarPopHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 74DAA1E424811D2500EF7493 /* ZXNavigationBarController+ZXNavSystemBarPopHandle.m */; };
 		74DD73E5248E376900C46E53 /* ZXNavigationBar.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 74DD73E4248E376900C46E53 /* ZXNavigationBar.bundle */; };
+		74E5255A2542C6A4006A46BE /* NSAttributedString+ZXNavCalcSizeExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E525592542C6A4006A46BE /* NSAttributedString+ZXNavCalcSizeExtension.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -124,6 +125,8 @@
 		74DAA1E324811D2500EF7493 /* ZXNavigationBarController+ZXNavSystemBarPopHandle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ZXNavigationBarController+ZXNavSystemBarPopHandle.h"; sourceTree = "<group>"; };
 		74DAA1E424811D2500EF7493 /* ZXNavigationBarController+ZXNavSystemBarPopHandle.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "ZXNavigationBarController+ZXNavSystemBarPopHandle.m"; sourceTree = "<group>"; };
 		74DD73E4248E376900C46E53 /* ZXNavigationBar.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ZXNavigationBar.bundle; sourceTree = "<group>"; };
+		74E525582542C6A4006A46BE /* NSAttributedString+ZXNavCalcSizeExtension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSAttributedString+ZXNavCalcSizeExtension.h"; sourceTree = "<group>"; };
+		74E525592542C6A4006A46BE /* NSAttributedString+ZXNavCalcSizeExtension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSAttributedString+ZXNavCalcSizeExtension.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -242,6 +245,8 @@
 				74BC1B1B241373A30032A424 /* UIView+ZXNavFrameExtension.m */,
 				74BC1B1D2413886B0032A424 /* NSString+ZXNavCalcSizeExtension.h */,
 				74BC1B1E2413886B0032A424 /* NSString+ZXNavCalcSizeExtension.m */,
+				74E525582542C6A4006A46BE /* NSAttributedString+ZXNavCalcSizeExtension.h */,
+				74E525592542C6A4006A46BE /* NSAttributedString+ZXNavCalcSizeExtension.m */,
 				74BC1B34241787720032A424 /* UIImage+ZXNavColorRender.h */,
 				74BC1B35241787720032A424 /* UIImage+ZXNavColorRender.m */,
 				74BC1B4E24192F2E0032A424 /* UIImage+ZXNavBundleExtension.h */,
@@ -495,6 +500,7 @@
 				74BC1B3F2417C9D60032A424 /* DemoBaseViewController.m in Sources */,
 				74BC1B5C241A05C90032A424 /* DemoCustomNav.m in Sources */,
 				749BBF4F2424CE6400C63132 /* UINavigationController+ZXNavBarAllHiddenExtension.m in Sources */,
+				74E5255A2542C6A4006A46BE /* NSAttributedString+ZXNavCalcSizeExtension.m in Sources */,
 				74DAA1E524811D2500EF7493 /* ZXNavigationBarController+ZXNavSystemBarPopHandle.m in Sources */,
 				74BC1AF8241362C50032A424 /* main.m in Sources */,
 				74BC1B1F2413886B0032A424 /* NSString+ZXNavCalcSizeExtension.m in Sources */,

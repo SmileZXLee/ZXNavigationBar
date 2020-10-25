@@ -11,6 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ZXNavTitleLabel : UILabel
+//NavTitleLabel的frame更新回调
 @property (copy, nonatomic) void (^zx_titleLabelFrameUpdateBlock)(ZXNavTitleLabel *titleLabel);
 @end
 

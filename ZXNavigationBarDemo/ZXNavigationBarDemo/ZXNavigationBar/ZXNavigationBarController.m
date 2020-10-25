@@ -50,6 +50,7 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
     self.zx_navTitleView = navBar.zx_titleView;
     self.zx_navTitleLabel = navBar.zx_titleLabel;
     self.zx_navLeftBtn = navBar.zx_leftBtn;
+    self.zx_navSubLeftBtn = navBar.zx_subLeftBtn;
     self.zx_navRightBtn = navBar.zx_rightBtn;
     self.zx_navSubRightBtn = navBar.zx_subRightBtn;
     self.zx_navLineView = navBar.lineView;
@@ -197,7 +198,7 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
     return self.zx_navFixHeight;
 }
 
-#pragma mark 获取返回按钮的体魄
+#pragma mark 获取返回按钮的图片
 - (UIImage *)getBackBtnImage{
     UIImage *backImg = nil;
     if(self.zx_backBtnImageName && self.zx_backBtnImageName.length){
@@ -271,6 +272,7 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
     _zx_navTintColor = zx_navTintColor;
     if(self.zx_navBar){
         self.zx_navLeftBtn.zx_tintColor = zx_navTintColor;
+        self.zx_navSubLeftBtn.zx_tintColor = zx_navTintColor;
         self.zx_navRightBtn.zx_tintColor = zx_navTintColor;
         self.zx_navSubRightBtn.zx_tintColor = zx_navTintColor;
     }
@@ -289,8 +291,11 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
 
 - (void)setZx_backBtnImageName:(NSString *)zx_backBtnImageName{
     _zx_backBtnImageName = zx_backBtnImageName;
-    UIImage *backImg = [self getBackBtnImage];
-    [self.zx_navLeftBtn setImage:backImg forState:UIControlStateNormal];
+    if(self.navigationController && self.navigationController.viewControllers.count > 1 && !self.zx_hideBaseNavBar){
+        UIImage *backImg = [self getBackBtnImage];
+        [self.zx_navLeftBtn setImage:backImg forState:UIControlStateNormal];
+    }
+    
 }
 
 - (void)setZx_navTitleFont:(UIFont *)zx_navTitleFont{
@@ -483,6 +488,16 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
     };
 }
 
+#pragma mark 设置左侧第二个Button图片和点击回调
+- (void)zx_setSubLeftBtnWithImgName:(NSString *)imgName clickedBlock:(subLeftBtnClickedBlock)clickBlock{
+    [self.zx_navSubLeftBtn setImage:[UIImage imageNamed:imgName] forState:UIControlStateNormal];
+    ((ZXNavigationBar *)self.zx_navBar).zx_subLeftBtnClickedBlock = ^(ZXNavItemBtn * _Nonnull btn) {
+        if(clickBlock){
+            clickBlock(btn);
+        }
+    };
+}
+
 #pragma mark 设置最右侧Button图片和点击回调
 - (void)zx_setRightBtnWithImgName:(NSString *)imgName clickedBlock:(rightBtnClickedBlock)clickBlock{
     [self.zx_navRightBtn setImage:[UIImage imageNamed:imgName] forState:UIControlStateNormal];
@@ -507,6 +522,17 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
 - (void)zx_setLeftBtnWithText:(NSString *)btnText clickedBlock:(leftBtnClickedBlock)clickBlock{
     [self.zx_navLeftBtn setTitle:btnText forState:UIControlStateNormal];
     ((ZXNavigationBar *)self.zx_navBar).zx_leftBtnClickedBlock = ^(ZXNavItemBtn * _Nonnull btn) {
+        if(clickBlock){
+            clickBlock(btn);
+        }
+    };
+}
+
+#pragma mark 设置左侧第二个按钮文字和点击回调
+- (void)zx_setSubLeftBtnWithText:(NSString *)btnText clickedBlock:(subLeftBtnClickedBlock)clickBlock{
+    [self.zx_navSubLeftBtn setTitleColor:self.zx_navTitleLabel.textColor forState:UIControlStateNormal];
+    [self.zx_navSubLeftBtn setTitle:btnText forState:UIControlStateNormal];
+    ((ZXNavigationBar *)self.zx_navBar).zx_subLeftBtnClickedBlock = ^(ZXNavItemBtn * _Nonnull btn) {
         if(clickBlock){
             clickBlock(btn);
         }
@@ -539,6 +565,17 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
 - (void)zx_setLeftBtnWithImgUrl:(NSString *)imgUrlStr placeholderImgName:(NSString *)placeholderImgName clickedBlock:(nullable leftBtnClickedBlock)clickBlock{
     [self setNavItemBtnWithItem:self.zx_navLeftBtn imgUrl:imgUrlStr placeholderImgName:placeholderImgName];
     ((ZXNavigationBar *)self.zx_navBar).zx_leftBtnClickedBlock = ^(ZXNavItemBtn * _Nonnull btn) {
+        if(clickBlock){
+            clickBlock(btn);
+        }
+    };
+    
+}
+
+#pragma mark 设置左侧第二个按钮图片地址和点击回调
+- (void)zx_setSubLeftBtnWithImgUrl:(NSString *)imgUrlStr placeholderImgName:(NSString *)placeholderImgName clickedBlock:(nullable subLeftBtnClickedBlock)clickBlock{
+    [self setNavItemBtnWithItem:self.zx_navSubLeftBtn imgUrl:imgUrlStr placeholderImgName:placeholderImgName];
+    ((ZXNavigationBar *)self.zx_navBar).zx_subLeftBtnClickedBlock = ^(ZXNavItemBtn * _Nonnull btn) {
         if(clickBlock){
             clickBlock(btn);
         }
@@ -579,8 +616,19 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
     
 }
 
+#pragma mark 设置左侧第二个按钮图片和点击回调
+- (void)zx_setSubLeftBtnWithImg:(UIImage *)img clickedBlock:(nullable subLeftBtnClickedBlock)clickBlock{
+    [self.zx_navSubLeftBtn setImage:img forState:UIControlStateNormal];
+    ((ZXNavigationBar *)self.zx_navBar).zx_subLeftBtnClickedBlock = ^(ZXNavItemBtn * _Nonnull btn) {
+        if(clickBlock){
+            clickBlock(btn);
+        }
+    };
+    
+}
+
 #pragma mark 设置右侧按钮图片和点击回调
-- (void)zx_setRightBtnWithImg:(UIImage *)img clickedBlock:(nullable leftBtnClickedBlock)clickBlock{
+- (void)zx_setRightBtnWithImg:(UIImage *)img clickedBlock:(nullable rightBtnClickedBlock)clickBlock{
     [self.zx_navRightBtn setImage:img forState:UIControlStateNormal];
     ((ZXNavigationBar *)self.zx_navBar).zx_rightBtnClickedBlock = ^(ZXNavItemBtn * _Nonnull btn) {
         if(clickBlock){
@@ -591,7 +639,7 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
 }
 
 #pragma mark 设置右侧第二个按钮图片和点击回调
-- (void)zx_setSubRightBtnWithImg:(UIImage *)img clickedBlock:(nullable leftBtnClickedBlock)clickBlock{
+- (void)zx_setSubRightBtnWithImg:(UIImage *)img clickedBlock:(nullable subRightBtnClickedBlock)clickBlock{
     [self.zx_navSubRightBtn setImage:img forState:UIControlStateNormal];
     ((ZXNavigationBar *)self.zx_navBar).zx_subRightBtnClickedBlock = ^(ZXNavItemBtn * _Nonnull btn) {
         if(clickBlock){
@@ -604,6 +652,15 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
 #pragma mark 左侧Button点击回调
 - (void)zx_leftClickedBlock:(leftBtnClickedBlock)clickBlock{
     ((ZXNavigationBar *)self.zx_navBar).zx_leftBtnClickedBlock = ^(ZXNavItemBtn * _Nonnull btn) {
+        if(clickBlock){
+            clickBlock(btn);
+        }
+    };
+}
+
+#pragma mark 左侧第二个Button点击回调
+- (void)zx_subLeftClickedBlock:(subLeftBtnClickedBlock)clickBlock{
+    ((ZXNavigationBar *)self.zx_navBar).zx_subLeftBtnClickedBlock = ^(ZXNavItemBtn * _Nonnull btn) {
         if(clickBlock){
             clickBlock(btn);
         }
@@ -815,6 +872,9 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
     if(self.navigationController && ![self.navigationController isKindOfClass:NSClassFromString(@"ZXNavigationBarNavigationController")]){
         self.navigationController.interactivePopGestureRecognizer.delegate = (id)self;
         self.navigationController.interactivePopGestureRecognizer.enabled = self.navigationController.viewControllers.firstObject != self;
+    }
+    if(!self.navigationController){
+        self.navigationController.interactivePopGestureRecognizer.enabled = NO;
     }
 }
 - (void)didReceiveMemoryWarning {

@@ -23,6 +23,7 @@ typedef enum {
 }ZXNavPopBlockFrom;
 
 typedef void(^leftBtnClickedBlock) (ZXNavItemBtn *btn);
+typedef void(^subLeftBtnClickedBlock) (ZXNavItemBtn *btn);
 typedef void(^rightBtnClickedBlock) (ZXNavItemBtn *btn);
 typedef void(^subRightBtnClickedBlock) (ZXNavItemBtn *btn);
 typedef void(^foldingOffsetBlock) (CGFloat offset);
@@ -129,9 +130,14 @@ typedef void(^transparentGradientsOpaqueBlock) (void);
 @property (strong, nonatomic)UIColor *zx_navLineViewBackgroundColor;
 
 /**
- 左侧Button
+ 最左侧Button
  */
 @property (weak, nonatomic)ZXNavItemBtn *zx_navLeftBtn;
+
+/**
+ 左侧第二个Button
+ */
+@property (weak, nonatomic)ZXNavItemBtn *zx_navSubLeftBtn;
 
 /**
  最右侧Button
@@ -232,13 +238,20 @@ pop手势是否支持多层级的手势同时触发，默认为否。若设置�
  */
 @property (assign, nonatomic)int zx_navFixHeight;
 /**
- 设置左侧Button的图片和点击回调
+ 设置最左侧Button的图片和点击回调
  
  @param imgName 图片名字
  @param clickBlock 点击回调
  */
 - (void)zx_setLeftBtnWithImgName:(NSString *)imgName clickedBlock:(nullable leftBtnClickedBlock)clickBlock;
 
+/**
+ 设置左侧第二个Button的图片和点击回调
+ 
+ @param imgName 图片名字
+ @param clickBlock 点击回调
+ */
+- (void)zx_setSubLeftBtnWithImgName:(NSString *)imgName clickedBlock:(nullable subLeftBtnClickedBlock)clickBlock;
 
 /**
  设置最右侧Button的图片和点击回调
@@ -258,12 +271,20 @@ pop手势是否支持多层级的手势同时触发，默认为否。若设置�
 
 
 /**
- 设置左侧Button的文字和点击回调
+ 设置最左侧Button的文字和点击回调
  
  @param btnText 按钮文字
  @param clickBlock 点击回调
  */
 - (void)zx_setLeftBtnWithText:(NSString *)btnText clickedBlock:(nullable leftBtnClickedBlock)clickBlock;
+
+/**
+ 设置左侧第二个Button的文字和点击回调
+ 
+ @param btnText 按钮文字
+ @param clickBlock 点击回调
+ */
+- (void)zx_setSubLeftBtnWithText:(NSString *)btnText clickedBlock:(nullable subLeftBtnClickedBlock)clickBlock;
 
 /**
  设置最右侧Button的文字和点击回调
@@ -274,13 +295,22 @@ pop手势是否支持多层级的手势同时触发，默认为否。若设置�
 - (void)zx_setRightBtnWithText:(NSString *)btnText clickedBlock:(nullable rightBtnClickedBlock)clickBlock;
 
 /**
- 设置左侧Button的图片Url和点击回调
+ 设置最左侧Button的图片Url和点击回调
  
  @param imgUrlStr 图片Url
  @param placeholderImgName 占位图名称
  @param clickBlock 点击回调
  */
 - (void)zx_setLeftBtnWithImgUrl:(NSString *)imgUrlStr placeholderImgName:(NSString *)placeholderImgName clickedBlock:(nullable leftBtnClickedBlock)clickBlock;
+
+/**
+ 设置左侧第二个Button的图片Url和点击回调
+ 
+ @param imgUrlStr 图片Url
+ @param placeholderImgName 占位图名称
+ @param clickBlock 点击回调
+ */
+- (void)zx_setSubLeftBtnWithImgUrl:(NSString *)imgUrlStr placeholderImgName:(NSString *)placeholderImgName clickedBlock:(nullable subLeftBtnClickedBlock)clickBlock;
 
 /**
  设置最右侧Button的图片Url和点击回调
@@ -302,7 +332,7 @@ pop手势是否支持多层级的手势同时触发，默认为否。若设置�
 
 
 /**
- 设置左侧按钮图片和点击回调
+ 设置最左侧按钮图片和点击回调
  
  @param img 图片
  @param clickBlock 点击回调
@@ -326,11 +356,18 @@ pop手势是否支持多层级的手势同时触发，默认为否。若设置�
 - (void)zx_setSubRightBtnWithImg:(UIImage *)img clickedBlock:(nullable leftBtnClickedBlock)clickBlock;
 
 /**
- 左侧Button的点击回调
+ 最左侧Button的点击回调
  
  @param clickBlock 点击回调
  */
 - (void)zx_leftClickedBlock:(leftBtnClickedBlock)clickBlock;
+
+/**
+ 左侧第二个Button的点击回调
+ 
+ @param clickBlock 点击回调
+ */
+- (void)zx_subLeftClickedBlock:(subLeftBtnClickedBlock)clickBlock;
 
 /**
  最右侧Button的点击回调
