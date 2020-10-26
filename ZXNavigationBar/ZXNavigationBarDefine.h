@@ -17,7 +17,7 @@
 #define ZXNavDefalutSubTitleSize 10
 #define ZXNavDefalutItemFontSize 15
 
-#define ZXNavDefalutItemSize 25
+#define ZXNavDefalutItemSize 22
 #define ZXNavDefalutItemMargin 10
 
 /**

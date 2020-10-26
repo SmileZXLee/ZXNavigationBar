@@ -11,6 +11,7 @@
 #import "UIImage+ZXNavColorRender.h"
 #import "UIView+ZXNavFrameExtension.h"
 #import "NSString+ZXNavCalcSizeExtension.h"
+#import "NSAttributedString+ZXNavCalcSizeExtension.h"
 #import "ZXNavTitleLabel.h"
 #import "ZXNavItemBtn.h"
 #import "ZXNavBacImageView.h"
@@ -27,9 +28,13 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (assign, nonatomic)CGFloat zx_itemMargin;
 /**
- 左侧Button
+ 最左侧Button
  */
 @property (weak, nonatomic)ZXNavItemBtn *zx_leftBtn;
+/**
+ 左侧第二个Button
+ */
+@property (weak, nonatomic)ZXNavItemBtn *zx_subLeftBtn;
 /**
  最右侧Button
  */
@@ -75,9 +80,13 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (weak, nonatomic)UIView *lineView;
 /**
- 左侧Button点击回调
+ 最左侧Button点击回调
  */
 @property (copy, nonatomic) void (^zx_leftBtnClickedBlock)(ZXNavItemBtn *btn);
+/**
+ 左侧第二个Button点击回调
+ */
+@property (copy, nonatomic) void (^zx_subLeftBtnClickedBlock)(ZXNavItemBtn *btn);
 /**
  最右侧Button点击回调
  */
