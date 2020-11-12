@@ -46,7 +46,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  titleView，显示在正中间的标题View
  */
-@property (weak, nonatomic)ZXNavTitleView *zx_titleView;
+@property (weak, nonatomic, readonly)ZXNavTitleView *zx_titleView;
 /**
  titleLabel，显示在正中间的标题Label
  */

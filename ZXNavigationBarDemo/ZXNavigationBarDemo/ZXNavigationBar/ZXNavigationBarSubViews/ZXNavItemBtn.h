@@ -29,6 +29,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic)CGSize zx_fixImageSize;
 ///设置NavItemBtn自动计算宽度后的附加宽度
 @property (assign, nonatomic)CGFloat zx_textAttachWidth;
+///设置NavItemBtn的自定义view
+@property (strong, nonatomic)UIView *zx_customView;
+///NavItemBtn frame发生改变时的回调，可在这个block中return修改后的frame
+@property(copy, nonatomic)CGRect(^zx_handleFrameBlock)(CGRect oldFrame);
 @end
 
 NS_ASSUME_NONNULL_END

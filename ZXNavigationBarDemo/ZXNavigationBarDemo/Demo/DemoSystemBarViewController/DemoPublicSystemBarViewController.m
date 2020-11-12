@@ -7,6 +7,7 @@
 //
 
 #import "DemoPublicSystemBarViewController.h"
+#import "DemoXibViewController.h"
 
 @interface DemoPublicSystemBarViewController ()
 

@@ -27,6 +27,9 @@
     
     //最左侧的按钮添加”返回“文字，当当前控制器不是第0个的时候，ZXNavigationBar会自动显示返回图片，且点击返回上一个控制器
     [self.zx_navLeftBtn setTitle:@"返回" forState:UIControlStateNormal];
+    //设置自定义的navItemView
+    self.zx_navSubRightBtn.zx_customView = [UISwitch new];
+    
 }
 
 #pragma mark - Actions
