@@ -300,13 +300,13 @@ self.zx_handleAdjustNavContainerOffsetBlock = ^CGFloat(CGFloat oldNavOffset, CGF
 };
 ```
 
-#### 自定义TitleView
+#### 自定义TitleView(建议自定义TitleView中的子控件与底部距离固定不变，以适配不同高度的导航栏)
 ```objective-c
 //创建自定义View
 UIView *customTitleView = [[UIView alloc]init];
 [self zx_addCustomTitleView:customTitleView];
 ```
-#### 自定义导航栏View
+#### 自定义导航栏View(建议导航栏View中的子控件与底部距离固定不变，以适配不同高度的导航栏)
 ```objective-c
 //创建自定义View
 UIView *customNav = [[UIView alloc]init];
