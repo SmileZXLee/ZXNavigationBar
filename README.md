@@ -24,13 +24,13 @@ pod 'ZXNavigationBar'
 - [x] 仅需一行代码即可解决scrollView横向滚动与pop手势冲突问题
 - [x] 支持随时切换为系统导航栏，且与系统导航栏之间无缝衔接
 - [x] 支持自定义`ZXNavigationBar`高度
-- [x] 支持在`ZXNavigationBar`上自定义titleView
+- [x] 支持在`ZXNavigationBar`上自定义titleView与navItemView
+- [x] 若`ZXNavigationBar`自带效果都无法满足，支持任意自定义导航栏View
 - [x] 支持导航栏折叠、支持跟随ScrollView滚动透明度自动改变
 - [x] 支持通过url加载导航栏Item
 - [x] 支持全屏手势返回
 - [x] 支持自定义手势返回范围
 - [x] 支持监听手势返回进度
-- [x] 若`ZXNavigationBar`自带效果都无法满足，支持任意自定义导航栏
 - [x] 若从Xib中加载控制器View，添加子View无需手动设置距离导航栏顶部约束，`ZXNavigationBar`会自动处理
 
 
@@ -215,6 +215,16 @@ self.zx_navLeftBtn.zx_fixImageSize = CGSizeMake(10,10);
 ```objective-c
 self.zx_navLeftBtn.zx_textAttachWidth = 20;
 ```
+* 自定义NavItemView
+```objective-c
+self.zx_navLeftBtn.zx_customView = [UISwitch new];
+```
+* 设置NavItemBtn frame发生改变时的回调，可在这个block中return修改后的frame
+```objective-c
+self.zx_navLeftBtn.zx_handleFrameBlock = ^CGRect(CGRect oldFrame) {
+    return CGRectMake(oldFrame.origin.x, oldFrame.origin.y, oldFrame.size.width + 10, 30);
+};
+```
 
 #### 设置导航栏背景颜色
 ```objective-c
@@ -299,7 +309,11 @@ self.zx_handleAdjustNavContainerOffsetBlock = ^CGFloat(CGFloat oldNavOffset, CGF
     return 10;
 };
 ```
-
+#### 自定义NavItemView
+```objective-c
+//以zx_navLeftBtn为例
+self.zx_navLeftBtn.zx_customView = [UISwitch new];
+```
 #### 自定义TitleView(建议自定义TitleView中的子控件与底部距离固定不变，以适配不同高度的导航栏)
 ```objective-c
 //创建自定义View
