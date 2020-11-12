@@ -38,12 +38,14 @@
     self.zx_fixWidth = -1;
     self.zx_fixHeight = -1;
     self.zx_fixImageSize = CGSizeZero;
-    
 }
 
 #pragma mark - Setter
 - (void)setTitle:(NSString *)title forState:(UIControlState)state{
-    if(self.zx_disableSetTitle && title){
+    if(self.zx_customView && title && title.length){
+        return;
+    }
+    if(self.zx_disableSetTitle && title && !self.zx_customView){
         NSLog(@"zx_subLeftBtn/zx_subRightBtn不支持设置title，仅支持设置图片！");
         return;
     }
@@ -55,7 +57,10 @@
 }
 
 - (void)setAttributedTitle:(NSAttributedString *)title forState:(UIControlState)state{
-    if(self.zx_disableSetTitle && title){
+    if(self.zx_customView && title && title.length){
+        return;
+    }
+    if(self.zx_disableSetTitle && title && !self.zx_customView){
         NSLog(@"zx_subLeftBtn/zx_subRightBtn不支持设置attributedTitle，仅支持设置图片！");
         return;
     }
@@ -64,6 +69,9 @@
 }
 
 - (void)setImage:(UIImage *)image forState:(UIControlState)state{
+    if(self.zx_customView && image){
+        return;
+    }
     if(self.zx_tintColor){
         image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     }else{
@@ -121,6 +129,30 @@
     [self.superview setValue:@1 forKey:@"shouldRefLayout"];
     [self layoutImageAndTitle];
     [self noticeUpdateFrame];
+}
+
+- (void)setZx_customView:(UIView *)zx_customView{
+    _zx_customView = zx_customView;
+    if(!zx_customView){
+        return;
+    }
+    if(![self.subviews containsObject:zx_customView]){
+        [self addSubview:zx_customView];
+    }
+    if(CGRectEqualToRect(zx_customView.frame, CGRectZero)){
+        CGFloat customViewWidth = self.zx_fixWidth < 0 ? ZXNavDefalutItemSize : self.zx_fixWidth;
+        CGFloat customViewHeight = self.zx_fixHeight < 0 ? ZXNavDefalutItemSize : self.zx_fixWidth;
+        zx_customView.frame = CGRectMake(0, 0, customViewWidth, customViewHeight);
+    }
+    if(zx_customView.frame.size.width){
+        self.zx_fixWidth = zx_customView.frame.size.width + zx_customView.frame.origin.x * 2;
+    }
+    if(zx_customView.frame.size.height){
+        self.zx_fixHeight = zx_customView.frame.size.height + zx_customView.frame.origin.y * 2;
+    }
+    [self setImage:nil forState:UIControlStateNormal];
+    [self setTitle:@"" forState:UIControlStateNormal];
+    [self setAttributedTitle:nil forState:UIControlStateNormal];
 }
 
 #pragma mark - pirvate

@@ -92,7 +92,7 @@ typedef void(^transparentGradientsOpaqueBlock) (void);
 /**
  titleView，显示在正中间的标题View，请不要在titleView直接添加自定义的titleView，如需设置自定义导航栏请使用-zx_addCustomTitleView方法
  */
-@property (weak, nonatomic)ZXNavTitleView *zx_navTitleView;
+@property (weak, nonatomic, readonly)ZXNavTitleView *zx_navTitleView;
 
 /**
  titleLabel，显示在正中间的标题Label
