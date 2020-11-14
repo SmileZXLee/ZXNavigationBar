@@ -29,7 +29,7 @@
     [self.zx_navLeftBtn setTitle:@"返回" forState:UIControlStateNormal];
     //设置自定义的navItemView
     self.zx_navSubRightBtn.zx_customView = [UISwitch new];
-    
+    self.zx_navSubRightBtn.hidden = YES;
 }
 
 #pragma mark - Actions
@@ -121,11 +121,9 @@
 #pragma mark 点击了右侧显示两个Item
 - (IBAction)changeRightSubBtnAction:(UISwitch *)sender {
     if(sender.on){
-        [self zx_setSubRightBtnWithImgName:@"light_icon" clickedBlock:^(ZXNavItemBtn * _Nonnull btn) {
-            NSLog(@"点击了右侧第二个Button");
-        }];
+        self.zx_navSubRightBtn.hidden = NO;
     }else{
-        [self.zx_navSubRightBtn setImage:nil forState:UIControlStateNormal];
+        self.zx_navSubRightBtn.hidden = YES;
     }
 }
 
