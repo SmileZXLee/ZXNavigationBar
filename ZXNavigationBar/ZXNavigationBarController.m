@@ -363,9 +363,9 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
 - (void)setZx_isEnableSafeArea:(BOOL)zx_isEnableSafeArea{
     if(@available(iOS 11.0, *)) {
         if(_zx_isEnableSafeArea != zx_isEnableSafeArea){
+            _zx_isEnableSafeArea = zx_isEnableSafeArea;
             if(zx_isEnableSafeArea){
-                CGFloat safeAreaHeight = ZXAppStatusBarHeight;
-                [self adjustNavContainerOffset:([self getCurrentNavHeight] - safeAreaHeight)];
+                [self adjustNavContainerOffset:[self getCurrentNavHeight]];
                 
             }else{
                 [self adjustNavContainerOffset:[self getCurrentNavHeight]];
