@@ -9,7 +9,8 @@
 #import "DemoXibViewController.h"
 #import "DemoSystemBarViewController.h"
 @interface DemoXibViewController ()
-
+///是否禁止pop操作
+@property(assign, nonatomic)BOOL disablePop;
 @end
 
 @implementation DemoXibViewController
@@ -30,6 +31,11 @@
     //设置自定义的navItemView
     self.zx_navSubRightBtn.zx_customView = [UISwitch new];
     self.zx_navSubRightBtn.hidden = YES;
+    
+    __weak typeof(self) weakSelf = self;
+    self.zx_handlePopBlock = ^BOOL(ZXNavigationBarController * _Nonnull viewController, ZXNavPopBlockFrom popBlockFrom) {
+        return !weakSelf.disablePop;
+    };
 }
 
 #pragma mark - Actions
@@ -127,5 +133,8 @@
     }
 }
 
+- (IBAction)disPopAction:(UISwitch *)sender {
+    self.disablePop = sender.on;
+}
 
 @end
