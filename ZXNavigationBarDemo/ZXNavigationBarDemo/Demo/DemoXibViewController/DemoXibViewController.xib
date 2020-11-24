@@ -387,7 +387,7 @@
                         <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="yhy-7Q-ELB">
                             <rect key="frame" x="350" y="9.5" width="51" height="31"/>
                             <connections>
-                                <action selector="disPopAction:" destination="-1" eventType="valueChanged" id="dfv-Vw-1NO"/>
+                                <action selector="disPopAction:" destination="-1" eventType="valueChanged" id="wnH-LV-Uau"/>
                             </connections>
                         </switch>
                     </subviews>

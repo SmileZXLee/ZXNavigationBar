@@ -101,6 +101,22 @@ cFlag;\
  */
 #define ZXNavBarHeightNotIncludeStatusBar (ZXIsIPad ? 50 : 44)
 
+
+/**
+ 获取iPhone设备状态栏高度
+
+ @return iPhone设备状态栏高度
+ */
+#define ZXIPhoneAppStatusBarHeight ({\
+int height = 0;\
+if(@available(iOS 13.0, *)){\
+height = [[UIApplication sharedApplication] statusBarFrame].size.height != 0 ? [[UIApplication sharedApplication] statusBarFrame].size.height : (ZXIsBangScreen ? 44 : 20);\
+}else{\
+height = (ZXIsBangScreen ? 44 : 20);\
+}\
+height;\
+})
+
 /**
  获取状态栏高度
 
@@ -108,7 +124,8 @@ cFlag;\
  */
 //#define ZXAppStatusBarHeight [[UIApplication sharedApplication] statusBarFrame].size.height
 //适配iOS13以下系统开启热点或音视频时的导航栏(因为iOS13以下系统开启或音视频时状态栏会增高，从而导致计算出来的整个导航栏增高)
-#define ZXAppStatusBarHeight (ZXIsHorizontalScreen ? ZXRealAppStatusBarHeight : ZXIsFullScreenIpad ? ZXRealAppStatusBarHeight : (ZXIsBangScreen ? 44 : 20))
+#define ZXAppStatusBarHeight (ZXIsHorizontalScreen ? ZXRealAppStatusBarHeight : ZXIsFullScreenIpad ? ZXRealAppStatusBarHeight : ZXIPhoneAppStatusBarHeight)
+
 
 /**
  获取真实状态栏高度

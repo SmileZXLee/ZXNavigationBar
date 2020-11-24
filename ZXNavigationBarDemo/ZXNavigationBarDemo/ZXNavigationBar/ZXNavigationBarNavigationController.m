@@ -75,7 +75,6 @@
 
 #pragma mark 处理pop手势
 - (void)handleNavigationTransition:(UIPanGestureRecognizer *)panGesture{
-    //[self updateTopViewController:self.topViewController];
     if(self.zx_topViewController && !self.doingPopGesture){
         if(self.zx_topViewController.zx_handlePopBlock){
             BOOL shouldPop = self.zx_topViewController.zx_handlePopBlock(self.zx_topViewController,ZXNavPopBlockFromPopGesture);
@@ -90,18 +89,11 @@
     CGFloat popOffsetX = panGestureX - self.touchBeginX;
     if(self.zx_handleCustomPopGesture){
         if(panGesture.state == UIGestureRecognizerStateEnded){
+            self.doingPopGesture = NO;
             if(popOffsetX > self.view.frame.size.width / 2){
                 self.zx_handleCustomPopGesture(self.zx_topViewController,1);
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    [self updateTopViewController:self.topViewController];
-                    self.doingPopGesture = NO;
-                });
             }else{
                 self.zx_handleCustomPopGesture(self.zx_topViewController,0);
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    [self updateTopViewController:self.topViewController];
-                    self.doingPopGesture = NO;
-                });
                 
             }
         }else{

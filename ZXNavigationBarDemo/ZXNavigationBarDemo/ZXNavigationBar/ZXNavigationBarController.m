@@ -10,8 +10,12 @@
 
 #import <objc/message.h>
 #import "UIImage+ZXNavBundleExtension.h"
+
+
+@implementation ZXXibTopConstraintModel
+
+@end
 @interface ZXNavigationBarController ()<UIGestureRecognizerDelegate>
-@property(assign, nonatomic)CGFloat orgNavOffset;
 @property(assign, nonatomic)BOOL setFold;
 @property(assign, nonatomic) CGFloat lastNavAlphe;
 @property(assign, nonatomic)BOOL isNavFoldAnimating;
@@ -20,7 +24,7 @@
 @property(strong, nonatomic)CADisplayLink *displayLink;
 @property(copy, nonatomic)foldingOffsetBlock offsetBlock;
 @property(copy, nonatomic)foldCompletionBlock completionBlock;
-@property(strong, nonatomic)NSLayoutConstraint * xibTopConstraint;
+@property(strong, nonatomic)NSMutableArray<ZXXibTopConstraintModel *> *xibTopConstraintArr;
 @end
 
 @implementation ZXNavigationBarController
@@ -28,7 +32,6 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
 #pragma mark - Init
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.orgNavOffset = -1;
     self.zx_navFixHeight = -1;
     if(self.navigationController && !self.zx_hideBaseNavBar){
         [self initNavBar];
@@ -86,32 +89,48 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
              offset -= ZXMainWindow.safeAreaInsets.top;
         }
     }
-    if(self.xibTopConstraint){
-        [self updateTopConstraint:self.xibTopConstraint offset:offset];
+    if(self.xibTopConstraintArr.count){
+        for (ZXXibTopConstraintModel *constraintModel in self.xibTopConstraintArr) {
+            [self updateTopConstraint:constraintModel offset:offset];
+        }
         return;
     }
     NSArray *constraintArr = [self.view constraints];
+    [self.xibTopConstraintArr removeAllObjects];
     [constraintArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        NSLayoutConstraint * constraint = obj;
+        NSLayoutConstraint *constraint = obj;
         if (constraint.firstAttribute == NSLayoutAttributeTop){
-            if(self.orgNavOffset == -1){
-                self.orgNavOffset = constraint.constant;
+            id secondItem = constraint.secondItem;
+            UIView *secondView = nil;
+            if([secondItem isKindOfClass:[UILayoutGuide class]]){
+                secondView = ((UILayoutGuide *)secondItem).owningView;
             }
-            [self updateTopConstraint:constraint offset:offset];
-            self.xibTopConstraint = constraint;
-            *stop = YES;
+            if([secondItem isKindOfClass:[UIView class]]){
+                secondView = secondItem;
+            }
+            if(!secondView || self.view == secondView){
+                ZXXibTopConstraintModel *constraintModel = [[ZXXibTopConstraintModel alloc]init];
+                constraintModel.orgOffset = constraint.constant;
+                constraintModel.constraint = constraint;
+                [self updateTopConstraint:constraintModel offset:offset];
+                [self.xibTopConstraintArr addObject:constraintModel];
+                if(!self.zx_enableAdjustNavContainerAll){
+                    *stop = YES;
+                }
+            }
+            
         }
     }];
 }
 
 #pragma mark 更新容器顶部约束
-- (void)updateTopConstraint:(NSLayoutConstraint *)constraint offset:(CGFloat)offset{
-    CGFloat handleOffset = self.orgNavOffset + offset;
+- (void)updateTopConstraint:(ZXXibTopConstraintModel *)constraintModel offset:(CGFloat)offset{
+    CGFloat orgNavOffset = constraintModel.orgOffset;
+    CGFloat handleOffset = orgNavOffset + offset;
     if(self.zx_handleAdjustNavContainerOffsetBlock){
-        handleOffset = self.zx_handleAdjustNavContainerOffsetBlock(self.orgNavOffset,self.orgNavOffset + offset);
+        handleOffset = self.zx_handleAdjustNavContainerOffsetBlock(orgNavOffset,orgNavOffset + offset);
     }
-    constraint.constant = handleOffset;
-    self.xibTopConstraint = constraint;
+    constraintModel.constraint.constant = handleOffset;
 }
 
 #pragma mark 开启DisplayLink
@@ -141,8 +160,8 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
             }else{
                 self.zx_navBar.zx_height -= self.zx_navFoldingSpeed;
             }
-            if(self.xibTopConstraint){
-                self.xibTopConstraint.constant -= self.zx_navFoldingSpeed;
+            for (ZXXibTopConstraintModel *constraintModel in self.xibTopConstraintArr) {
+                constraintModel.constraint.constant -= self.zx_navFoldingSpeed;
             }
             if(self.offsetBlock){
                 self.offsetBlock(-self.zx_navFoldingSpeed);
@@ -162,8 +181,8 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
     }else{
         if(self.zx_navBar.zx_height < [self getCurrentNavHeight]){
             self.zx_navBar.zx_height += self.zx_navFoldingSpeed;
-            if(self.xibTopConstraint){
-                self.xibTopConstraint.constant += self.zx_navFoldingSpeed;
+            for (ZXXibTopConstraintModel *constraintModel in self.xibTopConstraintArr) {
+                constraintModel.constraint.constant += self.zx_navFoldingSpeed;
             }
             if(self.offsetBlock){
                 self.offsetBlock(self.zx_navFoldingSpeed);
@@ -431,7 +450,10 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
 - (void)setZx_handleAdjustNavContainerOffsetBlock:(CGFloat (^)(CGFloat, CGFloat))zx_handleAdjustNavContainerOffsetBlock{
     _zx_handleAdjustNavContainerOffsetBlock = zx_handleAdjustNavContainerOffsetBlock;
     if(zx_handleAdjustNavContainerOffsetBlock){
-        [self adjustNavContainerOffset:self.xibTopConstraint.constant - self.orgNavOffset];
+        ZXXibTopConstraintModel *constraintModel = self.xibTopConstraintArr.firstObject;
+        if(constraintModel){
+            [self adjustNavContainerOffset:constraintModel.constraint.constant - constraintModel.orgOffset];
+        }
     }
 }
 
@@ -476,6 +498,13 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
     }
 }
 
+
+- (NSMutableArray<ZXXibTopConstraintModel *> *)xibTopConstraintArr{
+    if(!_xibTopConstraintArr){
+        _xibTopConstraintArr = [NSMutableArray array];
+    }
+    return _xibTopConstraintArr;
+}
 
 #pragma mark - Public
 #pragma mark 设置左侧Button图片和点击回调
@@ -862,6 +891,7 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
     if(self.zx_showSystemNavBar){
         self.navigationController.navigationBarHidden = NO;
     }
+    self.navigationController.navigationBar.translucent = NO;
 }
 
 - (void)viewDidAppear:(BOOL)animated{
@@ -875,6 +905,12 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
     }
     if(!self.navigationController){
         self.navigationController.interactivePopGestureRecognizer.enabled = NO;
+    }
+    if(self.navigationController && [self.navigationController isKindOfClass:[ZXNavigationBarNavigationController class]]){
+        SEL selector = NSSelectorFromString(@"updateTopViewController:");
+        IMP imp = [self.navigationController methodForSelector:selector];
+        void (*func) (id, SEL, ZXNavigationBarController *) = (void *)imp;
+        func(self.navigationController,selector,self);
     }
 }
 - (void)didReceiveMemoryWarning {
