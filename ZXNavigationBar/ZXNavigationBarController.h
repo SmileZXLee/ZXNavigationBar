@@ -34,12 +34,21 @@ typedef void(^transparentGradientsTransparentBlock) (void);
 typedef void(^transparentGradientsOpaqueBlock) (void);
 
 @interface ZXXibTopConstraintModel : NSObject
+/**
+ 与控制器view或safeArea的顶部约束
+ */
 @property(strong, nonatomic)NSLayoutConstraint *constraint;
+/**
+ 与控制器view的顶部约束的原始constant
+ */
 @property(assign, nonatomic)CGFloat orgOffset;
+/**
+ 是否是与safeArea的顶部约束
+ */
+@property(assign, nonatomic)BOOL isToSafeArea;
 @end
 
 @interface ZXNavigationBarController : UIViewController
-
 /**
  设置左右Button的大小(宽高相等)
  */
@@ -83,7 +92,12 @@ typedef void(^transparentGradientsOpaqueBlock) (void);
 /**
  是否启用了SafeArea，默认为是，若取消了SafeArea，则必须将此项设置为NO(使用Xib加载控制器时生效)
  */
-@property (assign, nonatomic)BOOL zx_isEnableSafeArea;
+@property (assign, nonatomic)BOOL zx_isEnableSafeArea ZXNavigationBarDeprecated("从版本1.3.1起，此属性无效，是否启用了SafeArea交由ZXNavigationBar内部自行判断");
+
+/**
+ 禁止自动设置自定义导航栏与其相关配置，保留原有的系统导航栏（需要设置在[super viewDidLoad]之前）
+ */
+@property (assign, nonatomic)BOOL zx_disableAutoSetCustomNavBar;
 
 /**
  设置导航栏的TintColor，此属性可以将导航栏的title颜色、左右Button的文字和图片颜色修改为TintColor

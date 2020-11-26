@@ -7,8 +7,9 @@
 //  https://github.com/SmileZXLee/ZXNavigationBar
 
 #import "ZXNavigationBarNavigationController.h"
+#import <objc/runtime.h>
 #import "ZXNavigationBarController.h"
-@interface ZXNavigationBarNavigationController ()<UIGestureRecognizerDelegate>
+@interface ZXNavigationBarNavigationController ()<UIGestureRecognizerDelegate,UINavigationControllerDelegate>
 @property (assign, nonatomic) CGFloat touchBeginX;
 @property (assign, nonatomic) BOOL doingPopGesture;
 @property (strong, nonatomic, nullable) ZXNavigationBarController *zx_topViewController;
@@ -20,6 +21,7 @@
 - (void)viewDidLoad {
     self.orgInteractivePopGestureRecognizerDelegate = self.interactivePopGestureRecognizer.delegate;
     [super viewDidLoad];
+    self.delegate = self;
     self.zx_popGestureCoverRatio = 1;
     [self addFullScreenGesture];
 }
@@ -67,7 +69,6 @@
 - (void)addFullScreenGesture{
     self.interactivePopGestureRecognizer.enabled = NO;
     UIPanGestureRecognizer *popGestureRecognizer = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(handleNavigationTransition:)];
-    
     popGestureRecognizer.delegate = self;
     [self.view addGestureRecognizer:popGestureRecognizer];
     _zx_popGestureRecognizer = popGestureRecognizer;
@@ -91,9 +92,17 @@
         if(panGesture.state == UIGestureRecognizerStateEnded){
             self.doingPopGesture = NO;
             if(popOffsetX > self.view.frame.size.width / 2){
-                self.zx_handleCustomPopGesture(self.zx_topViewController,1);
+                if(@available(iOS 10.0, *)){
+                    
+                }else{
+                    self.zx_handleCustomPopGesture(self.zx_topViewController,1);
+                }
             }else{
-                self.zx_handleCustomPopGesture(self.zx_topViewController,0);
+                if(@available(iOS 10.0, *)){
+                    
+                }else{
+                    self.zx_handleCustomPopGesture(self.zx_topViewController,0);
+                }
                 
             }
         }else{
@@ -146,6 +155,30 @@
         shouldRecognizeSimultaneously = self.zx_popGestureShouldRecognizeSimultaneously(otherGestureRecognizer);
     }
     return shouldRecognizeSimultaneously;
+}
+
+#pragma mark - UINavigationControllerDelegate
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated{
+    UIViewController *topViewController = self.topViewController;
+        if(topViewController){
+            id<UIViewControllerTransitionCoordinator> transitionCoordinator = topViewController.transitionCoordinator;
+            if(transitionCoordinator){
+                if(@available(iOS 10.0, *)){
+                    [transitionCoordinator notifyWhenInteractionChangesUsingBlock:^(id<UIViewControllerTransitionCoordinatorContext> context){
+                        if([context isCancelled]){
+                            if(self.zx_handleCustomPopGesture){
+                                self.zx_handleCustomPopGesture(self.zx_topViewController,0);
+                            }
+                            
+                        }else{
+                            if(self.zx_handleCustomPopGesture){
+                                self.zx_handleCustomPopGesture(self.zx_topViewController,1);
+                            }
+                        }
+                    }];
+                }
+            }
+        }
 }
 
 

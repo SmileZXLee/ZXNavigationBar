@@ -17,6 +17,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.zx_navStatusBarStyle = ZXNavStatusBarStyleDefault;
+    
 }
 
 - (void)dealloc{

@@ -33,7 +33,7 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.zx_navFixHeight = -1;
-    if(self.navigationController && !self.zx_hideBaseNavBar){
+    if(self.navigationController && !self.zx_hideBaseNavBar && !self.zx_disableAutoSetCustomNavBar){
         [self initNavBar];
         [self setAutoBack];
     }
@@ -61,7 +61,6 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
     self.zx_navBar = navBar;
     self.zx_navTitleLabel.text = self.zx_navTitle;
     [self adjustNavContainerOffset:[self getCurrentNavHeight]];
-    self.zx_isEnableSafeArea = YES;
     [self relayoutSubviews];
 }
 
@@ -81,17 +80,17 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
 
 #pragma mark Xib加载情况下，调整约束自动下移导航栏高度
 - (void)adjustNavContainerOffset:(CGFloat)offset{
-    if(self.zx_disableNavAutoSafeLayout){
-        offset = 0;
-    }
-    if(self.zx_isEnableSafeArea){
-        if (@available(iOS 11.0, *)) {
-             offset -= ZXMainWindow.safeAreaInsets.top;
-        }
+    [self adjustNavContainerOffset:offset checkSafeArea:YES];
+}
+
+#pragma mark Xib加载情况下，调整约束自动下移导航栏高度
+- (void)adjustNavContainerOffset:(CGFloat)offset checkSafeArea:(BOOL)checkSafeArea{
+    if(self.zx_disableAutoSetCustomNavBar){
+        return;
     }
     if(self.xibTopConstraintArr.count){
         for (ZXXibTopConstraintModel *constraintModel in self.xibTopConstraintArr) {
-            [self updateTopConstraint:constraintModel offset:offset];
+            [self updateTopConstraint:constraintModel offset:offset checkSafeArea:checkSafeArea];
         }
         return;
     }
@@ -102,17 +101,20 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
         if (constraint.firstAttribute == NSLayoutAttributeTop){
             id secondItem = constraint.secondItem;
             UIView *secondView = nil;
+            BOOL isToSafeArea = YES;
             if([secondItem isKindOfClass:[UILayoutGuide class]]){
                 secondView = ((UILayoutGuide *)secondItem).owningView;
             }
             if([secondItem isKindOfClass:[UIView class]]){
                 secondView = secondItem;
+                isToSafeArea = NO;
             }
             if(!secondView || self.view == secondView){
                 ZXXibTopConstraintModel *constraintModel = [[ZXXibTopConstraintModel alloc]init];
                 constraintModel.orgOffset = constraint.constant;
                 constraintModel.constraint = constraint;
-                [self updateTopConstraint:constraintModel offset:offset];
+                constraintModel.isToSafeArea = isToSafeArea;
+                [self updateTopConstraint:constraintModel offset:offset checkSafeArea:checkSafeArea];
                 [self.xibTopConstraintArr addObject:constraintModel];
                 if(!self.zx_enableAdjustNavContainerAll){
                     *stop = YES;
@@ -124,11 +126,22 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
 }
 
 #pragma mark 更新容器顶部约束
-- (void)updateTopConstraint:(ZXXibTopConstraintModel *)constraintModel offset:(CGFloat)offset{
+- (void)updateTopConstraint:(ZXXibTopConstraintModel *)constraintModel offset:(CGFloat)offset checkSafeArea:(BOOL)checkSafeArea{
+    if(self.zx_disableAutoSetCustomNavBar){
+        return;
+    }
+    if(self.zx_disableNavAutoSafeLayout){
+        offset = 0;
+    }
     CGFloat orgNavOffset = constraintModel.orgOffset;
     CGFloat handleOffset = orgNavOffset + offset;
     if(self.zx_handleAdjustNavContainerOffsetBlock){
         handleOffset = self.zx_handleAdjustNavContainerOffsetBlock(orgNavOffset,orgNavOffset + offset);
+    }
+    if(constraintModel.isToSafeArea && checkSafeArea){
+        if (@available(iOS 11.0, *)) {
+            handleOffset -= ZXMainWindow.safeAreaInsets.top;
+        }
     }
     constraintModel.constraint.constant = handleOffset;
 }
@@ -367,7 +380,7 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
 - (void)setZx_hideBaseNavBar:(BOOL)zx_hideBaseNavBar{
     if(_zx_hideBaseNavBar != zx_hideBaseNavBar){
         if(zx_hideBaseNavBar){
-            [self adjustNavContainerOffset:0];
+            [self adjustNavContainerOffset:0 checkSafeArea:NO];
         }else{
             [self adjustNavContainerOffset:[self getCurrentNavHeight]];
         }
@@ -379,20 +392,6 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
     }
 }
 
-- (void)setZx_isEnableSafeArea:(BOOL)zx_isEnableSafeArea{
-    if(@available(iOS 11.0, *)) {
-        if(_zx_isEnableSafeArea != zx_isEnableSafeArea){
-            _zx_isEnableSafeArea = zx_isEnableSafeArea;
-            if(zx_isEnableSafeArea){
-                [self adjustNavContainerOffset:[self getCurrentNavHeight]];
-                
-            }else{
-                [self adjustNavContainerOffset:[self getCurrentNavHeight]];
-            }
-        }
-    }
-    _zx_isEnableSafeArea = zx_isEnableSafeArea;
-}
 
 - (void)setZx_navStatusBarStyle:(ZXNavStatusBarStyle)zx_navStatusBarStyle{
     _zx_navStatusBarStyle = zx_navStatusBarStyle;
@@ -406,12 +405,6 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
     _zx_showSystemNavBar = zx_showSystemNavBar;
     if(self.navigationController){
         self.zx_hideBaseNavBar = YES;
-        if(self.zx_isEnableSafeArea){
-            if (@available(iOS 11.0, *)) {
-                [self adjustNavContainerOffset:ZXMainWindow.safeAreaInsets.top];
-            }
-        }
-        
         self.navigationController.navigationBar.translucent = !zx_showSystemNavBar;
         self.navigationController.navigationBarHidden = !zx_showSystemNavBar;
         [self checkDoAutoSysBarAlpha];
@@ -434,7 +427,7 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
 }
 
 - (void)setZx_disableNavAutoSafeLayout:(BOOL)zx_disableNavAutoSafeLayout{
-    zx_disableNavAutoSafeLayout = zx_disableNavAutoSafeLayout;
+    _zx_disableNavAutoSafeLayout = zx_disableNavAutoSafeLayout;
     [self adjustNavContainerOffset:0];
 }
 
@@ -874,11 +867,13 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
 #pragma mark - Other
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    [self refNavStatusFromWillAppear:YES];
-    if(@available(iOS 11.0, *)){
-        UIScrollView.appearance.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
-    }else{
-        self.automaticallyAdjustsScrollViewInsets = NO;
+    if(!self.zx_disableAutoSetCustomNavBar){
+        [self refNavStatusFromWillAppear:YES];
+        if(@available(iOS 11.0, *)){
+            UIScrollView.appearance.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+        }else{
+            self.automaticallyAdjustsScrollViewInsets = NO;
+        }
     }
     if(_zx_navStatusBarStyle != 0){
         [self setZx_navStatusBarStyle:_zx_navStatusBarStyle];
@@ -888,6 +883,9 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
 
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
+    if(self.zx_disableAutoSetCustomNavBar){
+        return;
+    }
     if(self.zx_showSystemNavBar){
         self.navigationController.navigationBarHidden = NO;
     }
@@ -896,7 +894,7 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
 
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-    if(self.zx_navEnableSmoothFromSystemNavBar){
+    if(self.zx_navEnableSmoothFromSystemNavBar && !self.zx_disableAutoSetCustomNavBar){
         [self refNavStatusFromWillAppear:NO];
     }
     if(self.navigationController && ![self.navigationController isKindOfClass:NSClassFromString(@"ZXNavigationBarNavigationController")]){
@@ -938,6 +936,9 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
 
 - (void)viewDidLayoutSubviews{
     [super viewDidLayoutSubviews];
+    if(self.zx_disableAutoSetCustomNavBar){
+        return;
+    }
     if(!self.isNavFoldAnimating){
         [self relayoutSubviews];
     }

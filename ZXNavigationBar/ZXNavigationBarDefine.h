@@ -178,4 +178,9 @@ height;\
  */
 #define ZXHorizontaledSafeArea ((ZXIsHorizontalScreen && ZXIsBangScreen)? ZXNavBarHeightNotIncludeStatusBar : 0)
 
+/**
+ 属性过期标注
+ */
+#define ZXNavigationBarDeprecated(DESCRIPTION) __attribute__((deprecated(DESCRIPTION)))
+
 #endif /* ZXNavigationBarDefine_h */
