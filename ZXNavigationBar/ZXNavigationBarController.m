@@ -17,7 +17,7 @@
 @end
 @interface ZXNavigationBarController ()<UIGestureRecognizerDelegate>
 @property(assign, nonatomic)BOOL setFold;
-@property(assign, nonatomic) CGFloat lastNavAlphe;
+@property(assign, nonatomic)CGFloat lastNavAlphe;
 @property(assign, nonatomic)BOOL isNavFoldAnimating;
 @property(assign, nonatomic)BOOL doAutoSysBarAlphe;
 @property(strong, nonatomic)UIColor *orgWindowColor;

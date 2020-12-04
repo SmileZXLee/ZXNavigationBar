@@ -53,6 +53,7 @@
     if(self.zx_tintColor){
         [self setTitleColor:self.zx_tintColor forState:state];
     }
+    [self layoutImageAndTitle];
     [self noticeUpdateFrame];
 }
 
@@ -65,6 +66,7 @@
         return;
     }
     [super setAttributedTitle:title forState:state];
+    [self layoutImageAndTitle];
     [self noticeUpdateFrame];
 }
 
@@ -81,6 +83,7 @@
     if(!image){
         self.imageView.image = image;
     }
+    [self layoutImageAndTitle];
     [self noticeUpdateFrame];
 }
 
@@ -114,6 +117,7 @@
     _zx_fontSize = zx_fontSize;
     self.titleLabel.font = [UIFont systemFontOfSize:zx_fontSize];
     [self.superview setValue:@1 forKey:@"shouldRefLayout"];
+    [self layoutImageAndTitle];
     [self noticeUpdateFrame];
 }
 

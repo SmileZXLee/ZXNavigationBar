@@ -9,6 +9,7 @@
 #import "ZXNavigationBar.h"
 @interface ZXNavigationBar()
 @property (assign, nonatomic)BOOL shouldRefLayout;
+@property (assign, nonatomic)BOOL shouldRelayoutSubviews;
 @end
 @implementation ZXNavigationBar
 
@@ -23,7 +24,15 @@
 
 - (void)layoutSubviews{
     [super layoutSubviews];
-    [self relayoutSubviews];
+    if(!self.shouldRelayoutSubviews){
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(CGFLOAT_MIN * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            self.shouldRelayoutSubviews = YES;
+            self.shouldRefLayout = YES;
+            [self relayoutSubviews];
+        });
+    }else{
+        [self relayoutSubviews];
+    }
 }
 
 #pragma mark - private
@@ -97,13 +106,9 @@
     self.lineView = lineView;
     _zx_titleView = titleView;
     
-    CGFloat orgRigthBtnX = rightBtn.zx_x;
-    CGFloat orgLeftBtnX = leftBtn.zx_x;
     __weak typeof(self) weakSelf = self;
     rightBtn.zx_barItemBtnFrameUpdateBlock = ^(ZXNavItemBtn * _Nonnull barItemBtn) {
-        [weakSelf layoutItemBtn:barItemBtn];
-        barItemBtn.zx_x = orgRigthBtnX - (barItemBtn.zx_width + 5 - weakSelf.zx_itemSize) - weakSelf.zx_itemMargin * 10;
-        [weakSelf refNavBar];
+        [weakSelf relayoutSubviews];
     };
     
     subRightBtn.zx_barItemBtnFrameUpdateBlock = ^(ZXNavItemBtn * _Nonnull barItemBtn) {
@@ -111,36 +116,27 @@
     };
     
     leftBtn.zx_barItemBtnFrameUpdateBlock = ^(ZXNavItemBtn * _Nonnull barItemBtn) {
-        [weakSelf layoutItemBtn:barItemBtn];
-        rightBtn.zx_x = orgLeftBtnX + (barItemBtn.zx_width + 5 - weakSelf.zx_itemSize);
-        [weakSelf refNavBar];
-
+        [weakSelf relayoutSubviews];
     };
-    [self relayoutSubviews];
+    subLeftBtn.zx_barItemBtnFrameUpdateBlock = ^(ZXNavItemBtn * _Nonnull barItemBtn) {
+        [weakSelf relayoutSubviews];
+    };
 }
 
-#pragma mark 当Button中有文字时，刷新Button布局
-- (void)layoutItemBtn:(ZXNavItemBtn *)barItemBtn{
+#pragma mark 获取ItemBtn初始高度
+- (CGFloat)getInitItemBtnHeight:(ZXNavItemBtn *)barItemBtn{
+    if(barItemBtn.zx_fixHeight >= 0){
+        return barItemBtn.zx_fixHeight;
+    }
+    return self.zx_itemSize;
+}
+
+#pragma mark 获取ItemBtn的初始宽度
+- (CGFloat)getInitItemBtnWidth:(ZXNavItemBtn *)barItemBtn{
     if(barItemBtn.zx_fixWidth >= 0){
-        barItemBtn.zx_width = barItemBtn.zx_fixWidth;
-        return;
+        return barItemBtn.zx_fixWidth;
     }
-    if(barItemBtn.currentAttributedTitle && barItemBtn.currentAttributedTitle.length){
-        CGFloat btnw = [barItemBtn.currentAttributedTitle zx_getAttrRectWidthWithLimitH:barItemBtn.zx_height fontSize:barItemBtn.titleLabel.font.pointSize];
-        if(barItemBtn.imageView.image){
-            btnw = btnw + barItemBtn.imageView.zx_width;
-        }
-        barItemBtn.zx_width = btnw + barItemBtn.zx_textAttachWidth + 5;
-    }else if(barItemBtn.currentTitle){
-        CGFloat btnw = [barItemBtn.currentTitle zx_getRectWidthWithLimitH:barItemBtn.zx_height fontSize:barItemBtn.titleLabel.font.pointSize];
-        if(!barItemBtn.currentTitle.length){
-            btnw = 0;
-        }
-        if(barItemBtn.imageView.image){
-            btnw = btnw + barItemBtn.imageView.zx_width;
-        }
-        barItemBtn.zx_width = btnw + barItemBtn.zx_textAttachWidth + 5;
-    }
+    return self.zx_itemSize;
 }
 
 #pragma mark 获取ItemBtn最终高度
@@ -154,10 +150,26 @@
     return self.zx_itemSize;
 }
 
-#pragma mark 获取ItemBtn无文字时的最终宽度
+#pragma mark 获取ItemBtn的最终宽度
 - (CGFloat)getItemBtnWidth:(ZXNavItemBtn *)barItemBtn{
     if(barItemBtn.zx_fixWidth >= 0){
         return barItemBtn.zx_fixWidth;
+    }
+    if(barItemBtn.currentAttributedTitle && barItemBtn.currentAttributedTitle.length){
+        CGFloat btnw = [barItemBtn.currentAttributedTitle zx_getAttrRectWidthWithLimitH:barItemBtn.zx_height fontSize:barItemBtn.titleLabel.font.pointSize];
+        if(barItemBtn.imageView.image){
+            btnw = btnw + barItemBtn.imageView.zx_width;
+        }
+        return btnw + barItemBtn.zx_textAttachWidth + 5;
+    }else if(barItemBtn.currentTitle){
+        CGFloat btnw = [barItemBtn.currentTitle zx_getRectWidthWithLimitH:barItemBtn.zx_height fontSize:barItemBtn.titleLabel.font.pointSize];
+        if(!barItemBtn.currentTitle.length){
+            btnw = 0;
+        }
+        if(barItemBtn.imageView.image){
+            btnw = btnw + barItemBtn.imageView.zx_width;
+        }
+        return btnw + barItemBtn.zx_textAttachWidth + 5;
     }
     if(!barItemBtn.currentAttributedTitle && !barItemBtn.currentTitle && !CGSizeEqualToSize(barItemBtn.zx_fixImageSize,CGSizeZero)){
         return barItemBtn.zx_fixImageSize.width;
@@ -201,6 +213,17 @@
 
 #pragma mark 刷新子控件布局
 - (void)relayoutSubviews{
+    if(!self.shouldRelayoutSubviews){
+        if(CGRectEqualToRect(self.zx_leftBtn.frame, CGRectZero)){
+            self.zx_leftBtn.zx_width = [self getInitItemBtnWidth:self.zx_leftBtn];
+            self.zx_leftBtn.zx_height = [self getInitItemBtnHeight:self.zx_leftBtn];
+        }
+        if(CGRectEqualToRect(self.zx_rightBtn.frame, CGRectZero)){
+            self.zx_rightBtn.zx_width = [self getInitItemBtnWidth:self.zx_rightBtn];
+            self.zx_rightBtn.zx_height = [self getInitItemBtnHeight:self.zx_rightBtn];
+        }
+        return;
+    }
     if(self.zx_leftBtn && self.zx_rightBtn && self.zx_titleLabel){
         CGFloat centerOffSet = ZXAppStatusBarHeight;
         CGSize leftBtnSize = CGSizeZero;
@@ -224,12 +247,8 @@
             rightBtnSize = self.zx_rightBtn.zx_size;
             rightBtnW = self.zx_rightBtn.zx_width;
         }
-        self.zx_rightBtn.frame = CGRectMake(self.zx_width - self.zx_itemMargin - rightBtnW - ZXHorizontaledSafeArea,(self.zx_height - rightBtnFinalHeight + centerOffSet) / 2, rightBtnSize.width,rightBtnSize.height);
+        self.zx_rightBtn.frame = CGRectMake(self.zx_width - self.zx_itemMargin - rightBtnSize.width - ZXHorizontaledSafeArea,(self.zx_height - rightBtnFinalHeight + centerOffSet) / 2, rightBtnSize.width,rightBtnSize.height);
         [self handleItemBtnFrame:self.zx_rightBtn];
-        if(self.shouldRefLayout){
-            [self layoutItemBtn:self.zx_leftBtn];
-            [self layoutItemBtn:self.zx_rightBtn];
-        }
         CGFloat subRightBtnFinalHeight = [self getItemBtnHeight:self.zx_subRightBtn];
         CGFloat subRightBtnFinalWidth = [self getItemBtnWidth:self.zx_subRightBtn];
         if(self.zx_subRightBtn.imageView.image || self.zx_subRightBtn.zx_customView){
@@ -273,7 +292,6 @@
 }
 
 #pragma mark - Setter
-
 - (void)setZx_bacImage:(UIImage *)zx_bacImage{
     _zx_bacImage = zx_bacImage;
     self.zx_bacImageView.image = zx_bacImage;
