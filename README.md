@@ -27,7 +27,7 @@ pod 'ZXNavigationBar'
 - [x] 支持在`ZXNavigationBar`上自定义titleView与navItemView
 - [x] 若`ZXNavigationBar`自带效果都无法满足，支持任意自定义导航栏View
 - [x] 支持导航栏折叠、支持跟随ScrollView滚动透明度自动改变
-- [x] 支持通过url加载导航栏Item
+- [x] 支持通过url加载导航栏Item图片
 - [x] 支持全屏手势返回
 - [x] 支持自定义手势返回范围
 - [x] 支持监听手势返回进度
@@ -69,7 +69,7 @@ pod 'ZXNavigationBar'
 ```
 
 
-* 【导航控制器为`ZXNavigationBarNavigationController`或其子类时，可忽略此步操作】`ZXNavigationBarController`作了自动隐藏导航栏的处理，但由于导航栏早于内部子控制器加载，因此有可能造成自定义导航栏抖动或状态栏颜色黑白相嵌的问题，
+* 【导航控制器为`ZXNavigationBarNavigationController`或其子类时，可忽略此步操作！！】`ZXNavigationBarController`作了自动隐藏导航栏的处理，但由于导航栏早于内部子控制器加载，因此有可能造成自定义导航栏抖动或状态栏颜色黑白相嵌的问题，
 若您遇到此问题，请在base导航控制器的`pushViewController:animated:`中设置`self.navigationBarHidden = YES;`或在Appdelegate的`application:didFinishLaunchingWithOptions:`中调用方法`[UINavigationController zx_hideAllNavBar]`(需要先`#import "ZXNavigationBarController.h"`)
 ```objective-c
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -94,10 +94,7 @@ pod 'ZXNavigationBar'
 * 如果您是通过frame或者Masonry设置控件布局，请设置y距离顶部高度为导航栏高度，可直接使用`ZXNavBarHeight`这个宏
 * 如果您是通过Xib加载控制器View，则`ZXNavigationBar`会自动将内部约束设置为距离顶部为导航栏高度+原始高度，您无需作任何处理
 * 若您是通过Xib加载控制器View，且禁用了SafeArea，请设置（若使用了SafeArea，请忽略）：
-```objective-c
-//若大多数控制器都从Xib加载并禁用了SafeArea，可以直接在Base控制器中设置
-self.zx_isEnableSafeArea = NO;
-```
+
 ### 导航栏设置
 #### 注意:以下设置均在控制器中进行，self代表当前控制器(当前控制器需继承于`ZXNavigationBarController`)
 #### 设置导航栏标题
@@ -298,7 +295,10 @@ self.zx_navEnableSmoothFromSystemNavBar = YES;
 ```objective-c
 self.zx_disableNavAutoSafeLayout = YES;
 ```
-
+#### Xib加载控制器情况下将所有约束为top且secondItem为控制器view或safeArea的子view约束constant设置为原始长度+导航栏高度，默认为NO(仅第一个)，若设置为YES，将会遍历控制器view中的所有约束，对性能有一点影响
+```objective-c
+self.zx_enableAdjustNavContainerAll = YES;
+```
 #### 自动将顶部View约束下移导航栏高度时的回调，可拦截并自定义下移距离(从xib加载控制器view时生效)
 ```objective-c
 //oldNavOffset:视图在xib中所设置的约束与顶部距离
@@ -351,7 +351,7 @@ self.zx_handlePopBlock = ^BOOL(ZXNavigationBarController * _Nonnull viewControll
 //pop手势的触发范围比例，0-1，默认为1，即代表全屏触发
 self.zx_popGestureCoverRatio = 0.5;
 ```
-禁用全屏pop手势，若禁用，则pop触发范围为屏幕宽度的五分之一
+禁用全屏pop手势，若禁用，则pop触发范围为屏幕宽度的十分之一
 ```objective-c
 //在控制器中：
 self.zx_disableFullScreenGesture = YES;
