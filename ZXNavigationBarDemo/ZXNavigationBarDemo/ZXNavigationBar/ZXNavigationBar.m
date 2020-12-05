@@ -108,17 +108,21 @@
     
     __weak typeof(self) weakSelf = self;
     rightBtn.zx_barItemBtnFrameUpdateBlock = ^(ZXNavItemBtn * _Nonnull barItemBtn) {
+        weakSelf.self.shouldRefLayout = YES;
         [weakSelf relayoutSubviews];
     };
     
     subRightBtn.zx_barItemBtnFrameUpdateBlock = ^(ZXNavItemBtn * _Nonnull barItemBtn) {
+        weakSelf.self.shouldRefLayout = YES;
         [weakSelf relayoutSubviews];
     };
     
     leftBtn.zx_barItemBtnFrameUpdateBlock = ^(ZXNavItemBtn * _Nonnull barItemBtn) {
+        weakSelf.self.shouldRefLayout = YES;
         [weakSelf relayoutSubviews];
     };
     subLeftBtn.zx_barItemBtnFrameUpdateBlock = ^(ZXNavItemBtn * _Nonnull barItemBtn) {
+        weakSelf.self.shouldRefLayout = YES;
         [weakSelf relayoutSubviews];
     };
 }
