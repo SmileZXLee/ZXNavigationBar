@@ -196,7 +196,7 @@ self.zx_navLeftBtn.zx_tintColor = [UIColor redColor];
 ```objective-c
 self.zx_navLeftBtn.zx_fontSize = 12;
 ```
-* 设置NavItemBtn的固定宽度，若设置，则自动计算宽度无效
+* 设置NavItemBtn的固定宽度，若设置，则自动计算宽度无效(若需要恢复自动宽度，可设置`zx_fixWidth`为-1)
 ```objective-c
 self.zx_navLeftBtn.zx_fixWidth = 100;
 ```
