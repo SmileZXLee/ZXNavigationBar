@@ -28,9 +28,6 @@
     
     //最左侧的按钮添加”返回“文字，当当前控制器不是第0个的时候，ZXNavigationBar会自动显示返回图片，且点击返回上一个控制器
     [self.zx_navLeftBtn setTitle:@"返回" forState:UIControlStateNormal];
-    //设置自定义的navItemView
-    self.zx_navSubRightBtn.zx_customView = [UISwitch new];
-    self.zx_navSubRightBtn.hidden = YES;
     
     __weak typeof(self) weakSelf = self;
     self.zx_handlePopBlock = ^BOOL(ZXNavigationBarController * _Nonnull viewController, ZXNavPopBlockFrom popBlockFrom) {
@@ -127,9 +124,10 @@
 #pragma mark 点击了右侧显示两个Item
 - (IBAction)changeRightSubBtnAction:(UISwitch *)sender {
     if(sender.on){
-        self.zx_navSubRightBtn.hidden = NO;
+        //设置自定义NavItemView
+        self.zx_navSubRightBtn.zx_customView = [UISwitch new];
     }else{
-        self.zx_navSubRightBtn.hidden = YES;
+        self.zx_navSubRightBtn.zx_customView = nil;
     }
 }
 

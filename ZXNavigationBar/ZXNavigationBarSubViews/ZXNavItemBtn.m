@@ -101,6 +101,12 @@
     [self resetImage];
 }
 
+- (void)setZx_disableAutoLayoutImageAndTitle:(BOOL )zx_disableAutoLayoutImageAndTitle{
+    _zx_disableAutoLayoutImageAndTitle = zx_disableAutoLayoutImageAndTitle;
+    [self layoutImageAndTitle];
+    [self noticeUpdateFrame];
+}
+
 - (void)setZx_fixWidth:(CGFloat)zx_fixWidth{
     _zx_fixWidth = zx_fixWidth;
     [self.superview setValue:@1 forKey:@"shouldRefLayout"];
@@ -136,10 +142,15 @@
 }
 
 - (void)setZx_customView:(UIView *)zx_customView{
-    _zx_customView = zx_customView;
     if(!zx_customView){
+        if([self.subviews containsObject:_zx_customView]){
+            [_zx_customView removeFromSuperview];
+        }
+        _zx_customView = nil;
+        [self noticeUpdateFrame];
         return;
     }
+    _zx_customView = zx_customView;
     if(![self.subviews containsObject:zx_customView]){
         [self addSubview:zx_customView];
     }
@@ -182,6 +193,9 @@
 
 #pragma mark ButtonLayout
 - (void)layoutImageAndTitle{
+    if(self.zx_disableAutoLayoutImageAndTitle){
+        return;
+    }
     CGFloat btnw = 0;
     if(self.currentAttributedTitle){
         btnw = [self.currentAttributedTitle zx_getAttrRectWidthWithLimitH:self.frame.size.height fontSize:self.titleLabel.font.pointSize] + 5;
@@ -193,13 +207,19 @@
     }
     btnw += self.zx_textAttachWidth;
     if(self.imageView.image){
+        BOOL useFixImageSize = NO;
         CGFloat imageHeight = self.frame.size.height;
         CGFloat imageWidth = self.frame.size.height;
         if(!CGSizeEqualToSize(self.zx_fixImageSize,CGSizeZero)){
             imageHeight = self.zx_fixImageSize.height;
             imageWidth = self.zx_fixImageSize.width;
+            useFixImageSize = YES;
         }
-        self.imageView.frame = CGRectMake(0, (self.frame.size.height - imageHeight) / 2, imageWidth, imageHeight);
+        CGFloat imageViewX = 0;
+        if(!(self.currentTitle.length || self.currentAttributedTitle.length) && useFixImageSize){
+            imageViewX = (self.frame.size.width - imageWidth) / 2;
+        }
+        self.imageView.frame = CGRectMake(imageViewX, (self.frame.size.height - imageHeight) / 2, imageWidth, imageHeight);
         self.titleLabel.frame = CGRectMake(CGRectGetMaxX(self.imageView.frame), 0, btnw, self.frame.size.height);
     }else{
         self.imageView.frame = CGRectZero;

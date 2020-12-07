@@ -108,21 +108,21 @@
     
     __weak typeof(self) weakSelf = self;
     rightBtn.zx_barItemBtnFrameUpdateBlock = ^(ZXNavItemBtn * _Nonnull barItemBtn) {
-        weakSelf.self.shouldRefLayout = YES;
+        weakSelf.shouldRefLayout = YES;
         [weakSelf relayoutSubviews];
     };
     
     subRightBtn.zx_barItemBtnFrameUpdateBlock = ^(ZXNavItemBtn * _Nonnull barItemBtn) {
-        weakSelf.self.shouldRefLayout = YES;
+        weakSelf.shouldRefLayout = YES;
         [weakSelf relayoutSubviews];
     };
     
     leftBtn.zx_barItemBtnFrameUpdateBlock = ^(ZXNavItemBtn * _Nonnull barItemBtn) {
-        weakSelf.self.shouldRefLayout = YES;
+        weakSelf.shouldRefLayout = YES;
         [weakSelf relayoutSubviews];
     };
     subLeftBtn.zx_barItemBtnFrameUpdateBlock = ^(ZXNavItemBtn * _Nonnull barItemBtn) {
-        weakSelf.self.shouldRefLayout = YES;
+        weakSelf.shouldRefLayout = YES;
         [weakSelf relayoutSubviews];
     };
 }
@@ -148,9 +148,6 @@
     if(barItemBtn.zx_fixHeight >= 0){
         return barItemBtn.zx_fixHeight;
     }
-    if(!barItemBtn.currentAttributedTitle && !barItemBtn.currentTitle && !CGSizeEqualToSize(barItemBtn.zx_fixImageSize,CGSizeZero)){
-        return barItemBtn.zx_fixImageSize.height;
-    }
     return self.zx_itemSize;
 }
 
@@ -174,9 +171,6 @@
             btnw = btnw + barItemBtn.imageView.zx_width;
         }
         return btnw + barItemBtn.zx_textAttachWidth + 5;
-    }
-    if(!barItemBtn.currentAttributedTitle && !barItemBtn.currentTitle && !CGSizeEqualToSize(barItemBtn.zx_fixImageSize,CGSizeZero)){
-        return barItemBtn.zx_fixImageSize.width;
     }
     return self.zx_itemSize;
 }
@@ -228,6 +222,7 @@
         }
         return;
     }
+    NSLog(@"relayoutSubviews");
     if(self.zx_leftBtn && self.zx_rightBtn && self.zx_titleLabel){
         CGFloat centerOffSet = ZXAppStatusBarHeight;
         CGSize leftBtnSize = CGSizeZero;
