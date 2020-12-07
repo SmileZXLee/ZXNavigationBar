@@ -200,6 +200,10 @@ self.zx_navLeftBtn.zx_fontSize = 12;
 ```objective-c
 self.zx_navLeftBtn.zx_fixWidth = 100;
 ```
+* 禁止自动调整NavItemBtn图片和文字的布局，若要使contentEdgeInsets、titleEdgeInsets、imageEdgeInsets等，则需要将此属性设置为NO
+```objective-c
+self.zx_navLeftBtn.zx_disableAutoLayoutImageAndTitle = YES;
+```
 * 设置NavItemBtn的固定高度，若设置，则ZXNavDefalutItemSize无效
 ```objective-c
 self.zx_navLeftBtn.zx_fixHeight = 20;
