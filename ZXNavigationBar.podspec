@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
 s.name         = 'ZXNavigationBar'
-s.version      = '1.3.4'
+s.version      = '1.3.5'
 s.summary      = '灵活轻量的自定义导航栏，轻松实现各种自定义效果'
 s.homepage     = 'https://github.com/SmileZXLee/ZXNavigationBar'
 s.license      = 'MIT'

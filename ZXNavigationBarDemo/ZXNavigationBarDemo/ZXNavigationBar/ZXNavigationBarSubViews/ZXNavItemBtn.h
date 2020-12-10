@@ -5,6 +5,7 @@
 //  Created by 李兆祥 on 2020/3/7.
 //  Copyright © 2020 ZXLee. All rights reserved.
 //  https://github.com/SmileZXLee/ZXNavigationBar
+//  V1.3.5
 
 #import <UIKit/UIKit.h>
 
@@ -19,6 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic, nullable)UIColor *zx_imageColor;
 ///设置NavItemBtn的tintColor
 @property (strong, nonatomic, nullable)UIColor *zx_tintColor;
+///设置NavItemBtn的tintColor仅用于UIControlStateNormal状态(请在zx_imageColor和zx_tintColor之前设置)
+@property (assign, nonatomic)UIColor *zx_useTintColorOnlyInStateNormal;
 ///设置NavItemBtn的字体大小
 @property (assign, nonatomic)CGFloat zx_fontSize;
 ///禁止自动调整按钮图片和文字的布局，若要使contentEdgeInsets、titleEdgeInsets、imageEdgeInsets等，则需要将此属性设置为NO
@@ -31,6 +34,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic)CGSize zx_fixImageSize;
 ///设置NavItemBtn自动计算宽度后的附加宽度
 @property (assign, nonatomic)CGFloat zx_textAttachWidth;
+///NavItemBtn内部图片x轴的偏移量，负数代表左移，无title且设置了zx_fixImageSize后生效，仅改变内容imageView的位移，不会改变原始NavItemBtn的frame
+@property (assign, nonatomic)CGFloat zx_imageOffsetX;
 ///设置NavItemBtn的自定义view
 @property (strong, nonatomic, nullable)UIView *zx_customView;
 ///NavItemBtn frame发生改变时的回调，可在这个block中return修改后的frame

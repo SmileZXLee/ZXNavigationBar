@@ -5,6 +5,7 @@
 //  Created by 李兆祥 on 2020/3/7.
 //  Copyright © 2020 ZXLee. All rights reserved.
 //  https://github.com/SmileZXLee/ZXNavigationBar
+//  V1.3.5
 
 #import "ZXNavigationBar.h"
 @interface ZXNavigationBar()
@@ -222,7 +223,6 @@
         }
         return;
     }
-    NSLog(@"relayoutSubviews");
     if(self.zx_leftBtn && self.zx_rightBtn && self.zx_titleLabel){
         CGFloat centerOffSet = ZXAppStatusBarHeight;
         CGSize leftBtnSize = CGSizeZero;

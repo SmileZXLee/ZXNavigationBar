@@ -5,6 +5,7 @@
 //  Created by 李兆祥 on 2020/3/11.
 //  Copyright © 2020 ZXLee. All rights reserved.
 //  https://github.com/SmileZXLee/ZXNavigationBar
+//  V1.3.5
 
 #import <UIKit/UIKit.h>
 

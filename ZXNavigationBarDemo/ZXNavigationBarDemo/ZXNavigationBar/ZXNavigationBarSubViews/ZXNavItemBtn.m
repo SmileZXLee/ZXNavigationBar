@@ -5,6 +5,7 @@
 //  Created by 李兆祥 on 2020/3/7.
 //  Copyright © 2020 ZXLee. All rights reserved.
 //  https://github.com/SmileZXLee/ZXNavigationBar
+//  V1.3.5
 
 #import "ZXNavItemBtn.h"
 #import "ZXNavigationBarDefine.h"
@@ -141,6 +142,11 @@
     [self noticeUpdateFrame];
 }
 
+- (void)setZx_imageOffsetX:(CGFloat)zx_imageOffsetX{
+    _zx_imageOffsetX = zx_imageOffsetX;
+    [self layoutImageAndTitle];
+}
+
 - (void)setZx_customView:(UIView *)zx_customView{
     if(!zx_customView){
         if([self.subviews containsObject:_zx_customView]){
@@ -183,12 +189,28 @@
 }
 
 - (void)resetImage{
-    [self setImage:self.currentImage forState:self.state];
+    BOOL isStateFocused = NO;
+    if(@available(iOS 9.0, *)){
+        isStateFocused = self.state == UIControlStateFocused;
+    }
+    if(self.zx_useTintColorOnlyInStateNormal || isStateFocused){
+        [self setImage:[self imageForState:UIControlStateNormal] forState:UIControlStateNormal];
+    }else{
+        [self setImage:self.currentImage forState:self.state];
+    }
 }
 
 
 - (void)resetTitle{
-    [self setTitle:self.currentTitle forState:self.state];
+    BOOL isStateFocused = NO;
+    if(@available(iOS 9.0, *)){
+        isStateFocused = self.state == UIControlStateFocused;
+    }
+    if(self.zx_useTintColorOnlyInStateNormal || isStateFocused){
+        [self setTitle:[self titleForState:UIControlStateNormal] forState:UIControlStateNormal];
+    }else{
+        [self setTitle:self.currentTitle forState:self.state];
+    }
 }
 
 #pragma mark ButtonLayout
@@ -217,7 +239,7 @@
         }
         CGFloat imageViewX = 0;
         if(!(self.currentTitle.length || self.currentAttributedTitle.length) && useFixImageSize){
-            imageViewX = (self.frame.size.width - imageWidth) / 2;
+            imageViewX = (self.frame.size.width - imageWidth) / 2 + self.zx_imageOffsetX;
         }
         self.imageView.frame = CGRectMake(imageViewX, (self.frame.size.height - imageHeight) / 2, imageWidth, imageHeight);
         self.titleLabel.frame = CGRectMake(CGRectGetMaxX(self.imageView.frame), 0, btnw, self.frame.size.height);
