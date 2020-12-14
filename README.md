@@ -216,6 +216,14 @@ self.zx_navLeftBtn.zx_fixImageSize = CGSizeMake(10,10);
 ```objective-c
 self.zx_navLeftBtn.zx_textAttachWidth = 20;
 ```
+* 设置NavItemBtn内部图片x轴的偏移量，负数代表左移，无title且设置了zx_fixImageSize后生效，仅改变内容imageView的位移，不会改变原始NavItemBtn的frame
+```objective-c
+self.zx_navLeftBtn.zx_imageOffsetX = -10;
+```
+* 设置NavItemBtn的tintColor仅用于UIControlStateNormal状态(请在zx_imageColor和zx_tintColor之前设置)，默认为NO
+```objective-c
+self.zx_navLeftBtn.zx_useTintColorOnlyInStateNormal = YES;
+```
 * 自定义NavItemView
 ```objective-c
 self.zx_navLeftBtn.zx_customView = [UISwitch new];
