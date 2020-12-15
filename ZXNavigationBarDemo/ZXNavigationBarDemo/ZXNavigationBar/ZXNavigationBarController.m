@@ -5,7 +5,7 @@
 //  Created by 李兆祥 on 2020/3/7.
 //  Copyright © 2020 ZXLee. All rights reserved.
 //  https://github.com/SmileZXLee/ZXNavigationBar
-//  V1.3.5
+//  V1.3.6
 
 #import "ZXNavigationBarController.h"
 
@@ -57,7 +57,7 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
     self.zx_navSubLeftBtn = navBar.zx_subLeftBtn;
     self.zx_navRightBtn = navBar.zx_rightBtn;
     self.zx_navSubRightBtn = navBar.zx_subRightBtn;
-    self.zx_navLineView = navBar.lineView;
+    self.zx_navLineView = navBar.zx_lineView;
     self.zx_navBacImageView = navBar.zx_bacImageView;
     self.zx_navBar = navBar;
     self.zx_navTitleLabel.text = self.zx_navTitle;
@@ -375,6 +375,13 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
 - (void)setZx_navLineViewBackgroundColor:(UIColor *)zx_navLineViewBackgroundColor{
     _zx_navLineViewBackgroundColor = zx_navLineViewBackgroundColor;
     self.zx_navLineView.backgroundColor = zx_navLineViewBackgroundColor;
+}
+
+- (void)setZx_navLineViewHeight:(CGFloat)zx_navLineViewHeight{
+    _zx_navLineViewHeight = zx_navLineViewHeight;
+    if(self.zx_navBar){
+        self.zx_navBar.zx_lineViewHeight = zx_navLineViewHeight;
+    }
 }
 
 

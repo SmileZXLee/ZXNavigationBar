@@ -5,7 +5,7 @@
 //  Created by 李兆祥 on 2020/3/7.
 //  Copyright © 2020 ZXLee. All rights reserved.
 //  https://github.com/SmileZXLee/ZXNavigationBar
-//  V1.3.5
+//  V1.3.6
 
 #import <UIKit/UIKit.h>
 #import "ZXNavigationBarDefine.h"
@@ -79,7 +79,15 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  分割线
  */
-@property (weak, nonatomic)UIView *lineView;
+@property (weak, nonatomic)UIView *lineView ZXNavigationBarDeprecated("从版本1.3.6起，此属性过期，请使用zx_lineView");
+/**
+ 分割线
+ */
+@property (weak, nonatomic)UIView *zx_lineView;
+/**
+ 分割线的高度，默认为1
+ */
+@property (assign, nonatomic)CGFloat zx_lineViewHeight;
 /**
  最左侧Button点击回调
  */

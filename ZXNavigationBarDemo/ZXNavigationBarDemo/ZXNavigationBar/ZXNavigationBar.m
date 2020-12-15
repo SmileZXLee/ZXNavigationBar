@@ -5,7 +5,7 @@
 //  Created by 李兆祥 on 2020/3/7.
 //  Copyright © 2020 ZXLee. All rights reserved.
 //  https://github.com/SmileZXLee/ZXNavigationBar
-//  V1.3.5
+//  V1.3.6
 
 #import "ZXNavigationBar.h"
 @interface ZXNavigationBar()
@@ -42,6 +42,7 @@
     self.backgroundColor = ZXNavDefalutBacColor;
     _zx_itemSize = ZXNavDefalutItemSize;
     _zx_itemMargin = ZXNavDefalutItemMargin;
+    _zx_lineViewHeight = 1;
     ZXNavBacImageView *bacImageView = [[ZXNavBacImageView alloc]init];
     bacImageView.clipsToBounds = YES;
     bacImageView.contentMode = UIViewContentModeScaleAspectFill;
@@ -70,7 +71,7 @@
     subRightBtn.titleLabel.textAlignment = NSTextAlignmentCenter;
     [subRightBtn setTitleColor:ZXNavDefalutItemTextColor forState:UIControlStateNormal];
     subRightBtn.titleLabel.adjustsFontSizeToFitWidth = YES;
-    [subRightBtn setValue:@1 forKey:@"zx_disableSetTitle"];
+    //[subRightBtn setValue:@1 forKey:@"zx_disableSetTitle"];
     
     ZXNavItemBtn *subLeftBtn = [[ZXNavItemBtn alloc]init];
     [subLeftBtn addTarget:self action:@selector(subLeftBtnAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -79,7 +80,7 @@
     subLeftBtn.titleLabel.textAlignment = NSTextAlignmentCenter;
     [subLeftBtn setTitleColor:ZXNavDefalutItemTextColor forState:UIControlStateNormal];
     subLeftBtn.titleLabel.adjustsFontSizeToFitWidth = YES;
-    [subLeftBtn setValue:@1 forKey:@"zx_disableSetTitle"];
+    //[subLeftBtn setValue:@1 forKey:@"zx_disableSetTitle"];
     
     ZXNavTitleView *titleView = [[ZXNavTitleView alloc]init];
     ZXNavTitleLabel *titleLabel = [[ZXNavTitleLabel alloc]init];
@@ -104,7 +105,8 @@
     self.zx_subRightBtn = subRightBtn;
     self.zx_subLeftBtn = subLeftBtn;
     self.zx_titleLabel = titleLabel;
-    self.lineView = lineView;
+    _lineView = lineView;
+    _zx_lineView = lineView;
     _zx_titleView = titleView;
     
     __weak typeof(self) weakSelf = self;
@@ -149,6 +151,9 @@
     if(barItemBtn.zx_fixHeight >= 0){
         return barItemBtn.zx_fixHeight;
     }
+    if((barItemBtn.currentTitle && barItemBtn.currentTitle.length) || (barItemBtn.currentAttributedTitle && barItemBtn.currentAttributedTitle.length)){
+        return self.zx_itemSize + barItemBtn.zx_textAttachHeight;
+    }
     return self.zx_itemSize;
 }
 
@@ -180,7 +185,12 @@
 - (void)handleItemBtnFrame:(ZXNavItemBtn *)barItemBtn{
     if(barItemBtn.zx_handleFrameBlock){
         barItemBtn.frame =  barItemBtn.zx_handleFrameBlock(barItemBtn.frame);
-        
+    }
+    if(barItemBtn.zx_setCornerRadiusRounded){
+        barItemBtn.clipsToBounds = YES;
+        barItemBtn.layer.cornerRadius = barItemBtn.frame.size.height / 2;
+    }else if(barItemBtn.layer.cornerRadius == barItemBtn.frame.size.height / 2){
+        barItemBtn.layer.cornerRadius = 0;
     }
 }
 
@@ -250,18 +260,18 @@
         [self handleItemBtnFrame:self.zx_rightBtn];
         CGFloat subRightBtnFinalHeight = [self getItemBtnHeight:self.zx_subRightBtn];
         CGFloat subRightBtnFinalWidth = [self getItemBtnWidth:self.zx_subRightBtn];
-        if(self.zx_subRightBtn.imageView.image || self.zx_subRightBtn.zx_customView){
-            self.zx_subRightBtn.frame = CGRectMake(CGRectGetMinX(self.zx_rightBtn.frame) - self.zx_itemMargin - subRightBtnFinalWidth, (self.zx_height - subRightBtnFinalHeight + centerOffSet) / 2, subRightBtnFinalWidth, subRightBtnFinalHeight);
-        }else{
+        if(!self.zx_subRightBtn.currentImage && !self.zx_subRightBtn.currentTitle && !self.zx_subRightBtn.currentAttributedTitle && !self.zx_subRightBtn.zx_customView){
             self.zx_subRightBtn.frame = CGRectMake(CGRectGetMinX(self.zx_rightBtn.frame) - self.zx_itemMargin, self.zx_rightBtn.zx_y, 0, 0);
+        }else{
+            self.zx_subRightBtn.frame = CGRectMake(CGRectGetMinX(self.zx_rightBtn.frame) - self.zx_itemMargin - subRightBtnFinalWidth, (self.zx_height - subRightBtnFinalHeight + centerOffSet) / 2, subRightBtnFinalWidth, subRightBtnFinalHeight);;
         }
         [self handleItemBtnFrame:self.zx_subRightBtn];
         CGFloat subLeftBtnFinalHeight = [self getItemBtnHeight:self.zx_subLeftBtn];
         CGFloat subLeftBtnFinalWidth = [self getItemBtnWidth:self.zx_subLeftBtn];
-        if(self.zx_subLeftBtn.imageView.image || self.zx_subLeftBtn.zx_customView){
-            self.zx_subLeftBtn.frame = CGRectMake(CGRectGetMaxX(self.zx_leftBtn.frame) + self.zx_itemMargin, (self.zx_height - subLeftBtnFinalHeight + centerOffSet) / 2, subLeftBtnFinalWidth, subLeftBtnFinalHeight);
-        }else{
+        if(!self.zx_subLeftBtn.currentImage && !self.zx_subLeftBtn.currentTitle && !self.zx_subLeftBtn.currentAttributedTitle && !self.zx_subLeftBtn.zx_customView){
             self.zx_subLeftBtn.frame = CGRectMake(CGRectGetMaxX(self.zx_leftBtn.frame) + self.zx_itemMargin, self.zx_leftBtn.zx_y, 0, 0);
+        }else{
+            self.zx_subLeftBtn.frame = CGRectMake(CGRectGetMaxX(self.zx_leftBtn.frame) + self.zx_itemMargin, (self.zx_height - subLeftBtnFinalHeight + centerOffSet) / 2, subLeftBtnFinalWidth, subLeftBtnFinalHeight);
         }
         [self handleItemBtnFrame:self.zx_subLeftBtn];
         CGFloat leftBtnFakeWidth = CGRectGetMaxX(self.zx_subLeftBtn.frame);
@@ -275,7 +285,7 @@
         CGFloat maxItemWidth = MAX(leftBtnFakeWidth,rightBtnFakeWidth);
         self.zx_titleLabel.frame = CGRectMake(maxItemWidth,centerOffSet,self.zx_width - maxItemWidth * 2,self.zx_height - centerOffSet);
         self.zx_titleView.frame = self.zx_titleLabel.frame;
-        self.lineView.frame = CGRectMake(0, self.zx_height - 1, self.zx_width, 1);
+        self.zx_lineView.frame = CGRectMake(0, self.zx_height - self.zx_lineViewHeight, self.zx_width, self.zx_lineViewHeight);
         self.zx_bacImageView.frame = self.frame;
         self.shouldRefLayout = NO;
     }
@@ -339,6 +349,12 @@
         components[component] = resultingPixel[component] / 255.0f;
     }
     _zx_backgroundColorComponents = @[@(components[0]),@(components[1]),@(components[2])];
+}
+
+- (void)setZx_lineViewHeight:(CGFloat)zx_lineViewHeight{
+    _zx_lineViewHeight = zx_lineViewHeight;
+    self.shouldRefLayout = YES;
+    [self relayoutSubviews];
 }
 
 - (void)privateSetBackgroundColor:(UIColor *)backgroundColor{

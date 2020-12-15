@@ -5,7 +5,7 @@
 //  Created by 李兆祥 on 2020/3/7.
 //  Copyright © 2020 ZXLee. All rights reserved.
 //  https://github.com/SmileZXLee/ZXNavigationBar
-//  V1.3.5
+//  V1.3.6
 
 #import <UIKit/UIKit.h>
 #import "UINavigationController+ZXNavBarAllHiddenExtension.h"
@@ -149,7 +149,10 @@ typedef void(^transparentGradientsOpaqueBlock) (void);
  导航栏分割线View背景颜色
  */
 @property (strong, nonatomic)UIColor *zx_navLineViewBackgroundColor;
-
+/**
+ 导航栏分割线的高度，默认为1
+ */
+@property (assign, nonatomic)CGFloat zx_navLineViewHeight;
 /**
  最左侧Button
  */
@@ -308,6 +311,14 @@ pop手势是否支持多层级的手势同时触发，默认为否。若设置�
  @param clickBlock 点击回调
  */
 - (void)zx_setSubLeftBtnWithText:(NSString *)btnText clickedBlock:(nullable subLeftBtnClickedBlock)clickBlock;
+
+/**
+ 设置右侧第二个Button的文字和点击回调
+ 
+ @param btnText 按钮文字
+ @param clickBlock 点击回调
+ */
+- (void)zx_setSubRightBtnWithText:(NSString *)btnText clickedBlock:(nullable subRightBtnClickedBlock)clickBlock;
 
 /**
  设置最右侧Button的文字和点击回调

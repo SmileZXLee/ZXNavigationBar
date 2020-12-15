@@ -5,7 +5,7 @@
 //  Created by 李兆祥 on 2020/3/7.
 //  Copyright © 2020 ZXLee. All rights reserved.
 //  https://github.com/SmileZXLee/ZXNavigationBar
-//  V1.3.5
+//  V1.3.6
 
 #import "ZXNavItemBtn.h"
 #import "ZXNavigationBarDefine.h"
@@ -39,6 +39,12 @@
     self.zx_fixWidth = -1;
     self.zx_fixHeight = -1;
     self.zx_fixImageSize = CGSizeZero;
+}
+
+#pragma mark - Public
+- (void)zx_updateLayout{
+    [self layoutImageAndTitle];
+    [self noticeUpdateFrame];
 }
 
 #pragma mark - Setter
@@ -139,6 +145,18 @@
     _zx_textAttachWidth = zx_textAttachWidth;
     [self.superview setValue:@1 forKey:@"shouldRefLayout"];
     [self layoutImageAndTitle];
+    [self noticeUpdateFrame];
+}
+
+- (void)setZx_textAttachHeight:(CGFloat)zx_textAttachHeight{
+    _zx_textAttachHeight = zx_textAttachHeight;
+    [self.superview setValue:@1 forKey:@"shouldRefLayout"];
+    [self layoutImageAndTitle];
+    [self noticeUpdateFrame];
+}
+
+- (void)setZx_setCornerRadiusRounded:(BOOL)zx_setCornerRadiusRounded{
+    _zx_setCornerRadiusRounded = zx_setCornerRadiusRounded;
     [self noticeUpdateFrame];
 }
 
