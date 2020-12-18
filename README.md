@@ -216,6 +216,14 @@ self.zx_navLeftBtn.zx_fixImageSize = CGSizeMake(10,10);
 ```objective-c
 self.zx_navLeftBtn.zx_textAttachWidth = 20;
 ```
+* 设置NavItemBtn文字的附加高度
+```objective-c
+self.zx_navLeftBtn.zx_textAttachHeight = 10;
+```
+* 设置NavItemBtn的cornerRadius为高度的一半(圆形圆角)
+```objective-c
+self.zx_navLeftBtn.zx_setCornerRadiusRounded = YES;
+```
 * 设置NavItemBtn内部图片x轴的偏移量，负数代表左移，无title且设置了zx_fixImageSize后生效，仅改变内容imageView的位移，不会改变原始NavItemBtn的frame
 ```objective-c
 self.zx_navLeftBtn.zx_imageOffsetX = -10;
@@ -272,6 +280,10 @@ self.zx_navFixHeight = 30;
 #### 设置分割线背景颜色
 ```objective-c
 self.zx_navLineViewBackgroundColor = [UIColor blueColor];
+```
+#### 设置分割线的高度，默认为1
+```objective-c
+self.zx_navLineViewHeight = 2;
 ```
 * 分割线其他其他非frame相关属性通过`self.zx_navLineView`设置即可
 
