@@ -5,7 +5,7 @@
 //  Created by 李兆祥 on 2020/3/7.
 //  Copyright © 2020 ZXLee. All rights reserved.
 //  https://github.com/SmileZXLee/ZXNavigationBar
-//  V1.3.6
+//  V1.3.7
 
 #import "ZXNavigationBar.h"
 @interface ZXNavigationBar()
@@ -42,7 +42,7 @@
     self.backgroundColor = ZXNavDefalutBacColor;
     _zx_itemSize = ZXNavDefalutItemSize;
     _zx_itemMargin = ZXNavDefalutItemMargin;
-    _zx_lineViewHeight = 1;
+    _zx_lineViewHeight = 0.5;
     ZXNavBacImageView *bacImageView = [[ZXNavBacImageView alloc]init];
     bacImageView.clipsToBounds = YES;
     bacImageView.contentMode = UIViewContentModeScaleAspectFill;
@@ -186,6 +186,11 @@
     if(barItemBtn.zx_handleFrameBlock){
         barItemBtn.frame =  barItemBtn.zx_handleFrameBlock(barItemBtn.frame);
     }
+    void(^frameUpdateBlock)(CGRect frame) = [barItemBtn valueForKey:@"zx_frameUpdateBlock"];
+    if(frameUpdateBlock){
+        frameUpdateBlock(barItemBtn.frame);
+    }
+    
     if(barItemBtn.zx_setCornerRadiusRounded){
         barItemBtn.clipsToBounds = YES;
         barItemBtn.layer.cornerRadius = barItemBtn.frame.size.height / 2;
@@ -238,40 +243,35 @@
         CGSize leftBtnSize = CGSizeZero;
         CGFloat leftBtnFinalHeight = [self getItemBtnHeight:self.zx_leftBtn];
         CGFloat leftBtnFinalWidth = [self getItemBtnWidth:self.zx_leftBtn];
-        if((self.zx_leftBtn.zx_size.height == 0 && self.zx_leftBtn.zx_size.width == 0) || self.shouldRefLayout){
+        if(self.zx_leftBtn.currentImage || self.zx_leftBtn.currentTitle || self.zx_leftBtn.currentAttributedTitle || self.zx_leftBtn.zx_customView){
             leftBtnSize = CGSizeMake(leftBtnFinalWidth, leftBtnFinalHeight);
-        }else{
-            leftBtnSize = self.zx_leftBtn.zx_size;
         }
         self.zx_leftBtn.frame = CGRectMake(self.zx_itemMargin + ZXHorizontaledSafeArea,(self.zx_height - leftBtnFinalHeight + centerOffSet) / 2, leftBtnSize.width, leftBtnSize.height);
         [self handleItemBtnFrame:self.zx_leftBtn];
         CGSize rightBtnSize = CGSizeZero;
-        CGFloat rightBtnW = 0;
         CGFloat rightBtnFinalHeight = [self getItemBtnHeight:self.zx_rightBtn];
         CGFloat rightBtnFinalWidth = [self getItemBtnWidth:self.zx_rightBtn];
-        if((self.zx_rightBtn.zx_size.height == 0 && self.zx_rightBtn.zx_size.width == 0 && self.zx_rightBtn.zx_x == 0) || self.shouldRefLayout){
+        if(self.zx_rightBtn.currentImage || self.zx_rightBtn.currentTitle || self.zx_rightBtn.currentAttributedTitle || self.zx_rightBtn.zx_customView){
             rightBtnSize = CGSizeMake(rightBtnFinalWidth, rightBtnFinalHeight);
-            rightBtnW = self.zx_itemSize;
-        }else{
-            rightBtnSize = self.zx_rightBtn.zx_size;
-            rightBtnW = self.zx_rightBtn.zx_width;
         }
         self.zx_rightBtn.frame = CGRectMake(self.zx_width - self.zx_itemMargin - rightBtnSize.width - ZXHorizontaledSafeArea,(self.zx_height - rightBtnFinalHeight + centerOffSet) / 2, rightBtnSize.width,rightBtnSize.height);
         [self handleItemBtnFrame:self.zx_rightBtn];
         CGFloat subRightBtnFinalHeight = [self getItemBtnHeight:self.zx_subRightBtn];
         CGFloat subRightBtnFinalWidth = [self getItemBtnWidth:self.zx_subRightBtn];
+        CGFloat subRightBtnRightMargin = self.zx_rightBtn.zx_width ? self.zx_itemMargin : 0;
         if(!self.zx_subRightBtn.currentImage && !self.zx_subRightBtn.currentTitle && !self.zx_subRightBtn.currentAttributedTitle && !self.zx_subRightBtn.zx_customView){
-            self.zx_subRightBtn.frame = CGRectMake(CGRectGetMinX(self.zx_rightBtn.frame) - self.zx_itemMargin, self.zx_rightBtn.zx_y, 0, 0);
+            self.zx_subRightBtn.frame = CGRectMake(CGRectGetMinX(self.zx_rightBtn.frame) - subRightBtnRightMargin, self.zx_rightBtn.zx_y, 0, 0);
         }else{
-            self.zx_subRightBtn.frame = CGRectMake(CGRectGetMinX(self.zx_rightBtn.frame) - self.zx_itemMargin - subRightBtnFinalWidth, (self.zx_height - subRightBtnFinalHeight + centerOffSet) / 2, subRightBtnFinalWidth, subRightBtnFinalHeight);;
+            self.zx_subRightBtn.frame = CGRectMake(CGRectGetMinX(self.zx_rightBtn.frame) - subRightBtnRightMargin - subRightBtnFinalWidth, (self.zx_height - subRightBtnFinalHeight + centerOffSet) / 2, subRightBtnFinalWidth, subRightBtnFinalHeight);;
         }
         [self handleItemBtnFrame:self.zx_subRightBtn];
         CGFloat subLeftBtnFinalHeight = [self getItemBtnHeight:self.zx_subLeftBtn];
         CGFloat subLeftBtnFinalWidth = [self getItemBtnWidth:self.zx_subLeftBtn];
+        CGFloat subLeftBtnLeftMargin = self.zx_leftBtn.zx_width ? self.zx_itemMargin : 0;
         if(!self.zx_subLeftBtn.currentImage && !self.zx_subLeftBtn.currentTitle && !self.zx_subLeftBtn.currentAttributedTitle && !self.zx_subLeftBtn.zx_customView){
-            self.zx_subLeftBtn.frame = CGRectMake(CGRectGetMaxX(self.zx_leftBtn.frame) + self.zx_itemMargin, self.zx_leftBtn.zx_y, 0, 0);
+            self.zx_subLeftBtn.frame = CGRectMake(CGRectGetMaxX(self.zx_leftBtn.frame) + subLeftBtnLeftMargin, self.zx_leftBtn.zx_y, 0, 0);
         }else{
-            self.zx_subLeftBtn.frame = CGRectMake(CGRectGetMaxX(self.zx_leftBtn.frame) + self.zx_itemMargin, (self.zx_height - subLeftBtnFinalHeight + centerOffSet) / 2, subLeftBtnFinalWidth, subLeftBtnFinalHeight);
+            self.zx_subLeftBtn.frame = CGRectMake(CGRectGetMaxX(self.zx_leftBtn.frame) + subLeftBtnLeftMargin, (self.zx_height - subLeftBtnFinalHeight + centerOffSet) / 2, subLeftBtnFinalWidth, subLeftBtnFinalHeight);
         }
         [self handleItemBtnFrame:self.zx_subLeftBtn];
         CGFloat leftBtnFakeWidth = CGRectGetMaxX(self.zx_subLeftBtn.frame);
@@ -310,6 +310,9 @@
     _zx_itemSize = zx_itemSize;
     self.shouldRefLayout = YES;
     [self relayoutSubviews];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(CGFLOAT_MIN * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self relayoutSubviews];
+    });
 }
 
 - (void)setZx_itemMargin:(CGFloat)zx_itemMargin{
@@ -326,7 +329,9 @@
         if(_zx_gradientLayer){
             [_zx_gradientLayer removeFromSuperlayer];
         }
-        [self.layer insertSublayer:zx_gradientLayer atIndex:0];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(CGFLOAT_MIN * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self.layer insertSublayer:zx_gradientLayer atIndex:0];
+        });
     }
     _zx_gradientLayer = zx_gradientLayer;
 }

@@ -5,13 +5,14 @@
 //  Created by 李兆祥 on 2020/3/7.
 //  Copyright © 2020 ZXLee. All rights reserved.
 //  https://github.com/SmileZXLee/ZXNavigationBar
-//  V1.3.6
+//  V1.3.7
 
 #import <UIKit/UIKit.h>
 #import "UINavigationController+ZXNavBarAllHiddenExtension.h"
 #import "ZXNavigationBarController+ZXNavSystemBarPopHandle.h"
 #import "ZXNavigationBar.h"
 #import "ZXNavigationBarNavigationController.h"
+#import "ZXNavHistoryStackContentView.h"
 NS_ASSUME_NONNULL_BEGIN
 typedef enum {
     ZXNavStatusBarStyleDefault = 0x01,    // 状态栏颜色：黑色
@@ -20,7 +21,8 @@ typedef enum {
 
 typedef enum {
     ZXNavPopBlockFromBackButtonClick = 0x01,    // 点击返回按钮触发pop
-    ZXNavPopBlockFromPopGesture = 0x02,    // 返回手势触发pop
+    ZXNavPopBlockFromHistoryStack = 0x02,    // 长按返回按钮显示历史堆栈触发pop
+    ZXNavPopBlockFromPopGesture = 0x03,    // 返回手势触发pop
 }ZXNavPopBlockFrom;
 
 typedef void(^leftBtnClickedBlock) (ZXNavItemBtn *btn);
@@ -149,10 +151,12 @@ typedef void(^transparentGradientsOpaqueBlock) (void);
  导航栏分割线View背景颜色
  */
 @property (strong, nonatomic)UIColor *zx_navLineViewBackgroundColor;
+
 /**
- 导航栏分割线的高度，默认为1
+ 导航栏分割线的高度，默认为0.5
  */
 @property (assign, nonatomic)CGFloat zx_navLineViewHeight;
+
 /**
  最左侧Button
  */
@@ -263,6 +267,32 @@ pop手势是否支持多层级的手势同时触发，默认为否。若设置�
  导航栏固定高度
  */
 @property (assign, nonatomic)int zx_navFixHeight;
+
+/**
+ 导航栏历史堆栈视图
+ */
+@property(weak, nonatomic)ZXNavHistoryStackContentView *zx_navHistoryStackContentView;
+
+/**
+ 是否显示导航栏历史堆栈视图，默认为NO
+ */
+@property(assign, nonatomic)BOOL zx_showNavHistoryStackContentView;
+
+/**
+ 导航栏历史堆栈视图偏离的x值，默认为0(导航栏历史堆栈视图与屏幕左侧距离默认等于leftBtn与屏幕左侧距离，此属性用于自定义在此基础上增加或减少的水平位移)
+ */
+@property(assign, nonatomic)CGFloat zx_navHistoryStackContentViewOffsetX;
+
+/**
+ 导航栏历史堆栈视图Item展示最多的数量，默认为6个，超过6个显示由栈顶往下的6个
+ */
+@property(assign, nonatomic)long zx_navHistoryStackContentViewItemMaxLength;
+
+/**
+ 导航栏历史堆栈视图显示样式
+ */
+@property (assign, nonatomic) ZXNavHistoryStackViewStyle zx_navHistoryStackViewStyle;
+
 /**
  设置最左侧Button的图片和点击回调
  

@@ -5,7 +5,7 @@
 //  Created by 李兆祥 on 2020/3/7.
 //  Copyright © 2020 ZXLee. All rights reserved.
 //  https://github.com/SmileZXLee/ZXNavigationBar
-//  V1.3.6
+//  V1.3.7
 
 #ifndef ZXNavigationBarDefine_h
 #define ZXNavigationBarDefine_h
@@ -20,6 +20,15 @@
 
 #define ZXNavDefalutItemSize 22
 #define ZXNavDefalutItemMargin 10
+
+#define ZXNavHistoryStackCellHeight 44
+#define ZXNavHistoryStackCellTitleX 16
+#define ZXNavHistoryStackViewWidth 250
+#define ZXNavHistoryStackViewItemMaxLength 6
+#define ZXNavHistoryStackViewStyleDarkBackgroundColor [UIColor colorWithRed:16 / 255.0 green:16 / 255.0 blue:16 / 255.0 alpha:1]
+#define ZXNavHistoryStackViewStyleDarkSelectedColor [UIColor colorWithRed:66 / 255.0 green:66 / 255.0 blue:66 / 255.0 alpha:1]
+#define ZXNavHistoryStackViewStyleLightBackgroundColor [UIColor colorWithRed:255.0 / 255.0 green:255.0 / 255.0 blue:255.0 / 255.0 alpha:1]
+#define ZXNavHistoryStackViewStyleLightSelectedColor [UIColor colorWithRed:225 / 255.0 green:225 / 255.0 blue:225 / 255.0 alpha:1]
 
 /**
 获取主Window

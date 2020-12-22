@@ -5,7 +5,7 @@
 //  Created by 李兆祥 on 2020/3/7.
 //  Copyright © 2020 ZXLee. All rights reserved.
 //  https://github.com/SmileZXLee/ZXNavigationBar
-//  V1.3.6
+//  V1.3.7
 
 #import <UIKit/UIKit.h>
 
@@ -44,8 +44,14 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic, nullable)UIView *zx_customView;
 ///NavItemBtn frame发生改变时的回调，可在这个block中return修改后的frame
 @property(copy, nonatomic)CGRect(^zx_handleFrameBlock)(CGRect oldFrame);
+///开始点击的回调
+@property (copy, nonatomic) void (^zx_touchesBeganBlock)(void);
+///结束点击的回调
+@property (copy, nonatomic) void (^zx_touchesEndBlock)(void);
 ///手动更新布局，一般内部会自动调用，用于高度定制时无法自动更新布局时调用
 - (void)zx_updateLayout;
+///刷新NavItemBtn的image和title布局，一般内部会自动调用
+- (void)zx_layoutImageAndTitle;
 @end
 
 NS_ASSUME_NONNULL_END

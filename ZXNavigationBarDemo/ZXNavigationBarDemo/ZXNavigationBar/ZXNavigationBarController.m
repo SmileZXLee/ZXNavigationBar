@@ -5,9 +5,10 @@
 //  Created by 李兆祥 on 2020/3/7.
 //  Copyright © 2020 ZXLee. All rights reserved.
 //  https://github.com/SmileZXLee/ZXNavigationBar
-//  V1.3.6
+//  V1.3.7
 
 #import "ZXNavigationBarController.h"
+#import "ZXNavHistoryStackContentView.h"
 
 #import <objc/message.h>
 #import "UIImage+ZXNavBundleExtension.h"
@@ -25,6 +26,7 @@
 @property(strong, nonatomic)CADisplayLink *displayLink;
 @property(copy, nonatomic)foldingOffsetBlock offsetBlock;
 @property(copy, nonatomic)foldCompletionBlock completionBlock;
+@property(assign, nonatomic)BOOL isInLeftBtnTouchesBegan;
 @property(strong, nonatomic)NSMutableArray<ZXXibTopConstraintModel *> *xibTopConstraintArr;
 @end
 
@@ -34,6 +36,7 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.zx_navFixHeight = -1;
+    self.zx_navHistoryStackContentViewItemMaxLength = ZXNavHistoryStackViewItemMaxLength;
     if(self.navigationController && !self.zx_hideBaseNavBar && !self.zx_disableAutoSetCustomNavBar){
         [self initNavBar];
         [self setAutoBack];
@@ -74,8 +77,25 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
         [self zx_leftClickedBlock:^(ZXNavItemBtn * _Nonnull btn) {
             if(!(weakSelf.zx_handlePopBlock && !weakSelf.zx_handlePopBlock(weakSelf,ZXNavPopBlockFromBackButtonClick))){
                 [weakSelf.navigationController popViewControllerAnimated:YES];
+                [weakSelf zx_hideNavHistoryStackView];
             }
         }];
+        
+        self.zx_navLeftBtn.userInteractionEnabled = YES;
+        self.zx_navLeftBtn.zx_touchesBeganBlock = ^{
+            weakSelf.isInLeftBtnTouchesBegan = YES;
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                if(weakSelf.isInLeftBtnTouchesBegan){
+                    [weakSelf zx_showNavHistoryStackView];
+                }
+                weakSelf.isInLeftBtnTouchesBegan = NO;
+            });
+        };
+        self.zx_navLeftBtn.zx_touchesEndBlock = ^{
+            weakSelf.isInLeftBtnTouchesBegan = NO;
+        };
+        UIPanGestureRecognizer *leftBtnPanGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleLeftBtnPanGesture:)];
+        [self.zx_navLeftBtn addGestureRecognizer:leftBtnPanGestureRecognizer];
     }
 }
 
@@ -868,9 +888,51 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
     if(scrollView){
         [self zx_setPopGestureCompatibleScrollViews:@[scrollView]];
     }
-    
 }
 
+#pragma mark 显示历史堆栈
+-(void)zx_showNavHistoryStackView{
+    if(self.navigationController && self.zx_showNavHistoryStackContentView){
+        if(self.zx_handlePopBlock && !self.zx_handlePopBlock(self,ZXNavPopBlockFromHistoryStack)){
+            return;
+        }
+        ZXNavHistoryStackContentView *view = [[ZXNavHistoryStackContentView alloc]init];
+        NSMutableArray<ZXNavHistoryStackModel *> *historyStackArray = [NSMutableArray array];
+        NSMutableArray *viewControllersArr = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
+        if(viewControllersArr.count){
+            [viewControllersArr removeLastObject];
+            viewControllersArr = [NSMutableArray arrayWithArray:[[viewControllersArr reverseObjectEnumerator] allObjects]];
+            if(viewControllersArr.count > self.zx_navHistoryStackContentViewItemMaxLength){
+                [viewControllersArr removeObjectsInRange:NSMakeRange(self.zx_navHistoryStackContentViewItemMaxLength, viewControllersArr.count - self.zx_navHistoryStackContentViewItemMaxLength)];
+            }
+            for(UIViewController *viewController in viewControllersArr){
+                
+                ZXNavHistoryStackModel *historyStackModel = [[ZXNavHistoryStackModel alloc]init];
+                NSString *title = viewController.title;
+                if([viewController isKindOfClass:[ZXNavigationBarController class]]){
+                    title = ((ZXNavigationBarController *)viewController).zx_navTitleLabel.text;
+                }
+                historyStackModel.title = title;
+                historyStackModel.viewController = viewController;
+                [historyStackArray addObject:historyStackModel];
+            }
+            if(historyStackArray.count){
+                view.zx_historyStackArray = historyStackArray;
+                view.zx_historyStackViewLeft = self.zx_navLeftBtn.zx_x + self.zx_navHistoryStackContentViewOffsetX;
+                view.zx_historyStackViewStyle = self.zx_navHistoryStackViewStyle;
+                self.zx_navHistoryStackContentView = [view zx_show];
+            }
+        }
+    }
+}
+
+#pragma mark 隐藏历史堆栈
+- (void)zx_hideNavHistoryStackView{
+    if(self.zx_navHistoryStackContentView){
+        [self.zx_navHistoryStackContentView zx_hide];
+        self.zx_navHistoryStackContentView = nil;
+    }
+}
 
 #pragma mark - Other
 -(void)viewWillAppear:(BOOL)animated{
@@ -1013,6 +1075,21 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
         }
     }
     self.doAutoSysBarAlphe = doAutoSysBarAlphe;
+}
+
+#pragma mark 处理返回按钮pan手势
+- (void)handleLeftBtnPanGesture:(UIPanGestureRecognizer *)sender{
+    if(self.zx_navHistoryStackContentView){
+        CGPoint point = [sender locationInView:sender.view];
+        CGPoint convertedPoint = [self.zx_navHistoryStackContentView.zx_historyStackView convertPoint:point fromView:sender.view];
+        SEL sel = NSSelectorFromString(@"handlePanGestureWithPoint:");
+        ((void (*)(id,SEL,CGPoint))objc_msgSend)(self.zx_navHistoryStackContentView, sel,convertedPoint);
+        if(sender.state == UIGestureRecognizerStateEnded){
+            sel = NSSelectorFromString(@"handlePanGestureEnd");
+            ((void (*)(id,SEL))objc_msgSend)(self.zx_navHistoryStackContentView, sel);
+        }
+    }
+    
 }
 
 @end

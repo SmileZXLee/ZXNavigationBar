@@ -17,7 +17,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.zx_navStatusBarStyle = ZXNavStatusBarStyleDefault;
-    
+    self.zx_showNavHistoryStackContentView = YES;
 }
 
 - (void)dealloc{

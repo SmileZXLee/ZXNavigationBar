@@ -5,13 +5,17 @@
 //  Created by 李兆祥 on 2020/3/7.
 //  Copyright © 2020 ZXLee. All rights reserved.
 //  https://github.com/SmileZXLee/ZXNavigationBar
-//  V1.3.6
+//  V1.3.7
 
 #import "ZXNavItemBtn.h"
 #import "ZXNavigationBarDefine.h"
 #import "UIImage+ZXNavColorRender.h"
 #import "NSString+ZXNavCalcSizeExtension.h"
 #import "NSAttributedString+ZXNavCalcSizeExtension.h"
+@interface ZXNavItemBtn()
+///NavItemBtn frame发生改变时的回调
+@property(copy, nonatomic)void(^zx_frameUpdateBlock)(CGRect frame);
+@end
 @implementation ZXNavItemBtn
 #pragma mark - Init
 - (instancetype)initWithCoder:(NSCoder *)coder{
@@ -43,7 +47,7 @@
 
 #pragma mark - Public
 - (void)zx_updateLayout{
-    [self layoutImageAndTitle];
+    [self zx_layoutImageAndTitle];
     [self noticeUpdateFrame];
 }
 
@@ -52,15 +56,11 @@
     if(self.zx_customView && title && title.length){
         return;
     }
-    if(self.zx_disableSetTitle && title && !self.zx_customView){
-        NSLog(@"zx_subLeftBtn/zx_subRightBtn不支持设置title，仅支持设置图片！");
-        return;
-    }
     [super setTitle:title forState:state];
     if(self.zx_tintColor){
         [self setTitleColor:self.zx_tintColor forState:state];
     }
-    [self layoutImageAndTitle];
+    [self zx_layoutImageAndTitle];
     [self noticeUpdateFrame];
 }
 
@@ -68,12 +68,8 @@
     if(self.zx_customView && title && title.length){
         return;
     }
-    if(self.zx_disableSetTitle && title && !self.zx_customView){
-        NSLog(@"zx_subLeftBtn/zx_subRightBtn不支持设置attributedTitle，仅支持设置图片！");
-        return;
-    }
     [super setAttributedTitle:title forState:state];
-    [self layoutImageAndTitle];
+    [self zx_layoutImageAndTitle];
     [self noticeUpdateFrame];
 }
 
@@ -90,7 +86,7 @@
     if(!image){
         self.imageView.image = image;
     }
-    [self layoutImageAndTitle];
+    [self zx_layoutImageAndTitle];
     [self noticeUpdateFrame];
 }
 
@@ -110,7 +106,7 @@
 
 - (void)setZx_disableAutoLayoutImageAndTitle:(BOOL )zx_disableAutoLayoutImageAndTitle{
     _zx_disableAutoLayoutImageAndTitle = zx_disableAutoLayoutImageAndTitle;
-    [self layoutImageAndTitle];
+    [self zx_layoutImageAndTitle];
     [self noticeUpdateFrame];
 }
 
@@ -130,28 +126,28 @@
     _zx_fontSize = zx_fontSize;
     self.titleLabel.font = [UIFont systemFontOfSize:zx_fontSize];
     [self.superview setValue:@1 forKey:@"shouldRefLayout"];
-    [self layoutImageAndTitle];
+    [self zx_layoutImageAndTitle];
     [self noticeUpdateFrame];
 }
 
 - (void)setZx_fixImageSize:(CGSize)zx_fixImageSize{
     _zx_fixImageSize = zx_fixImageSize;
     [self.superview setValue:@1 forKey:@"shouldRefLayout"];
-    [self layoutImageAndTitle];
+    [self zx_layoutImageAndTitle];
     [self noticeUpdateFrame];
 }
 
 - (void)setZx_textAttachWidth:(CGFloat)zx_textAttachWidth{
     _zx_textAttachWidth = zx_textAttachWidth;
     [self.superview setValue:@1 forKey:@"shouldRefLayout"];
-    [self layoutImageAndTitle];
+    [self zx_layoutImageAndTitle];
     [self noticeUpdateFrame];
 }
 
 - (void)setZx_textAttachHeight:(CGFloat)zx_textAttachHeight{
     _zx_textAttachHeight = zx_textAttachHeight;
     [self.superview setValue:@1 forKey:@"shouldRefLayout"];
-    [self layoutImageAndTitle];
+    [self zx_layoutImageAndTitle];
     [self noticeUpdateFrame];
 }
 
@@ -162,7 +158,7 @@
 
 - (void)setZx_imageOffsetX:(CGFloat)zx_imageOffsetX{
     _zx_imageOffsetX = zx_imageOffsetX;
-    [self layoutImageAndTitle];
+    [self zx_layoutImageAndTitle];
 }
 
 - (void)setZx_customView:(UIView *)zx_customView{
@@ -203,7 +199,7 @@
 
 - (void)layoutSubviews{
     [super layoutSubviews];
-    [self layoutImageAndTitle];
+    [self zx_layoutImageAndTitle];
 }
 
 - (void)resetImage{
@@ -232,7 +228,7 @@
 }
 
 #pragma mark ButtonLayout
-- (void)layoutImageAndTitle{
+- (void)zx_layoutImageAndTitle{
     if(self.zx_disableAutoLayoutImageAndTitle){
         return;
     }
@@ -264,6 +260,20 @@
     }else{
         self.imageView.frame = CGRectZero;
         self.titleLabel.frame = CGRectMake(0, 0, btnw, self.frame.size.height);
+    }
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    [super touchesBegan:touches withEvent:event];
+    if(self.zx_touchesBeganBlock){
+        self.zx_touchesBeganBlock();
+    }
+}
+
+- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    [super touchesEnded:touches withEvent:event];
+    if(self.zx_touchesEndBlock){
+        self.zx_touchesEndBlock();
     }
 }
 
