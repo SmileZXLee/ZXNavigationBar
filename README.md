@@ -333,6 +333,22 @@ self.zx_handleAdjustNavContainerOffsetBlock = ^CGFloat(CGFloat oldNavOffset, CGF
     return 10;
 };
 ```
+#### 自动显示导航栏历史堆栈，默认为NO
+```objective-c
+self.zx_showNavHistoryStackContentView = YES;
+```
+#### 设置导航栏历史堆栈视图偏离的x值，默认为0(导航栏历史堆栈视图与屏幕左侧距离默认等于leftBtn与屏幕左侧距离，此属性用于自定义在此基础上增加或减少的水平位移)
+```objective-c
+self.zx_navHistoryStackContentViewOffsetX = 10;
+```
+#### 设置导航栏历史堆栈视图Item展示最多的数量，默认为6个，超过6个显示由栈顶往下的6个
+```objective-c
+self.zx_navHistoryStackContentViewItemMaxLength = 10;
+```
+#### 设置导航栏历史堆栈视图显示样式，默认为ZXNavHistoryStackViewStyleLight
+```objective-c
+self.zx_navHistoryStackViewStyle = ZXNavHistoryStackViewStyleDark;
+```
 #### 自定义NavItemView
 ```objective-c
 //以zx_navLeftBtn为例
