@@ -197,9 +197,21 @@ self.zx_navLeftBtn.zx_tintColor = [UIColor redColor];
 ```objective-c
 self.zx_navLeftBtn.zx_fontSize = 12;
 ```
-* 设置NavItemBtn的固定宽度，若设置，则自动计算宽度无效(若需要恢复自动宽度，可设置`zx_fixWidth`为-1)
+* 设置NavItemBtn的固定宽度，若设置，则ZXNavDefalutItemSize无效，若要恢复初始值，可设置为-1
 ```objective-c
 self.zx_navLeftBtn.zx_fixWidth = 100;
+```
+* 设置NavItemBtn的固定高度，若设置，则自动计算宽度无效(若需要恢复自动宽度，可设置`zx_fixWidth`为-1)
+```objective-c
+self.zx_navLeftBtn.zx_fixHeight = 100;
+```
+* 设置NavItemBtn距离左边元素的固定距离，若要恢复初始值，可设置为-1
+```objective-c
+self.zx_navLeftBtn.zx_fixMarginLeft = 15;
+```
+* 设置NavItemBtn距离右边元素的固定距离，若要恢复初始值，可设置为-1
+```objective-c
+self.zx_navLeftBtn.zx_fixMarginRight = 15;
 ```
 * 禁止自动调整NavItemBtn图片和文字的布局，若要使contentEdgeInsets、titleEdgeInsets、imageEdgeInsets等，则需要将此属性设置为NO
 ```objective-c
