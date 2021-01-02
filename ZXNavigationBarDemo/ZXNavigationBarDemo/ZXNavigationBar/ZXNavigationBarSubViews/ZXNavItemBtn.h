@@ -30,6 +30,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic)CGFloat zx_fixWidth;
 ///设置NavItemBtn的固定高度，若设置，则ZXNavDefalutItemSize无效，若要恢复初始值，可设置为-1
 @property (assign, nonatomic)CGFloat zx_fixHeight;
+///设置NavItemBtn距离左边元素的固定距离，若要恢复初始值，可设置为-1
+@property (assign, nonatomic)CGFloat zx_fixMarginLeft;
+///设置NavItemBtn距离右边元素的固定距离，若要恢复初始值，可设置为-1
+@property (assign, nonatomic)CGFloat zx_fixMarginRight;
 ///设置NavItemBtn image的固定大小，若要恢复初始值，可设置为CGSizeZero
 @property (assign, nonatomic)CGSize zx_fixImageSize;
 ///设置NavItemBtn文字自动计算宽度后的附加宽度

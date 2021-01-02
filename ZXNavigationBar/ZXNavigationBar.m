@@ -246,7 +246,11 @@
         if(self.zx_leftBtn.currentImage || self.zx_leftBtn.currentTitle || self.zx_leftBtn.currentAttributedTitle || self.zx_leftBtn.zx_customView){
             leftBtnSize = CGSizeMake(leftBtnFinalWidth, leftBtnFinalHeight);
         }
-        self.zx_leftBtn.frame = CGRectMake(self.zx_itemMargin + ZXHorizontaledSafeArea,(self.zx_height - leftBtnFinalHeight + centerOffSet) / 2, leftBtnSize.width, leftBtnSize.height);
+        CGFloat leftBtnLeftMargin = self.zx_itemMargin;
+        if(self.zx_leftBtn.zx_fixMarginLeft >= 0){
+            leftBtnLeftMargin = self.zx_leftBtn.zx_fixMarginLeft;
+        }
+        self.zx_leftBtn.frame = CGRectMake(leftBtnLeftMargin + ZXHorizontaledSafeArea,(self.zx_height - leftBtnFinalHeight + centerOffSet) / 2, leftBtnSize.width, leftBtnSize.height);
         [self handleItemBtnFrame:self.zx_leftBtn];
         CGSize rightBtnSize = CGSizeZero;
         CGFloat rightBtnFinalHeight = [self getItemBtnHeight:self.zx_rightBtn];
@@ -254,33 +258,59 @@
         if(self.zx_rightBtn.currentImage || self.zx_rightBtn.currentTitle || self.zx_rightBtn.currentAttributedTitle || self.zx_rightBtn.zx_customView){
             rightBtnSize = CGSizeMake(rightBtnFinalWidth, rightBtnFinalHeight);
         }
-        self.zx_rightBtn.frame = CGRectMake(self.zx_width - self.zx_itemMargin - rightBtnSize.width - ZXHorizontaledSafeArea,(self.zx_height - rightBtnFinalHeight + centerOffSet) / 2, rightBtnSize.width,rightBtnSize.height);
+        CGFloat rightBtnRightMargin = self.zx_itemMargin;
+        if(self.zx_rightBtn.zx_fixMarginRight >= 0){
+            rightBtnRightMargin = self.zx_rightBtn.zx_fixMarginRight;
+        }
+        self.zx_rightBtn.frame = CGRectMake(self.zx_width - rightBtnRightMargin - rightBtnSize.width - ZXHorizontaledSafeArea,(self.zx_height - rightBtnFinalHeight + centerOffSet) / 2, rightBtnSize.width,rightBtnSize.height);
         [self handleItemBtnFrame:self.zx_rightBtn];
         CGFloat subRightBtnFinalHeight = [self getItemBtnHeight:self.zx_subRightBtn];
         CGFloat subRightBtnFinalWidth = [self getItemBtnWidth:self.zx_subRightBtn];
-        CGFloat subRightBtnRightMargin = self.zx_rightBtn.zx_width ? self.zx_itemMargin : 0;
+        CGFloat subRightBtnRightMargin = self.zx_itemMargin;
+        if(self.zx_rightBtn.zx_fixMarginLeft >= 0){
+            subRightBtnRightMargin = self.zx_rightBtn.zx_fixMarginLeft;
+        }
+        if(self.zx_subRightBtn.zx_fixMarginRight >= 0){
+            subRightBtnRightMargin = self.zx_subRightBtn.zx_fixMarginRight;
+        }
+        CGFloat subRightBtnRightFinalMargin = self.zx_rightBtn.zx_width ? subRightBtnRightMargin : 0;
         if(!self.zx_subRightBtn.currentImage && !self.zx_subRightBtn.currentTitle && !self.zx_subRightBtn.currentAttributedTitle && !self.zx_subRightBtn.zx_customView){
-            self.zx_subRightBtn.frame = CGRectMake(CGRectGetMinX(self.zx_rightBtn.frame) - subRightBtnRightMargin, self.zx_rightBtn.zx_y, 0, 0);
+            self.zx_subRightBtn.frame = CGRectMake(CGRectGetMinX(self.zx_rightBtn.frame) - subRightBtnRightFinalMargin, self.zx_rightBtn.zx_y, 0, 0);
         }else{
-            self.zx_subRightBtn.frame = CGRectMake(CGRectGetMinX(self.zx_rightBtn.frame) - subRightBtnRightMargin - subRightBtnFinalWidth, (self.zx_height - subRightBtnFinalHeight + centerOffSet) / 2, subRightBtnFinalWidth, subRightBtnFinalHeight);;
+            self.zx_subRightBtn.frame = CGRectMake(CGRectGetMinX(self.zx_rightBtn.frame) - subRightBtnRightFinalMargin - subRightBtnFinalWidth, (self.zx_height - subRightBtnFinalHeight + centerOffSet) / 2, subRightBtnFinalWidth, subRightBtnFinalHeight);;
         }
         [self handleItemBtnFrame:self.zx_subRightBtn];
         CGFloat subLeftBtnFinalHeight = [self getItemBtnHeight:self.zx_subLeftBtn];
         CGFloat subLeftBtnFinalWidth = [self getItemBtnWidth:self.zx_subLeftBtn];
-        CGFloat subLeftBtnLeftMargin = self.zx_leftBtn.zx_width ? self.zx_itemMargin : 0;
+        CGFloat subLeftBtnLeftMargin = self.zx_itemMargin;
+        if(self.zx_leftBtn.zx_fixMarginRight >= 0){
+            subLeftBtnLeftMargin = self.zx_leftBtn.zx_fixMarginRight;
+        }
+        if(self.zx_subLeftBtn.zx_fixMarginLeft >= 0){
+            subLeftBtnLeftMargin = self.zx_subLeftBtn.zx_fixMarginLeft;
+        }
+        CGFloat subLeftBtnLeftFinalMargin = self.zx_leftBtn.zx_width ? subLeftBtnLeftMargin : 0;
         if(!self.zx_subLeftBtn.currentImage && !self.zx_subLeftBtn.currentTitle && !self.zx_subLeftBtn.currentAttributedTitle && !self.zx_subLeftBtn.zx_customView){
-            self.zx_subLeftBtn.frame = CGRectMake(CGRectGetMaxX(self.zx_leftBtn.frame) + subLeftBtnLeftMargin, self.zx_leftBtn.zx_y, 0, 0);
+            self.zx_subLeftBtn.frame = CGRectMake(CGRectGetMaxX(self.zx_leftBtn.frame) + subLeftBtnLeftFinalMargin, self.zx_leftBtn.zx_y, 0, 0);
         }else{
-            self.zx_subLeftBtn.frame = CGRectMake(CGRectGetMaxX(self.zx_leftBtn.frame) + subLeftBtnLeftMargin, (self.zx_height - subLeftBtnFinalHeight + centerOffSet) / 2, subLeftBtnFinalWidth, subLeftBtnFinalHeight);
+            self.zx_subLeftBtn.frame = CGRectMake(CGRectGetMaxX(self.zx_leftBtn.frame) + subLeftBtnLeftFinalMargin, (self.zx_height - subLeftBtnFinalHeight + centerOffSet) / 2, subLeftBtnFinalWidth, subLeftBtnFinalHeight);
         }
         [self handleItemBtnFrame:self.zx_subLeftBtn];
         CGFloat leftBtnFakeWidth = CGRectGetMaxX(self.zx_subLeftBtn.frame);
+        CGFloat titleLabelLeftMargin = self.zx_itemMargin;
+        if(self.zx_subLeftBtn.zx_fixMarginRight >= 0){
+            titleLabelLeftMargin = self.zx_subLeftBtn.zx_fixMarginRight;
+        }
+        CGFloat titleLabelRightMargin = self.zx_itemMargin;
+        if(self.zx_subRightBtn.zx_fixMarginLeft >= 0){
+            titleLabelRightMargin = self.zx_subRightBtn.zx_fixMarginLeft;
+        }
         if(self.zx_subLeftBtn.zx_width){
-            leftBtnFakeWidth += self.zx_itemMargin;
+            leftBtnFakeWidth += titleLabelLeftMargin;
         }
         CGFloat rightBtnFakeWidth = self.zx_width - self.zx_subRightBtn.zx_x;
         if(self.zx_subRightBtn.zx_width){
-            rightBtnFakeWidth += self.zx_itemMargin;
+            rightBtnFakeWidth += titleLabelRightMargin;
         }
         CGFloat maxItemWidth = MAX(leftBtnFakeWidth,rightBtnFakeWidth);
         self.zx_titleLabel.frame = CGRectMake(maxItemWidth,centerOffSet,self.zx_width - maxItemWidth * 2,self.zx_height - centerOffSet);

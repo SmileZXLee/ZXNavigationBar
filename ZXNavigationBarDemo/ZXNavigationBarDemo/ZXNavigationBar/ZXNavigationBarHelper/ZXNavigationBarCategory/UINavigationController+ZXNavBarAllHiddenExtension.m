@@ -22,8 +22,9 @@ static BOOL isHideAllNavBar = NO;
 
 - (void)swizzled_pushViewController:(UIViewController *)viewController animated:(BOOL)animated{
     [self swizzled_pushViewController:viewController animated:animated];
-    Class zxNavVcCls = NSClassFromString(@"ZXNavigationBarController");
-    if(isHideAllNavBar && [viewController isKindOfClass:zxNavVcCls]){
+    Class zxNavVcCls1 = NSClassFromString(@"ZXNavigationBarController");
+    Class zxNavVcCls2 = NSClassFromString(@"ZXNavigationBarTableViewController");
+    if(isHideAllNavBar && ([viewController isKindOfClass:zxNavVcCls1] || [viewController isKindOfClass:zxNavVcCls2])){
         self.navigationBarHidden = YES;
     }
 }

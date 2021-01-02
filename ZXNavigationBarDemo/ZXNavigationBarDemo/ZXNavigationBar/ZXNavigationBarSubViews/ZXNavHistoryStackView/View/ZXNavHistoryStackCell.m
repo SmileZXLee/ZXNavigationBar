@@ -1,8 +1,8 @@
 //
 //  ZXNavHistoryStackCell.m
-//  ZXNavigationBarDemo
+//  ZXNavigationBar
 //
-//  Created by mac on 2020/12/22.
+//  Created by 李兆祥 on 2020/12/22.
 //  Copyright © 2020 ZXLee. All rights reserved.
 //  https://github.com/SmileZXLee/ZXNavigationBar
 //  V1.3.7

@@ -1,24 +1,19 @@
 //
-//  ZXNavigationBarController.m
+//  ZXNavigationBarTableViewController.m
 //  ZXNavigationBar
 //
-//  Created by 李兆祥 on 2020/3/7.
+//  Created by 李兆祥 on 2020/12/31.
 //  Copyright © 2020 ZXLee. All rights reserved.
 //  https://github.com/SmileZXLee/ZXNavigationBar
 //  V1.3.7
 
-#import "ZXNavigationBarController.h"
 #import "ZXNavigationBarTableViewController.h"
 #import "ZXNavHistoryStackContentView.h"
 
 #import <objc/message.h>
 #import "UIImage+ZXNavBundleExtension.h"
 
-
-@implementation ZXXibTopConstraintModel
-
-@end
-@interface ZXNavigationBarController ()<UIGestureRecognizerDelegate>
+@interface ZXNavigationBarTableViewController ()<UIGestureRecognizerDelegate>
 @property(assign, nonatomic)BOOL setFold;
 @property(assign, nonatomic)CGFloat lastNavAlphe;
 @property(assign, nonatomic)BOOL isNavFoldAnimating;
@@ -31,7 +26,7 @@
 @property(strong, nonatomic)NSMutableArray<ZXXibTopConstraintModel *> *xibTopConstraintArr;
 @end
 
-@implementation ZXNavigationBarController
+@implementation ZXNavigationBarTableViewController
 static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault;
 #pragma mark - Init
 - (void)viewDidLoad {
@@ -178,10 +173,11 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
 - (void)relayoutSubviews{
     if(self.zx_navBar){
         if(self.zx_navIsFolded){
-            self.zx_navBar.frame = CGRectMake(0, 0, ZXScreenWidth, ZXAppStatusBarHeight);
+            self.zx_navBar.frame = CGRectMake(0, -[self getCurrentNavHeight], ZXScreenWidth, ZXAppStatusBarHeight);
         }else{
-            self.zx_navBar.frame = CGRectMake(0, 0, ZXScreenWidth, [self getCurrentNavHeight]);
+            self.zx_navBar.frame = CGRectMake(0, -[self getCurrentNavHeight], ZXScreenWidth, [self getCurrentNavHeight]);
         }
+        self.tableView.contentInset = UIEdgeInsetsMake([self getCurrentNavHeight], 0, 0, 0);
     }
 }
 

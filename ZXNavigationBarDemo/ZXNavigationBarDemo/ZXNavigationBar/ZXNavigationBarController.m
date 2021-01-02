@@ -8,6 +8,7 @@
 //  V1.3.7
 
 #import "ZXNavigationBarController.h"
+#import "ZXNavigationBarTableViewController.h"
 #import "ZXNavHistoryStackContentView.h"
 
 #import <objc/message.h>
@@ -850,34 +851,34 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
             return;
         }
         NSArray *navGestureArray = self.navigationController.view.gestureRecognizers;
-        for(UIScrollView *scrollView in scrollViewArr){
-            if([self.navigationController isKindOfClass:[ZXNavigationBarNavigationController class]]){
-                ZXNavigationBarNavigationController *navigationController = (ZXNavigationBarNavigationController *)self.navigationController;
-                for(UIGestureRecognizer *gestureRecognizer in navGestureArray) {
-                    if (gestureRecognizer == navigationController.zx_popGestureRecognizer) {
-                        scrollView.bounces = NO;
-                        navigationController.zx_popGestureShouldRecognizeSimultaneously = ^BOOL(UIGestureRecognizer * _Nonnull otherGestureRecognizer) {
+        if([self.navigationController isKindOfClass:[ZXNavigationBarNavigationController class]]){
+            ZXNavigationBarNavigationController *navigationController = (ZXNavigationBarNavigationController *)self.navigationController;
+            for(UIGestureRecognizer *gestureRecognizer in navGestureArray) {
+                if (gestureRecognizer == navigationController.zx_popGestureRecognizer) {
+                    navigationController.zx_popGestureShouldRecognizeSimultaneously = ^BOOL(UIGestureRecognizer * _Nonnull otherGestureRecognizer) {
+                        for(UIScrollView *scrollView in scrollViewArr){
+                            scrollView.bounces = NO;
                             if(otherGestureRecognizer.view != scrollView){
-                                return NO;;
+                                continue;
                             }
-                            if(scrollView.contentOffset.x <= 0){
-                                return YES;
-                            }else{
-                                return NO;
-                            }
-                        };
-                        break;
-                    }
-                        
-                }
-            }else{
-                for(UIGestureRecognizer *gestureRecognizer in navGestureArray) {
-                    if ([gestureRecognizer isKindOfClass:[UIScreenEdgePanGestureRecognizer class]]) {
-                        [scrollView.panGestureRecognizer requireGestureRecognizerToFail:gestureRecognizer];
-                        break;
-                    }
+                            return scrollView.contentOffset.x <= 0;
+                        }
+                        return NO;
+                    };
                     
+                    break;
                 }
+                    
+            }
+        }else{
+            for(UIGestureRecognizer *gestureRecognizer in navGestureArray) {
+                if ([gestureRecognizer isKindOfClass:[UIScreenEdgePanGestureRecognizer class]]) {
+                    for(UIScrollView *scrollView in scrollViewArr){
+                        [scrollView.panGestureRecognizer requireGestureRecognizerToFail:gestureRecognizer];
+                    }
+                    break;
+                }
+                
             }
         }
     }
@@ -911,6 +912,9 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
                 NSString *title = viewController.title;
                 if([viewController isKindOfClass:[ZXNavigationBarController class]]){
                     title = ((ZXNavigationBarController *)viewController).zx_navTitleLabel.text;
+                }
+                if([viewController isKindOfClass:[ZXNavigationBarTableViewController class]]){
+                    title = ((ZXNavigationBarTableViewController *)viewController).zx_navTitleLabel.text;
                 }
                 historyStackModel.title = title;
                 historyStackModel.viewController = viewController;
@@ -977,7 +981,7 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
     if(self.navigationController && [self.navigationController isKindOfClass:[ZXNavigationBarNavigationController class]]){
         SEL selector = NSSelectorFromString(@"updateTopViewController:");
         IMP imp = [self.navigationController methodForSelector:selector];
-        void (*func) (id, SEL, ZXNavigationBarController *) = (void *)imp;
+        void (*func) (id, SEL, UIViewController *) = (void *)imp;
         func(self.navigationController,selector,self);
     }
 }
@@ -1058,7 +1062,7 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
 }
 
 #pragma mark 获取上一个控制器
-- (ZXNavigationBarController *)getPreviousViewController{
+- (UIViewController *)getPreviousViewController{
     if(self.navigationController && self.navigationController.childViewControllers.count > 1){
         return self.navigationController.childViewControllers[self.navigationController.childViewControllers.count - 2];
     }
@@ -1067,10 +1071,10 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
 
 #pragma mark 验证是否需要自动调整系统导航栏透明度
 - (void)checkDoAutoSysBarAlpha{
-    ZXNavigationBarController *previousViewController = [self getPreviousViewController];
+    UIViewController *previousViewController = [self getPreviousViewController];
     BOOL doAutoSysBarAlphe = NO;
-    if([previousViewController isKindOfClass:[ZXNavigationBarController class]]){
-        if(previousViewController.zx_navEnableSmoothFromSystemNavBar && self.zx_showSystemNavBar){
+    if([previousViewController isKindOfClass:[ZXNavigationBarController class]] || [previousViewController isKindOfClass:[ZXNavigationBarTableViewController class]]){
+        if([previousViewController valueForKey:@"zx_navEnableSmoothFromSystemNavBar"] && self.zx_showSystemNavBar){
             doAutoSysBarAlphe = YES;
         }
     }

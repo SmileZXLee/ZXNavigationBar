@@ -11,6 +11,7 @@
 		04C058742591A82300E98683 /* ZXNavHistoryStackView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C058732591A82300E98683 /* ZXNavHistoryStackView.m */; };
 		04C058802591AE8100E98683 /* ZXNavHistoryStackModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C0587F2591AE8100E98683 /* ZXNavHistoryStackModel.m */; };
 		04C058872591AE9F00E98683 /* ZXNavHistoryStackCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C058862591AE9F00E98683 /* ZXNavHistoryStackCell.m */; };
+		04D9C1BB259DD18300CB58DD /* ZXNavigationBarTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D9C1BA259DD18300CB58DD /* ZXNavigationBarTableViewController.m */; };
 		742D08B024D16BED00F76EEE /* DemoCompatibleScrollViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 742D08AF24D16BED00F76EEE /* DemoCompatibleScrollViewViewController.m */; };
 		749BBF4F2424CE6400C63132 /* UINavigationController+ZXNavBarAllHiddenExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 749BBF4E2424CE6400C63132 /* UINavigationController+ZXNavBarAllHiddenExtension.m */; };
 		74A4B60B24D9716A00F7768A /* DemoPublicSystemBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74A4B60A24D9716A00F7768A /* DemoPublicSystemBarViewController.m */; };
@@ -69,6 +70,8 @@
 		04C0587F2591AE8100E98683 /* ZXNavHistoryStackModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZXNavHistoryStackModel.m; sourceTree = "<group>"; };
 		04C058852591AE9F00E98683 /* ZXNavHistoryStackCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZXNavHistoryStackCell.h; sourceTree = "<group>"; };
 		04C058862591AE9F00E98683 /* ZXNavHistoryStackCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZXNavHistoryStackCell.m; sourceTree = "<group>"; };
+		04D9C1B9259DD18300CB58DD /* ZXNavigationBarTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZXNavigationBarTableViewController.h; sourceTree = "<group>"; };
+		04D9C1BA259DD18300CB58DD /* ZXNavigationBarTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZXNavigationBarTableViewController.m; sourceTree = "<group>"; };
 		742D08AE24D16BED00F76EEE /* DemoCompatibleScrollViewViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DemoCompatibleScrollViewViewController.h; sourceTree = "<group>"; };
 		742D08AF24D16BED00F76EEE /* DemoCompatibleScrollViewViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DemoCompatibleScrollViewViewController.m; sourceTree = "<group>"; };
 		749BBF4D2424CE6400C63132 /* UINavigationController+ZXNavBarAllHiddenExtension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+ZXNavBarAllHiddenExtension.h"; sourceTree = "<group>"; };
@@ -250,6 +253,8 @@
 				74BC1B0E241364140032A424 /* ZXNavigationBar.m */,
 				74BC1B2024138BCB0032A424 /* ZXNavigationBarController.h */,
 				74BC1B2124138BCB0032A424 /* ZXNavigationBarController.m */,
+				04D9C1B9259DD18300CB58DD /* ZXNavigationBarTableViewController.h */,
+				04D9C1BA259DD18300CB58DD /* ZXNavigationBarTableViewController.m */,
 				74DAA1DD2480E50300EF7493 /* ZXNavigationBarNavigationController.h */,
 				74DAA1DE2480E50300EF7493 /* ZXNavigationBarNavigationController.m */,
 				74BC1B10241364C50032A424 /* ZXNavigationBarDefine.h */,
@@ -540,6 +545,7 @@
 				04C0586D2591A73700E98683 /* ZXNavHistoryStackContentView.m in Sources */,
 				74DAA1DF2480E50300EF7493 /* ZXNavigationBarNavigationController.m in Sources */,
 				74BC1B1424136C5C0032A424 /* ZXNavTitleLabel.m in Sources */,
+				04D9C1BB259DD18300CB58DD /* ZXNavigationBarTableViewController.m in Sources */,
 				742D08B024D16BED00F76EEE /* DemoCompatibleScrollViewViewController.m in Sources */,
 				74BC1B6F241B2E170032A424 /* DemoFoldFrameViewController.m in Sources */,
 				04C058802591AE8100E98683 /* ZXNavHistoryStackModel.m in Sources */,

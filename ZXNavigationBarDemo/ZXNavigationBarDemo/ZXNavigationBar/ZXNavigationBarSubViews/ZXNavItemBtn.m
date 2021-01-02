@@ -42,6 +42,8 @@
 - (void)setUp{
     self.zx_fixWidth = -1;
     self.zx_fixHeight = -1;
+    self.zx_fixMarginLeft = -1;
+    self.zx_fixMarginRight = -1;
     self.zx_fixImageSize = CGSizeZero;
 }
 
@@ -118,6 +120,18 @@
 
 - (void)setZx_fixHeight:(CGFloat)zx_fixHeight{
     _zx_fixHeight = zx_fixHeight;
+    [self.superview setValue:@1 forKey:@"shouldRefLayout"];
+    [self noticeUpdateFrame];
+}
+
+- (void)setZx_fixMarginLeft:(CGFloat)zx_fixMarginLeft{
+    _zx_fixMarginLeft = zx_fixMarginLeft;
+    [self.superview setValue:@1 forKey:@"shouldRefLayout"];
+    [self noticeUpdateFrame];
+}
+
+- (void)setZx_fixMarginRight:(CGFloat)zx_fixMarginRight{
+    _zx_fixMarginRight = zx_fixMarginRight;
     [self.superview setValue:@1 forKey:@"shouldRefLayout"];
     [self noticeUpdateFrame];
 }

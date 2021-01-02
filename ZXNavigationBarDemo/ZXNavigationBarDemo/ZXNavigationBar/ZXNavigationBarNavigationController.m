@@ -10,10 +10,11 @@
 #import "ZXNavigationBarNavigationController.h"
 #import <objc/runtime.h>
 #import "ZXNavigationBarController.h"
+#import "ZXNavigationBarTableViewController.h"
 @interface ZXNavigationBarNavigationController ()<UIGestureRecognizerDelegate,UINavigationControllerDelegate>
 @property (assign, nonatomic) CGFloat touchBeginX;
 @property (assign, nonatomic) BOOL doingPopGesture;
-@property (strong, nonatomic, nullable) ZXNavigationBarController *zx_topViewController;
+@property (strong, nonatomic, nullable) UIViewController *zx_topViewController;
 @property (strong, nonatomic) id orgInteractivePopGestureRecognizerDelegate;
 @end
 
@@ -78,12 +79,24 @@
 #pragma mark 处理pop手势
 - (void)handleNavigationTransition:(UIPanGestureRecognizer *)panGesture{
     if(self.zx_topViewController && !self.doingPopGesture){
-        if(self.zx_topViewController.zx_handlePopBlock){
-            BOOL shouldPop = self.zx_topViewController.zx_handlePopBlock(self.zx_topViewController,ZXNavPopBlockFromPopGesture);
-            if(!shouldPop){
-                return;
+        if([self.zx_topViewController isKindOfClass:[ZXNavigationBarTableViewController class]]){
+            ZXNavigationBarTableViewController *topViewController = (ZXNavigationBarTableViewController *)self.zx_topViewController;
+            if(topViewController.zx_handlePopBlock){
+                BOOL shouldPop = topViewController.zx_handlePopBlock((ZXNavigationBarTableViewController *)self.zx_topViewController,ZXNavPopBlockFromPopGesture);
+                if(!shouldPop){
+                    return;
+                }
+            }
+        }else{
+            ZXNavigationBarController *topViewController = (ZXNavigationBarController *)self.zx_topViewController;
+            if(topViewController.zx_handlePopBlock){
+                BOOL shouldPop = topViewController.zx_handlePopBlock((ZXNavigationBarController *)self.zx_topViewController,ZXNavPopBlockFromPopGesture);
+                if(!shouldPop){
+                    return;
+                }
             }
         }
+        
     }
     CGFloat panGestureX = [panGesture locationInView:self.view].x;
     self.doingPopGesture = YES;
@@ -119,8 +132,12 @@
 #pragma mark 更新栈顶控制器
 - (void)updateTopViewController:(UIViewController *)viewController{
     self.zx_topViewController = nil;
-    if(viewController && [viewController isKindOfClass:[ZXNavigationBarController class]]){
-        self.zx_topViewController = (ZXNavigationBarController *)viewController;
+    if(viewController && ([viewController isKindOfClass:[ZXNavigationBarController class]] || [viewController isKindOfClass:[ZXNavigationBarTableViewController class]] )){
+        if([viewController isKindOfClass:[ZXNavigationBarController class]]){
+            self.zx_topViewController = (ZXNavigationBarController *)viewController;
+        }else{
+            self.zx_topViewController = (ZXNavigationBarTableViewController *)viewController;
+        }
     }
 }
 
