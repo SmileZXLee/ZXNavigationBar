@@ -5,7 +5,7 @@
 //  Created by 李兆祥 on 2020/3/7.
 //  Copyright © 2020 ZXLee. All rights reserved.
 //  https://github.com/SmileZXLee/ZXNavigationBar
-//  V1.3.7
+//  V1.3.9
 
 #import <UIKit/UIKit.h>
 #import "UINavigationController+ZXNavBarAllHiddenExtension.h"
@@ -269,6 +269,16 @@ pop手势是否支持多层级的手势同时触发，默认为否。若设置�
 @property (assign, nonatomic)int zx_navFixHeight;
 
 /**
+ 自定义导航栏固定frame
+ */
+@property (assign, nonatomic)CGRect zx_navFixFrame;
+
+/**
+ 导航栏frame发生改变时的回调，可在这个block中return修改后的frame
+ */
+@property(copy, nonatomic)CGRect(^zx_navHandleFrameBlock)(CGRect oldFrame);
+
+/**
  导航栏历史堆栈视图
  */
 @property(weak, nonatomic)ZXNavHistoryStackContentView *zx_navHistoryStackContentView;
@@ -530,6 +540,9 @@ pop手势是否支持多层级的手势同时触发，默认为否。若设置�
 /// @param scrollView scrollView
 /// 注意：因判断是否支持多层级的手势同时触发的block属于同一导航控制器，为避免block被子控制器覆盖后失效，以下代码建议写在子控制器的-viewWillAppear或-viewDidAppear中
 - (void)zx_setPopGestureCompatibleScrollView:(UIScrollView *)scrollView;
+
+/// 手动显示导航栏历史堆栈view
+- (void)zx_showNavHistoryStackView;
 
 @end
 

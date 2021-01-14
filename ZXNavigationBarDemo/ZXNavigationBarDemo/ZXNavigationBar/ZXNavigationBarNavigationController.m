@@ -5,7 +5,7 @@
 //  Created by 李兆祥 on 2020/5/29.
 //  Copyright © 2020 ZXLee. All rights reserved.
 //  https://github.com/SmileZXLee/ZXNavigationBar
-//  V1.3.7
+//  V1.3.9
 
 #import "ZXNavigationBarNavigationController.h"
 #import <objc/runtime.h>
@@ -48,6 +48,9 @@
 - (NSArray<UIViewController *> *)popToRootViewControllerAnimated:(BOOL)animated{
     if(self.viewControllers.firstObject && !self.doingPopGesture){
         [self updateTopViewController:self.viewControllers.firstObject];
+    }
+    if(!self.zx_disableAutoHidesBottomBarWhenPushed && self.viewControllers.count > 1){
+        self.topViewController.hidesBottomBarWhenPushed = NO;
     }
     return [super popToRootViewControllerAnimated:animated];
 }

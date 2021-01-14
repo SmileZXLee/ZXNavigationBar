@@ -5,7 +5,7 @@
 //  Created by 李兆祥 on 2020/3/7.
 //  Copyright © 2020 ZXLee. All rights reserved.
 //  https://github.com/SmileZXLee/ZXNavigationBar
-//  V1.3.7
+//  V1.3.9
 
 #import "ZXNavigationBarController.h"
 #import "ZXNavigationBarTableViewController.h"
@@ -37,6 +37,7 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.zx_navFixHeight = -1;
+    self.zx_navFixFrame = CGRectZero;
     self.zx_navHistoryStackContentViewItemMaxLength = ZXNavHistoryStackViewItemMaxLength;
     if(self.navigationController && !self.zx_hideBaseNavBar && !self.zx_disableAutoSetCustomNavBar){
         [self initNavBar];
@@ -177,10 +178,17 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
 #pragma mark 刷新导航栏位置
 - (void)relayoutSubviews{
     if(self.zx_navBar){
-        if(self.zx_navIsFolded){
-            self.zx_navBar.frame = CGRectMake(0, 0, ZXScreenWidth, ZXAppStatusBarHeight);
+        if(!CGRectEqualToRect(self.zx_navFixFrame, CGRectZero)){
+            self.zx_navBar.frame = self.zx_navFixFrame;
         }else{
-            self.zx_navBar.frame = CGRectMake(0, 0, ZXScreenWidth, [self getCurrentNavHeight]);
+            if(self.zx_navIsFolded){
+                self.zx_navBar.frame = CGRectMake(0, 0, ZXScreenWidth, ZXAppStatusBarHeight);
+            }else{
+                self.zx_navBar.frame = CGRectMake(0, 0, ZXScreenWidth, [self getCurrentNavHeight]);
+            }
+        }
+        if(self.zx_navHandleFrameBlock){
+            self.zx_navBar.frame = self.zx_navHandleFrameBlock(self.zx_navBar.frame);
         }
     }
 }
@@ -483,6 +491,17 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
     _zx_navFixHeight = zx_navFixHeight;
     [self relayoutSubviews];
     [self adjustNavContainerOffset:[self getCurrentNavHeight]];
+}
+
+- (void)setZx_navFixFrame:(CGRect)zx_navFixFrame{
+    _zx_navFixFrame = zx_navFixFrame;
+    if(!CGRectEqualToRect(zx_navFixFrame, CGRectZero)){
+        [self relayoutSubviews];
+        if(self.zx_navBar){
+            ((void (*)(id,SEL))objc_msgSend)(self.zx_navBar, NSSelectorFromString(@"relayoutSubviews"));
+        }
+        [self adjustNavContainerOffset:[self getCurrentNavHeight]];
+    }
 }
 
 - (void)setZx_handleCustomPopGesture:(void (^)(CGFloat))zx_handleCustomPopGesture{
@@ -892,7 +911,7 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
 }
 
 #pragma mark 显示历史堆栈
--(void)zx_showNavHistoryStackView{
+- (void)zx_showNavHistoryStackView{
     if(self.navigationController && self.zx_showNavHistoryStackContentView){
         if(self.zx_handlePopBlock && !self.zx_handlePopBlock(self,ZXNavPopBlockFromHistoryStack)){
             return;
