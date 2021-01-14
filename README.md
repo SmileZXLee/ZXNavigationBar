@@ -122,6 +122,17 @@ self.zx_navTitleFont = [UIFont systemFontOfSize:20];
 
 * 设置导航栏标题其他非frame属性，通过控制`self.zx_navTitleLabel`即可
 
+#### 自定义导航栏frame
+```objective-c
+self.zx_navFixFrame = CGRectMake(0, 0, 100, 100);
+```
+#### 导航栏frame发生改变时的回调，可在这个block中return修改后的frame
+```objective-c
+self.zx_navHandleFrameBlock = ^CGRect(CGRect oldFrame) {
+    return CGRectMake(0, 0, 100, 100);
+};
+```
+
 #### 设置导航栏默认返回按钮图片，若不设置则使用默认的返回按钮图片
 ```objective-c
 self.zx_backBtnImageName = @"newBackImageName";
@@ -216,10 +227,6 @@ self.zx_navLeftBtn.zx_fixMarginRight = 15;
 * 禁止自动调整NavItemBtn图片和文字的布局，若要使contentEdgeInsets、titleEdgeInsets、imageEdgeInsets等，则需要将此属性设置为NO
 ```objective-c
 self.zx_navLeftBtn.zx_disableAutoLayoutImageAndTitle = YES;
-```
-* 设置NavItemBtn的固定高度，若设置，则ZXNavDefalutItemSize无效
-```objective-c
-self.zx_navLeftBtn.zx_fixHeight = 20;
 ```
 * 设置NavItemBtn image的固定大小
 ```objective-c
