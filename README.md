@@ -87,7 +87,15 @@ pod 'ZXNavigationBar'
 }
 @end
 ```
-
+#### 如果您在项目中使用了`FDFullscreenPopGesture`
+* `ZXNavigationBar`支持全屏手势返回和拦截，建议您移除其他的第三方全屏手势返回框架以避免冲突。
+* 若自定义导航栏与系统导航栏同在一个项目中，您可以在继承于`ZXNavigationBarController`的跟控制器的初始化方法书写以下代码以兼容`FDFullscreenPopGesture`:
+```objective-c
+//因FDFullscreenPopGesture默认会在控制器即将展示时显示系统导航栏，与ZXNavigationBar共同使用时会造成系统导航栏出现一下又马上消失，因此需要以下设置
+self.fd_prefersNavigationBarHidden = YES;
+//当您通过zx_handlePopBlock拦截侧滑返回手势时，请设置fd_interactivePopDisabled为YES以关闭FDFullscreenPopGesture在当前控制器的全屏返回手势，否则无法拦截。
+self.fd_interactivePopDisabled = YES;
+```
 
 #### 【重要】`ZXNavigationBar`对于自定义导航栏view内容无法自动下移的处理方式
 如果App使用的是系统的导航栏且不透明，view的内容会自动下移，例如非刘海屏会下移64像素；若设置了自定义的导航栏，因为它实际上就是普通的View，则控制器view中的内容不会自动下移以避免挡住导航栏。
