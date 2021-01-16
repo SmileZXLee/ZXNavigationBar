@@ -87,7 +87,7 @@ pod 'ZXNavigationBar'
 }
 @end
 ```
-#### 如果您在项目中使用了`FDFullscreenPopGesture`
+#### 【重要】如果您在项目中使用了`FDFullscreenPopGesture`
 * `ZXNavigationBar`支持全屏手势返回和拦截，建议您移除其他的第三方全屏手势返回框架以避免冲突。
 * 若自定义导航栏与系统导航栏同在一个项目中，您可以在继承于`ZXNavigationBarController`的跟控制器的初始化方法书写以下代码以兼容`FDFullscreenPopGesture`:
 ```objective-c
@@ -406,6 +406,9 @@ self.zx_handlePopBlock = ^BOOL(ZXNavigationBarController * _Nonnull viewControll
     //返回YES则代表不禁止pop操作，返回NO则禁止pop操作
     return YES;
 };
+
+//如果您在项目中使用了FDFullscreenPopGesture，需要关闭FDFullscreenPopGesture在当前控制器的全屏侧滑返回手势，否则zx_handlePopBlock无法拦截侧滑返回手势
+self.fd_interactivePopDisabled = YES;
 ```
 #### 设置全屏返回手势
 ```objective-c
