@@ -34,6 +34,7 @@ pod 'ZXNavigationBar'
 - [x] 仿系统导航栏历史堆栈效果，支持iOS8-iOS14，支持自定义基本样式
 - [x] 若从Xib中加载控制器View，添加子View无需手动设置距离导航栏顶部约束，`ZXNavigationBar`会自动处理
 
+### 反馈&交流qq群：[790460711](https://jq.qq.com/?_wv=1027&k=vU2fKZZH)
 
 ### 效果预览
 导航栏设置 | 仿微博热搜效果 |  自定义导航栏  
