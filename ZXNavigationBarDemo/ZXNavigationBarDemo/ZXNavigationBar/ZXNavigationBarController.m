@@ -435,7 +435,7 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
     defaultNavStatusBarStyle = zx_navStatusBarStyle;
     if(!self.zx_disableAutoSetStatusBarStyle){
         NSNumber *basedStatusBarAppearance = [[NSBundle mainBundle]objectForInfoDictionaryKey:@"UIViewControllerBasedStatusBarAppearance"];
-        if([basedStatusBarAppearance boolValue]){
+        if(!basedStatusBarAppearance || [basedStatusBarAppearance boolValue]){
             [self setNeedsStatusBarAppearanceUpdate];
         }else{
             #pragma clang diagnostic push

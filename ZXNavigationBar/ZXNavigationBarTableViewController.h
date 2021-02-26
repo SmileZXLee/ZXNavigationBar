@@ -518,6 +518,9 @@ pop手势是否支持多层级的手势同时触发，默认为否。若设置�
 
 /// 手动显示导航栏历史堆栈view
 - (void)zx_showNavHistoryStackView;
+
+///scrollView滚动，如需使用scrollViewDidScroll请重写此方法
+- (void)zx_scrollViewDidScroll:(UIScrollView *)scrollView;
 @end
 
 NS_ASSUME_NONNULL_END

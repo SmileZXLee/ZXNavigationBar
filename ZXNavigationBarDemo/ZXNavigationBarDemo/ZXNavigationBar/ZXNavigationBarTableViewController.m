@@ -23,7 +23,9 @@
 @property(copy, nonatomic)foldingOffsetBlock offsetBlock;
 @property(copy, nonatomic)foldCompletionBlock completionBlock;
 @property(assign, nonatomic)BOOL isInLeftBtnTouchesBegan;
+@property(assign, nonatomic)BOOL didDoScroll;
 @property(strong, nonatomic)NSMutableArray<ZXXibTopConstraintModel *> *xibTopConstraintArr;
+
 @end
 
 @implementation ZXNavigationBarTableViewController
@@ -172,18 +174,24 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
 
 #pragma mark 刷新导航栏位置
 - (void)relayoutSubviews{
+    if(self.didDoScroll){
+        return;
+    }
     if(self.zx_navBar){
         if(!CGRectEqualToRect(self.zx_navFixFrame, CGRectZero)){
             self.zx_navBar.frame = self.zx_navFixFrame;
         }else{
             if(self.zx_navIsFolded){
-                self.zx_navBar.frame = CGRectMake(0, 0, ZXScreenWidth, ZXAppStatusBarHeight);
+                self.zx_navBar.frame = CGRectMake(0, -ZXAppStatusBarHeight, ZXScreenWidth, ZXAppStatusBarHeight);
             }else{
-                self.zx_navBar.frame = CGRectMake(0, 0, ZXScreenWidth, [self getCurrentNavHeight]);
+                self.zx_navBar.frame = CGRectMake(0, -[self getCurrentNavHeight], ZXScreenWidth, [self getCurrentNavHeight]);
             }
         }
         if(self.zx_navHandleFrameBlock){
             self.zx_navBar.frame = self.zx_navHandleFrameBlock(self.zx_navBar.frame);
+        }
+        if(self.tableView){
+            self.tableView.contentInset = UIEdgeInsetsMake([self getCurrentNavHeight], 0, 0, 0);
         }
     }
 }
@@ -430,7 +438,7 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
     defaultNavStatusBarStyle = zx_navStatusBarStyle;
     if(!self.zx_disableAutoSetStatusBarStyle){
         NSNumber *basedStatusBarAppearance = [[NSBundle mainBundle]objectForInfoDictionaryKey:@"UIViewControllerBasedStatusBarAppearance"];
-        if([basedStatusBarAppearance boolValue]){
+        if(!basedStatusBarAppearance || [basedStatusBarAppearance boolValue]){
             [self setNeedsStatusBarAppearanceUpdate];
         }else{
             #pragma clang diagnostic push
@@ -1045,7 +1053,20 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
     return YES;
 }
 
+#pragma mark - UIScrollviewDelegate
+#pragma mark scrollView滚动，请勿重写此方法，否则导航栏将跟着scrollView一起移动
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    self.didDoScroll = YES;
+    self.zx_navBar.zx_y = scrollView.contentOffset.y;
+    [self zx_scrollViewDidScroll:scrollView];
+}
+
 #pragma mark - Private
+#pragma mark scrollView滚动，如需使用scrollViewDidScroll请重写此方法
+- (void)zx_scrollViewDidScroll:(UIScrollView *)scrollView{
+    
+}
+
 #pragma mark 通过SDWebImage设置导航栏item
 - (void)setNavItemBtnWithItem:(UIButton *)btn imgUrl:(NSString *)imgUrlStr placeholderImgName:(NSString *)placeholderImgName{
     NSURL *imgUrl = [NSURL URLWithString:imgUrlStr];
