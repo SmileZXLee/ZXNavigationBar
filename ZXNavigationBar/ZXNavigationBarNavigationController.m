@@ -35,7 +35,7 @@
     if(!self.zx_disableAutoHidesBottomBarWhenPushed){
         [viewController setHidesBottomBarWhenPushed:self.viewControllers.count  >= 1];
     }
-    [super pushViewController:viewController animated:YES];
+    [super pushViewController:viewController animated:animated];
 }
 
 - (UIViewController *)popViewControllerAnimated:(BOOL)animated{

@@ -434,7 +434,16 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
     _zx_navStatusBarStyle = zx_navStatusBarStyle;
     defaultNavStatusBarStyle = zx_navStatusBarStyle;
     if(!self.zx_disableAutoSetStatusBarStyle){
-        [self setNeedsStatusBarAppearanceUpdate];
+        NSNumber *basedStatusBarAppearance = [[NSBundle mainBundle]objectForInfoDictionaryKey:@"UIViewControllerBasedStatusBarAppearance"];
+        if([basedStatusBarAppearance boolValue]){
+            [self setNeedsStatusBarAppearanceUpdate];
+        }else{
+            #pragma clang diagnostic push
+            #pragma clang diagnostic ignored"-Wdeprecated-declarations"
+            [[UIApplication sharedApplication] setStatusBarStyle:[self preferredStatusBarStyle]];
+            #pragma clang diagnostic pop
+           
+        }
     }
 }
 
@@ -496,11 +505,7 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
 - (void)setZx_navFixFrame:(CGRect)zx_navFixFrame{
     _zx_navFixFrame = zx_navFixFrame;
     if(!CGRectEqualToRect(zx_navFixFrame, CGRectZero)){
-        [self relayoutSubviews];
-        if(self.zx_navBar){
-            ((void (*)(id,SEL))objc_msgSend)(self.zx_navBar, NSSelectorFromString(@"relayoutSubviews"));
-        }
-        [self adjustNavContainerOffset:[self getCurrentNavHeight]];
+        self.zx_navFixHeight = zx_navFixFrame.size.height;
     }
 }
 

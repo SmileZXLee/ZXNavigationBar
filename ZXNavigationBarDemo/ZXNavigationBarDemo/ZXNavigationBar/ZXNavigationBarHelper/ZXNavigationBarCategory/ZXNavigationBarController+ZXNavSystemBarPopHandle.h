@@ -12,12 +12,12 @@
 #import "ZXNavigationBarController.h"
 
 NS_ASSUME_NONNULL_BEGIN
-@protocol BackButtonHandlerProtocol <NSObject>
+@protocol ZXBackButtonHandlerProtocol <NSObject>
 @optional
 
 -(BOOL)zx_navSystemBarPopHandle;
 @end
-@interface UIViewController (ZXNavSystemBarPopHandle)<BackButtonHandlerProtocol>
+@interface UIViewController (ZXNavSystemBarPopHandle)<ZXBackButtonHandlerProtocol>
 
 @end
 
