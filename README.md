@@ -348,7 +348,7 @@ self.zx_navEnableSmoothFromSystemNavBar = YES;
 ```objective-c
 self.zx_disableNavAutoSafeLayout = YES;
 ```
-#### Xib加载控制器情况下将所有约束为top且secondItem为控制器view或safeArea的子view约束constant设置为原始长度+导航栏高度，默认为NO(仅第一个)，若设置为YES，将会遍历控制器view中的所有约束，对性能有一点影响
+#### Xib加载控制器情况下将所有约束为top且secondItem为控制器view或safeArea的子view约束constant设置为原始长度+导航栏高度，默认为NO(仅第一个)，若设置为YES，将会遍历控制器view中的所有约束，对性能有一点影响（需要设置在[super viewDidLoad]之前）
 ```objective-c
 self.zx_enableAdjustNavContainerAll = YES;
 ```
