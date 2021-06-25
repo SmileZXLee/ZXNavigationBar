@@ -69,6 +69,10 @@ pod 'ZXNavigationBar'
 }
 @end
 ```
+* 在跳转到使用系统导航栏的页面（如系统相册、icloud drive）出现控制器内容上移被系统导航栏遮挡的问题时，请在跳转前设置  
+```objective-c
+UIScrollView.appearance.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentAutomatic;
+```
 
 
 * 【导航控制器为`ZXNavigationBarNavigationController`或其子类时，可忽略此步操作！！】`ZXNavigationBarController`作了自动隐藏导航栏的处理，但由于导航栏早于内部子控制器加载，因此有可能造成自定义导航栏抖动或状态栏颜色黑白相嵌的问题，
