@@ -5,7 +5,7 @@
 //  Created by 李兆祥 on 2020/12/31.
 //  Copyright © 2020 ZXLee. All rights reserved.
 //  https://github.com/SmileZXLee/ZXNavigationBar
-//  V1.3.9
+//  V1.4.1
 
 #import <UIKit/UIKit.h>
 #import "UINavigationController+ZXNavBarAllHiddenExtension.h"
@@ -208,7 +208,7 @@ typedef void(^transparentGradientsOpaqueBlock) (void);
  */
 @property (assign, nonatomic) CGFloat zx_popGestureCoverRatio;
 /**
- 将所有约束为top且secondItem为控制器view或safeArea的子view约束constant设置为原始长度+导航栏高度，默认为NO，若设置为YES，将会遍历控制器view中的所有约束，对性能有一点影响
+ 将所有约束为top且secondItem为控制器view或safeArea的子view约束constant设置为原始长度+导航栏高度，默认为NO，若设置为YES，将会遍历控制器view中的所有约束，对性能有一点影响（需要设置在[super viewDidLoad]之前）
  */
 @property (assign, nonatomic) BOOL zx_enableAdjustNavContainerAll;
 /**

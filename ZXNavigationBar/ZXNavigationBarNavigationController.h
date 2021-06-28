@@ -5,7 +5,7 @@
 //  Created by 李兆祥 on 2020/5/29.
 //  Copyright © 2020 ZXLee. All rights reserved.
 //  https://github.com/SmileZXLee/ZXNavigationBar
-//  V1.3.9
+//  V1.4.1
 
 #import <UIKit/UIKit.h>
 
@@ -44,6 +44,11 @@ pop手势是否支持多层级的手势同时触发，默认为否
 */
 @property(copy, nonatomic)BOOL(^zx_popGestureShouldRecognizeSimultaneously)(UIGestureRecognizer *otherGestureRecognizer);
 
+/**
+ 拦截导航控制器侧滑返回手势，若返回NO，则禁止pop;
+ topViewController:当前控制器
+*/
+@property(copy, nonatomic)BOOL(^zx_navHandlePopGestureBlock)(UIViewController *topViewController);
 @end
 
 NS_ASSUME_NONNULL_END

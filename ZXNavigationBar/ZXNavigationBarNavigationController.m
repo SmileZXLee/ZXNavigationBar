@@ -5,7 +5,7 @@
 //  Created by 李兆祥 on 2020/5/29.
 //  Copyright © 2020 ZXLee. All rights reserved.
 //  https://github.com/SmileZXLee/ZXNavigationBar
-//  V1.3.9
+//  V1.4.1
 
 #import "ZXNavigationBarNavigationController.h"
 #import <objc/runtime.h>
@@ -30,7 +30,9 @@
 
 #pragma mark - 重写父类pop和push相关方法
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated{
-    self.navigationBarHidden = YES;
+    if([viewController isKindOfClass:[ZXNavigationBarController class]]){
+        self.navigationBarHidden = YES;
+    }
     [self updateTopViewController:viewController];
     if(!self.zx_disableAutoHidesBottomBarWhenPushed){
         [viewController setHidesBottomBarWhenPushed:self.viewControllers.count  >= 1];
@@ -100,6 +102,12 @@
             }
         }
         
+    }
+    if(self.zx_navHandlePopGestureBlock){
+        BOOL shouldPop = self.zx_navHandlePopGestureBlock(self.zx_topViewController);
+        if(!shouldPop){
+            return;
+        }
     }
     CGFloat panGestureX = [panGesture locationInView:self.view].x;
     self.doingPopGesture = YES;
