@@ -1057,7 +1057,9 @@ static ZXNavStatusBarStyle defaultNavStatusBarStyle = ZXNavStatusBarStyleDefault
 #pragma mark scrollView滚动，请勿重写此方法，否则导航栏将跟着scrollView一起移动
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
     self.didDoScroll = YES;
-    self.zx_navBar.zx_y = scrollView.contentOffset.y;
+    if (scrollView == self.tableView) {
+        self.zx_navBar.zx_y =  scrollView.contentOffset.y;
+    }
     [self zx_scrollViewDidScroll:scrollView];
 }
 
