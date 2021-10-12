@@ -92,13 +92,31 @@
     [self noticeUpdateFrame];
 }
 
+- (void)setSelected:(BOOL)selected{
+    [super setSelected:selected];
+    [self zx_layoutImageAndTitle];
+    [self noticeUpdateFrame];
+}
+
+- (void)setHighlighted:(BOOL)highlighted{
+    [super setHighlighted:highlighted];
+    [self zx_layoutImageAndTitle];
+    [self noticeUpdateFrame];
+}
+
+- (void)setEnabled:(BOOL)enabled{
+    [super setEnabled:enabled];
+    [self zx_layoutImageAndTitle];
+    [self noticeUpdateFrame];
+}
+
+
 - (void)setZx_tintColor:(UIColor *)zx_tintColor{
     _zx_tintColor = zx_tintColor;
     self.tintColor = zx_tintColor;
     [self resetImage];
     [self resetTitle];
 }
-
 
 - (void)setZx_imageColor:(UIColor *)zx_imageColor{
     _zx_imageColor = zx_imageColor;
@@ -183,6 +201,9 @@
         _zx_customView = nil;
         [self noticeUpdateFrame];
         return;
+    }
+    if(_zx_customView && _zx_customView.superview){
+        [_zx_customView removeFromSuperview];
     }
     _zx_customView = zx_customView;
     if(![self.subviews containsObject:zx_customView]){
