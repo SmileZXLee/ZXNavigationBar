@@ -107,7 +107,6 @@ self.fd_interactivePopDisabled = YES;
 * `ZXNavigationBar`的处理方法是：
 * 如果您是通过frame或者Masonry设置控件布局，请设置y距离顶部高度为导航栏高度，可直接使用`ZXNavBarHeight`这个宏
 * 如果您是通过Xib加载控制器View，则`ZXNavigationBar`会自动将内部约束设置为距离顶部为导航栏高度+原始高度，您无需作任何处理
-* 若您是通过Xib加载控制器View，且禁用了SafeArea，请设置（若使用了SafeArea，请忽略）：
 
 ### 导航栏设置
 #### 注意:以下设置均在控制器中进行，self代表当前控制器(当前控制器需继承于`ZXNavigationBarController`)
