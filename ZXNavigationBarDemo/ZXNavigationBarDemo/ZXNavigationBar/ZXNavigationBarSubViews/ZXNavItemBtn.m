@@ -79,7 +79,7 @@
     if(self.zx_customView && image){
         return;
     }
-    if(self.zx_tintColor){
+    if(self.zx_tintColor || self.zx_imageColor){
         image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     }else{
         image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
